@@ -6,10 +6,24 @@ class GBFeature {
   /// The default value (should use null if not specified)
   ///2 Array of Rule objects that determine when and how the defaultValue gets overridden
   List<GBFeatureRule>? rules;
+
+  ///  The default value (should use null if not specified)
+  Map<String, dynamic>? defaultValue;
 }
 
 /// Rule object consists of various definitions to apply to calculate feature value
 class GBFeatureRule {
+  GBFeatureRule({
+    this.condition,
+    this.coverage,
+    this.force,
+    this.variations,
+    this.key,
+    this.weights,
+    this.nameSpace,
+    this.hashAttribute,
+  });
+
   /// Optional targeting condition
   GBCondition? condition;
 
@@ -17,7 +31,7 @@ class GBFeatureRule {
   double? coverage;
 
   /// Immediately force a specific value (ignore every other option besides condition and coverage)
-  Map<String, Object>? force;
+  dynamic force;
 
   /// Run an experiment (A/B test) and randomly choose between these variations
   List<Map<String, dynamic>>? variations;
@@ -33,6 +47,17 @@ class GBFeatureRule {
 
   /// What user attribute should be used to assign variations (defaults to id)
   String? hashAttribute;
+
+  factory GBFeatureRule.fromMap(Map<String, dynamic> mappedData) =>
+      GBFeatureRule(
+        condition: mappedData['condition'],
+        coverage: mappedData['coverage'],
+        variations: mappedData['variations'],
+        key: mappedData['key'],
+        weights: mappedData['weights'],
+        force: mappedData['force'],
+        hashAttribute: mappedData["hashAttribute"],
+      );
 }
 
 /// Enum For defining feature value source.
@@ -52,6 +77,15 @@ enum GBFeatureSource {
 
 /// Result for Feature
 class GBFeatureResult {
+  GBFeatureResult({
+    this.value,
+    this.on,
+    this.off,
+    this.source,
+    this.experiment,
+    this.experimentResult,
+  });
+
   /// The assigned value of the feature
   dynamic value;
 
@@ -69,5 +103,5 @@ class GBFeatureResult {
   GBExperiment? experiment;
 
   ///When source is "experiment", this will be an ExperimentResult object
-
+  GBExperimentResult? experimentResult;
 }

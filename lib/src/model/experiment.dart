@@ -1,6 +1,18 @@
+import '../Utils/constant.dart';
+
 /// Defines a single experiment
 
 class GBExperiment {
+  GBExperiment({
+    this.key,
+    this.variations,
+    this.hashAttribute,
+    this.weights,
+    this.active,
+    this.coverage,
+    this.force,
+  });
+
   /// The globally unique tracking key for the experiment
   String? key;
 
@@ -21,7 +33,7 @@ class GBExperiment {
   double? coverage;
 
   /// Optional targeting condition
-  /// var condition: GBCondition? = null;
+  GBCondition? condition;
 
   /// All users included in the experiment will be forced into the specific variation index
   int? force;
@@ -29,6 +41,14 @@ class GBExperiment {
 
 /// The result of running an Experiment given a specific Context
 class GBExperimentResult {
+  GBExperimentResult({
+    this.inExperiment,
+    this.variationID,
+    this.value,
+    this.hasAttributes,
+    this.hashValue,
+  });
+
   /// Whether or not the user is part of the experiment
   bool? inExperiment;
 
@@ -42,5 +62,5 @@ class GBExperimentResult {
   String? hasAttributes;
 
   /// The value of that attribute
-  String? hasValue;
+  String? hashValue;
 }

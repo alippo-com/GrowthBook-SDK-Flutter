@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -28,9 +30,14 @@ class _HomeState extends State<Home> {
   void initState() {
     Dio()
         .get('https://cdn.growthbook.io/api/features/key_dev_48ecac96a7facd6c')
-        .then(
-          (response) => print(response.data),
-        );
+        .then((response) {
+      Map<String, dynamic> map = response.data['features'];
+
+      map.forEach((key, value) {
+        log("Feature Name $key ${value.toString()}");
+      });
+    });
+
     super.initState();
   }
 

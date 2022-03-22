@@ -67,7 +67,6 @@ class GBSDKBuilderApp extends SDKBuilder {
 
 // The main export of the libraries is a simple GrowthBook wrapper class that takes a Context object in the constructor.
 // It exposes two main methods: feature and run.
-
 class GrowthBookSDK {
   GrowthBookSDK({required GBContext context, GBFeatures? features})
       : _context = context {
@@ -79,4 +78,6 @@ class GrowthBookSDK {
   ///
   final GBContext _context;
   GBContext get context => _context;
+
+  GBFeatures get features => _context.features;
 }

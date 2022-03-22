@@ -1,3 +1,4 @@
+import '../Helper/helper.dart' show Tuple2, Tuple3;
 import '../model/experiment.dart';
 import '../model/features.dart';
 
@@ -13,12 +14,19 @@ class Constant {
   static String featurePath = 'api/features/';
 }
 
+/// Triple Tuple for GrowthBook Namespaces
+/// It has ID, StartRange & EndRange
+typedef GBNameSpace = Tuple3<String, double, double>;
+
+/// Double Tuple for GrowthBook Ranges
+typedef GBBucketRange = Tuple2<double, double>;
+
 /// Type Alias for Feature in GrowthBook
 /// Represents json response in this case.
 typedef GBFeatures = Map<String, GBFeature>;
 
 /// Type Alias for Condition Element in GrowthBook Rules
-typedef GBCondition = String;
+typedef GBCondition = Map<String, dynamic>;
 
 /// Handler for Refresh Cache Request
 /// It updates back whether cache was refreshed or not
