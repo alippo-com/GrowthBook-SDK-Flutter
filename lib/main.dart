@@ -1,7 +1,5 @@
-import 'dart:developer';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:r_sdk_m/growth_book.dart';
 
 void main(List<String> args) {
   runApp(const MyApp());
@@ -26,23 +24,44 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final userAttr = {'Name': 'Dhruvin'};
+
+  late final GrowthBookSDK gb;
   @override
   void initState() {
-    Dio()
-        .get('https://cdn.growthbook.io/api/features/key_dev_48ecac96a7facd6c')
-        .then((response) {
-      Map<String, dynamic> map = response.data['features'];
-
-      map.forEach((key, value) {
-        log("Feature Name $key ${value.toString()}");
-      });
-    });
-
+    /// Initializing SDK.
+    gb = GBSDKBuilderApp(
+            apiKey: 'key_dev_48ecac96a7facd6c',
+            hostURL: 'https://cdn.growthbook.io/',
+            attributes: userAttr,
+            growthBookTrackingCallBack: (experiment, experimentResult) {
+              /// Track feature.
+            })
+        .initialize();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Rocking features',
+            ),
+            const SizedBox(height: 15),
+            ElevatedButton(
+              onPressed: () {
+                /// Check features from growth_book by [GrowthBookSDK.context..]
+                ///
+              },
+              child: const Text('List Down All Features'),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

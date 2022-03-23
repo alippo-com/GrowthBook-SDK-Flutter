@@ -3,12 +3,30 @@ import 'experiment.dart';
 
 /// A Feature object consists of possible values plus rules for how to assign values to users.
 class GBFeature {
+  GBFeature({
+    this.rules,
+    this.defaultValue,
+  });
+
   /// The default value (should use null if not specified)
   ///2 Array of Rule objects that determine when and how the defaultValue gets overridden
   List<GBFeatureRule>? rules;
 
   ///  The default value (should use null if not specified)
   Map<String, dynamic>? defaultValue;
+
+  factory GBFeature.fromMap(Map<String, dynamic> dataMap) {
+    return GBFeature(
+      rules: dataMap['rules'] != null
+          ? List<GBFeatureRule>.from(
+              (dataMap['rules'] as List).map(
+                (e) => GBFeatureRule.fromMap(e),
+              ),
+            )
+          : null,
+      // defaultValue: dataMap["defaultValue"],
+    );
+  }
 }
 
 /// Rule object consists of various definitions to apply to calculate feature value
@@ -34,7 +52,7 @@ class GBFeatureRule {
   dynamic force;
 
   /// Run an experiment (A/B test) and randomly choose between these variations
-  List<Map<String, dynamic>>? variations;
+  List<dynamic>? variations;
 
   /// The globally unique tracking key for the experiment (default to the feature key)
   String? key;
@@ -48,16 +66,21 @@ class GBFeatureRule {
   /// What user attribute should be used to assign variations (defaults to id)
   String? hashAttribute;
 
-  factory GBFeatureRule.fromMap(Map<String, dynamic> mappedData) =>
-      GBFeatureRule(
-        condition: mappedData['condition'],
-        coverage: mappedData['coverage'],
-        variations: mappedData['variations'],
-        key: mappedData['key'],
-        weights: mappedData['weights'],
-        force: mappedData['force'],
-        hashAttribute: mappedData["hashAttribute"],
-      );
+  factory GBFeatureRule.fromMap(Map<String, dynamic> mappedData) {
+    return GBFeatureRule(
+      condition: mappedData['condition'],
+      coverage: mappedData['coverage'],
+      variations: mappedData['variations'] != null
+          ? List<dynamic>.from(mappedData['variations'].map((e) => e))
+          : null,
+      key: mappedData['key'],
+      weights: mappedData['weights'] != null
+          ? List<double>.from(mappedData['weights'])
+          : null,
+      force: mappedData['force'],
+      hashAttribute: mappedData["hashAttribute"],
+    );
+  }
 }
 
 /// Enum For defining feature value source.

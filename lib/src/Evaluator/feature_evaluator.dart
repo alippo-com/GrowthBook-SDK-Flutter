@@ -57,7 +57,7 @@ class GBFeatureEvaluator {
           else {
             final exp = GBExperiment(
               key: rule.key ?? key,
-              variations: rule.variations ?? [],
+              // variations: rule.variations ?? [],
               coverage: rule.coverage,
               weights: rule.weights,
               hashAttribute: rule.hashAttribute,

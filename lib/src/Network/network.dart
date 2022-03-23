@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 abstract class BaseClient {
+  const BaseClient();
   Future<Response> get(
     String uri, {
     Map<String, dynamic>? queryParameters,

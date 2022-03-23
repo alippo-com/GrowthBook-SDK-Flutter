@@ -1,5 +1,9 @@
-import 'package:r_sdk_m/src/Utils/constant.dart';
-import 'package:r_sdk_m/src/model/context.dart';
+import 'package:r_sdk_m/src/Features/features_view_model.dart';
+import 'package:r_sdk_m/src/Network/network.dart';
+
+import 'src/Features/feature_data_source.dart';
+import 'src/Utils/utils.dart';
+import 'src/model/context.dart';
 
 abstract class SDKBuilder {
   SDKBuilder({
@@ -47,18 +51,21 @@ class GBSDKBuilderApp extends SDKBuilder {
             apiKey: apiKey,
             hostURL: hostURL,
             attributes: attributes,
-            growthBookTrackingCallBack: growthBookTrackingCallBack);
+            growthBookTrackingCallBack: growthBookTrackingCallBack) {
+    customLogger('GrowthBook initialized successfully.');
+  }
 
   @override
   GrowthBookSDK initialize() {
     final gbContext = GBContext(
-        apiKey: apiKey,
-        hostURL: hostURL,
-        enabled: enable,
-        attributes: attributes,
-        qaMode: qaMode,
-        forcedVariation: forcedVariations,
-        trackingCallBack: growthBookTrackingCallBack);
+      apiKey: apiKey,
+      hostURL: hostURL,
+      enabled: enable,
+      attributes: attributes,
+      qaMode: qaMode,
+      forcedVariation: forcedVariations,
+      trackingCallBack: growthBookTrackingCallBack,
+    );
     return GrowthBookSDK(
       context: gbContext,
     );
@@ -67,17 +74,35 @@ class GBSDKBuilderApp extends SDKBuilder {
 
 // The main export of the libraries is a simple GrowthBook wrapper class that takes a Context object in the constructor.
 // It exposes two main methods: feature and run.
-class GrowthBookSDK {
-  GrowthBookSDK({required GBContext context, GBFeatures? features})
-      : _context = context {
+class GrowthBookSDK extends FeaturesFlowDelegate {
+  GrowthBookSDK(
+      {required GBContext context, GBFeatures? features, BaseClient? client})
+      : _context = context,
+        _baseClient = client ?? DioClient() {
     if (features != null) {
       _context.features = features;
     }
+    refresh();
   }
 
   ///
   final GBContext _context;
+
   GBContext get context => _context;
 
   GBFeatures get features => _context.features;
+
+  final BaseClient _baseClient;
+
+  @override
+  void featuresFetchedSuccessfully(GBFeatures gbFeatures) {
+    _context.features = gbFeatures;
+  }
+
+  Future<void> refresh() async {
+    final featureViewModel = FeatureViewModel(
+        delegate: this,
+        source: FeatureDataSource(client: _baseClient, context: _context));
+    await featureViewModel.fetchFeature();
+  }
 }
