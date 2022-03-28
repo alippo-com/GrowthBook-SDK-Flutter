@@ -46,7 +46,7 @@ class GBUtils {
     return false;
   }
 
-  /// Returns an array of floats with numVariations items that are all equal and
+  /// Returns an array of double with numVariations items that are all equal and
   /// sum to 1. For example, getEqualWeights(2) would return [0.5, 0.5].
   List<double> getEqualWeights(int numVariations) {
     List<double> weights = <double>[];
@@ -61,7 +61,7 @@ class GBUtils {
   ///This converts and experiment's coverage and variation weights into an array
   /// of bucket ranges.
   List<GBBucketRange>? getBucketRanges(
-      int numVariations, double coverage, List<num> weights) {
+      int numVariations, double coverage, List<double> weights) {
     List<GBBucketRange> bucketRange;
 
     // Clamp the value of coverage to between 0 and 1 inclusive.

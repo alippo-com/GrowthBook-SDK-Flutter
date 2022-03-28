@@ -41,8 +41,8 @@ extension DoubleExt on double {
 }
 
 extension PairingExtension on List {
-  List zipWithNext() {
+  List zipWithNext<T>() {
     final second = this[1];
-    return [first, second];
+    return <T>[first, second];
   }
 }
