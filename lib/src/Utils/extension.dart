@@ -1,3 +1,5 @@
+import 'dart:math';
+
 /// Extension for checking runtime_time_type of object in special references;
 /// 1.String
 /// 2.List
@@ -26,4 +28,21 @@ extension ObjectChecker on Object? {
 
   /// Check that it is primitive data type or not.
   bool get isPrimitive => isString || isBoolean || isNumber;
+
+  /// Check that if object is double.
+  bool get isDouble => this is double;
+}
+
+extension DoubleExt on double {
+  double roundTo(int numFractionDigits) {
+    var factor = pow(10, numFractionDigits.toDouble());
+    return (this * factor).toInt() / factor;
+  }
+}
+
+extension PairingExtension on List {
+  List zipWithNext() {
+    final second = this[1];
+    return [first, second];
+  }
 }

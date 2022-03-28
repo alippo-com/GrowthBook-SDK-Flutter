@@ -13,7 +13,7 @@ class GBFeature {
   List<GBFeatureRule>? rules;
 
   ///  The default value (should use null if not specified)
-  Map<String, dynamic>? defaultValue;
+  dynamic defaultValue;
 
   factory GBFeature.fromMap(Map<String, dynamic> dataMap) {
     return GBFeature(
@@ -24,7 +24,7 @@ class GBFeature {
               ),
             )
           : null,
-      // defaultValue: dataMap["defaultValue"],
+      defaultValue: dataMap["defaultValue"],
     );
   }
 }
@@ -61,7 +61,7 @@ class GBFeatureRule {
   List<double>? weights;
 
   /// A tuple that contains the namespace identifier, plus a range of coverage for the experiment.
-  Map<double, double>? nameSpace;
+  List<Map<double, double>>? nameSpace;
 
   /// What user attribute should be used to assign variations (defaults to id)
   String? hashAttribute;
@@ -69,7 +69,7 @@ class GBFeatureRule {
   factory GBFeatureRule.fromMap(Map<String, dynamic> mappedData) {
     return GBFeatureRule(
       condition: mappedData['condition'],
-      coverage: mappedData['coverage'],
+      coverage: (mappedData['coverage'] as num?)?.toDouble(),
       variations: mappedData['variations'] != null
           ? List<dynamic>.from(mappedData['variations'].map((e) => e))
           : null,

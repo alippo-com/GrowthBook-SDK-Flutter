@@ -6,9 +6,10 @@ class GBExperiment {
   GBExperiment({
     this.key,
     this.variations,
+    this.namespace,
     this.hashAttribute,
     this.weights,
-    this.active,
+    this.active = true,
     this.coverage,
     this.force,
   });
@@ -20,6 +21,8 @@ class GBExperiment {
   List? variations = [];
 
   /// A tuple that contains the namespace identifier, plus a range of coverage for the experiment
+  List<Map>? namespace;
+
   /// All users included in the experiment will be forced into the specific variation index
   String? hashAttribute;
 
@@ -27,7 +30,7 @@ class GBExperiment {
   List? weights;
 
   /// If set to false, always return the control (first variation)
-  bool? active = true;
+  bool active;
 
   /// What percent of users should be included in the experiment (between 0 and 1, inclusive)
   double? coverage;
@@ -37,6 +40,9 @@ class GBExperiment {
 
   /// All users included in the experiment will be forced into the specific variation index
   int? force;
+
+  ///Check if experiment is not active.
+  bool get deactivated => !active;
 }
 
 /// The result of running an Experiment given a specific Context

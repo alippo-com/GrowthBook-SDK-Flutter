@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
+import 'package:r_sdk_m/src/Evaluator/feature_evaluator.dart';
 import 'package:r_sdk_m/src/Features/features_view_model.dart';
 import 'package:r_sdk_m/src/Network/network.dart';
+import 'package:r_sdk_m/src/model/features.dart';
 
 import 'src/Features/feature_data_source.dart';
 import 'src/Utils/utils.dart';
@@ -55,6 +58,8 @@ class GBSDKBuilderApp extends SDKBuilder {
     customLogger('GrowthBook initialized successfully.');
   }
 
+  BaseClient? _client;
+
   @override
   GrowthBookSDK initialize() {
     final gbContext = GBContext(
@@ -66,17 +71,25 @@ class GBSDKBuilderApp extends SDKBuilder {
       forcedVariation: forcedVariations,
       trackingCallBack: growthBookTrackingCallBack,
     );
-    return GrowthBookSDK(
-      context: gbContext,
-    );
+    return GrowthBookSDK(context: gbContext, client: _client);
+  }
+
+  ///   Set Network Client - Network Client for Making API Calls
+  SDKBuilder setNetworkDispatcher(BaseClient client) {
+    _client = client;
+    return this;
   }
 }
 
-// The main export of the libraries is a simple GrowthBook wrapper class that takes a Context object in the constructor.
+// The main export of the libraries is a simple GrowthBook wrapper class that
+// takes a Context object in the constructor.
 // It exposes two main methods: feature and run.
 class GrowthBookSDK extends FeaturesFlowDelegate {
   GrowthBookSDK(
-      {required GBContext context, GBFeatures? features, BaseClient? client})
+      {required GBContext context,
+      GBFeatures? features,
+      BaseClient? client,
+      VoidCallback? afterFetch})
       : _context = context,
         _baseClient = client ?? DioClient() {
     if (features != null) {
@@ -84,6 +97,8 @@ class GrowthBookSDK extends FeaturesFlowDelegate {
     }
     refresh();
   }
+
+  VoidCallback? afterFetch;
 
   ///
   final GBContext _context;
@@ -101,8 +116,17 @@ class GrowthBookSDK extends FeaturesFlowDelegate {
 
   Future<void> refresh() async {
     final featureViewModel = FeatureViewModel(
-        delegate: this,
-        source: FeatureDataSource(client: _baseClient, context: _context));
-    await featureViewModel.fetchFeature();
+      delegate: this,
+      source: FeatureDataSource(client: _baseClient, context: _context),
+    );
+    await featureViewModel.fetchFeature().then((value) {
+      if (afterFetch != null) {
+        afterFetch!.call();
+      }
+    });
+  }
+
+  GBFeatureResult feature(String id) {
+    return GBFeatureEvaluator().evaluateFeature(_context, id);
   }
 }

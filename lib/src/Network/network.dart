@@ -1,13 +1,10 @@
 import 'package:dio/dio.dart';
 
+typedef OnSuccess = void Function(Map<String, dynamic> onSuccess);
+
 abstract class BaseClient {
   const BaseClient();
-  Future<Response> get(
-    String uri, {
-    Map<String, dynamic>? queryParameters,
-    CancelToken? cancelToken,
-    ProgressCallback? onReceiveProgress,
-  });
+  consumeGetRequest(String path, OnSuccess onSuccess);
 }
 
 class DioClient extends BaseClient {
@@ -16,17 +13,8 @@ class DioClient extends BaseClient {
   final Dio _dio;
 
   @override
-  Future<Response> get(
-    String uri, {
-    Map<String, dynamic>? queryParameters,
-    CancelToken? cancelToken,
-    ProgressCallback? onReceiveProgress,
-  }) async {
-    return await _dio.get(
-      uri,
-      queryParameters: queryParameters,
-      cancelToken: cancelToken,
-      onReceiveProgress: onReceiveProgress,
-    );
+  consumeGetRequest(String path, OnSuccess onSuccess) async {
+    final data = await _dio.get(path);
+    onSuccess(data.data);
   }
 }

@@ -2,12 +2,15 @@ import 'package:r_sdk_m/src/Utils/constant.dart';
 import 'package:r_sdk_m/src/model/context.dart';
 import 'package:r_sdk_m/src/model/experiment.dart';
 
+import '../Utils/gb_utils.dart';
+import 'condition_evaluator.dart';
+
 /// Experiment Evaluator Class
 /// Takes Context & Experiment & returns Experiment Result
 class GBExperimentEvaluator {
   /// Takes Context & Experiment & returns Experiment Result
 
-  evaluateExperiment({
+  GBExperimentResult evaluateExperiment({
     required GBContext context,
     required GBExperiment experiment,
   }) {
@@ -28,7 +31,7 @@ class GBExperimentEvaluator {
     }
 
     /// If experiment.action is set to false, return immediately (not in experiment, variationId 0)
-    if (!(experiment.active!)) {
+    if ((experiment.deactivated)) {
       return _getExperimentResult(experiment: experiment, gbContext: context);
     }
 
@@ -42,21 +45,59 @@ class GBExperimentEvaluator {
     /// TODO: name_space remaining.
     /// If experiment.namespace is set, check if hash value is included in the range and if not, return immediately (not in experiment, variationId 0)
     // if (experiment.namespace != null) {
-    //     val namespace = GBUtils.getGBNameSpace(experiment.namespace)
-    //     if (namespace!= null && !GBUtils.inNamespace(attributeValue, namespace)){
-    //         return getExperimentResult(experiment = experiment, gbContext = context)
-    //     }
+    //   var namespace = GBUtils().getGBNameSpace(experiment.namespace);
+    //   if (experiment.namespace != null &&
+    //       !GBUtils().inNamespace(attributeValue, namespace)) {
+    //     return _getExperimentResult(experiment: experiment, gbContext: context);
+    //   }
     // }
 
     // If experiment.condition is set and the condition evaluates to false, return immediately (not in experiment, variationId 0)
     if (experiment.condition != null) {
       final attr = context.attributes;
-
-      /// TODO: evaluate condition.
-      // if (!GBConditionEvaluator().evalCondition(attr, experiment.condition!)) {
-      //     return getExperimentResult(experiment = experiment, gbContext = context)
-      // }
+      if (!GBConditionEvaluator()
+          .evaluateCondition(attr ?? {}, experiment.condition!)) {
+        return _getExperimentResult(experiment: experiment, gbContext: context);
+      }
     }
+
+    /// Default variation weights and coverage if not specified
+    final weights = experiment.weights;
+    if (weights == null) {
+      // Default weights to an even split between all variations
+      experiment.weights =
+          GBUtils().getEqualWeights(experiment.variations?.length ?? 1);
+    }
+
+    final coverage = experiment.coverage ?? 1;
+    experiment.coverage = coverage;
+
+    // If experiment.force is set, return immediately (not in experiment, variationId experiment.force)
+    final forceExp = experiment.force;
+    if (forceExp != null) {
+      return _getExperimentResult(
+        experiment: experiment,
+        variationIndex: forceExp,
+        inExperiment: false,
+        gbContext: context,
+      );
+    }
+
+    // If context.qaMode is true, return immediately (not in experiment, variationId 0)
+    if (context.qaMode != null) {
+      if (context.qaMode!) {
+        return _getExperimentResult(experiment: experiment, gbContext: context);
+      }
+    }
+
+    final result = _getExperimentResult(
+      experiment: experiment,
+      inExperiment: true,
+      gbContext: context,
+    );
+    context.trackingCallBack!(experiment, result);
+
+    return result;
   }
 
   ///  This is a helper method to create an ExperimentResult object.
