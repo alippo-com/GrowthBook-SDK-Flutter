@@ -1,6 +1,5 @@
 import 'package:r_sdk_m/src/Utils/constant.dart';
 import 'package:r_sdk_m/src/Utils/extension.dart';
-import 'package:r_sdk_m/src/Utils/map_utils.dart';
 
 /// Both experiments and features can define targeting conditions using a syntax modeled after MongoDB queries.
 /// These conditions can have arbitrary nesting levels and evaluating them requires recursion.
@@ -37,29 +36,29 @@ class GBConditionEvaluator {
   /// - condition : to be evaluated
 
   bool evaluateCondition(dynamic attributes, GBCondition conditionOBJ) {
-    if (conditionOBJ.isJsonArray) {
+    if (conditionOBJ.isArray) {
       return false;
     } else {
       /// If conditionObj has a key $or, return evalOr(attributes, condition["$or"])
-      var targetItems = conditionOBJ[r"$or"];
+      var targetItems = conditionOBJ["\$or"];
       if (targetItems != null) {
         return evalOr(attributes, targetItems);
       }
 
       /// If conditionObj has a key $nor, return !evalOr(attributes, condition["$nor"])
-      targetItems = conditionOBJ[r"$nor"];
+      targetItems = conditionOBJ["\$nor"];
       if (targetItems != null) {
         return !evalOr(attributes, targetItems);
       }
 
       /// If conditionObj has a key $and, return !evalAnd(attributes, condition["$and"])
-      targetItems = conditionOBJ[r"$and"];
+      targetItems = conditionOBJ["\$and"];
       if (targetItems != null) {
         return evalAnd(attributes, targetItems);
       }
 
       // If conditionObj has a key $not, return !evalCondition(attributes, condition["$not"])
-      var targetItem = conditionOBJ[r"$not"];
+      var targetItem = conditionOBJ["\$not"];
       if (targetItem != null) {
         return !evaluateCondition(attributes, targetItem);
       }
@@ -77,8 +76,7 @@ class GBConditionEvaluator {
   }
 
   ///   Evaluate OR conditions against given attributes
-  bool evalOr(
-      Map<String, dynamic> attributes, Map<String, dynamic> conditionObj) {
+  bool evalOr(Map<String, dynamic> attributes, List conditionObj) {
     // If conditionObj is empty, return true
     if (conditionObj.isEmpty) {
       return true;
@@ -96,8 +94,7 @@ class GBConditionEvaluator {
   }
 
   /// Evaluate AND conditions against given attributes
-  bool evalAnd(
-      Map<String, dynamic> attributes, Map<String, dynamic> conditionObj) {
+  bool evalAnd(dynamic attributes, List conditionObj) {
     // Loop through the conditionObjects
 
     for (var i = 0; i < conditionObj.length; i++) {
@@ -129,29 +126,21 @@ class GBConditionEvaluator {
   }
 
   ///  This returns the data type of the passed in argument.
-  GBAttributeType getType(Map<String, dynamic>? obj) {
-    if (obj != null) {
-      if (!obj.isValidJsonElement) {
-        throw Exception('Not valid jsonElement');
-      }
-    }
-
-    if (obj.isNull) {
+  GBAttributeType getType(dynamic obj) {
+    if (obj == null) {
       return GBAttributeType.gbNull;
     }
-    final _value = obj![obj.values.first];
 
-    /// Primitive type checks.
-    if (_value.isString) {
-      return GBAttributeType.gbString;
-    }
+    final _value = obj as Object;
 
-    if (_value.isBoolean) {
-      return GBAttributeType.gbBoolean;
-    }
-
-    if (_value.isNumber) {
-      return GBAttributeType.gbNumber;
+    if (_value.isPrimitive) {
+      if (_value.isString) {
+        return GBAttributeType.gbString;
+      } else if (_value == true || _value == false) {
+        return GBAttributeType.gbBoolean;
+      } else {
+        return GBAttributeType.gbNumber;
+      }
     }
 
     if (_value.isArray) {
@@ -167,7 +156,7 @@ class GBConditionEvaluator {
 
   /// Given attributes and a dot-separated path string, return the value at
   /// that path (or null/undefined if the path doesn't exist)
-  dynamic getPath(Map<String, dynamic>? obj, String key) {
+  dynamic getPath(dynamic obj, String key) {
     var paths = <String>[];
 
     if (key.contains(".")) {
@@ -178,10 +167,10 @@ class GBConditionEvaluator {
 
     dynamic element = obj;
     for (final path in paths) {
-      if (element == null) {
+      if (element == null || (element as Object).isArray) {
         return null;
       }
-      if ((element as Map).isValidJsonElement) {
+      if ((element is Map)) {
         element = element[path];
       } else {
         return null;
@@ -202,41 +191,36 @@ class GBConditionEvaluator {
 
     // If conditionValue is array, return true if it's "equal" - "equal" should
     // do a deep comparison for arrays.
-    if (conditionValue.isMap) {
-      if ((conditionValue as Map).isJsonArray) {
-        if ((attributeValue as Object).isMap) {
-          if ((attributeValue as Map).isJsonArray) {
-            if (conditionValue.length == attributeValue.length) {
-              return attributeValue.length == conditionValue.length;
-            } else {
-              return false;
-            }
-          }
+    if (conditionValue.isArray) {
+      if ((attributeValue as Object).isArray) {
+        if ((conditionValue as List).length ==
+            (attributeValue as List).length) {
+          return attributeValue.length == conditionValue.length;
         } else {
           return false;
         }
+      } else {
+        return false;
       }
     }
 
     // If conditionValue is an object, loop over each key/value pair:
     if ((conditionValue as Object).isMap) {
-      if ((conditionValue as Map).isValidJsonElement) {
-        if (isOperatorObject(conditionValue as Map<String, dynamic>)) {
-          for (final key in conditionValue.keys) {
-            // If evalOperatorCondition(key, attributeValue, value)
-            // is false, return false
-            if (attributeValue != null) {
-              if (!evalOperatorCondition(
-                  key, attributeValue, conditionValue[key])) {
-                return false;
-              }
+      if (isOperatorObject(conditionValue as Map<String, dynamic>)) {
+        for (final key in conditionValue.keys) {
+          // If evalOperatorCondition(key, attributeValue, value)
+          // is false, return false
+          if (attributeValue != null) {
+            if (!evalOperatorCondition(
+                key, attributeValue, conditionValue[key])) {
+              return false;
             }
           }
-        } else if (attributeValue != null) {
-          return conditionValue == attributeValue;
-        } else {
-          return false;
         }
+      } else if (attributeValue != null) {
+        return conditionValue == attributeValue;
+      } else {
+        return false;
       }
     }
 
@@ -247,23 +231,21 @@ class GBConditionEvaluator {
   /// This checks if attributeValue is an array, and if so at least one of the
   /// array items must match the condition
   bool elemMatch(dynamic attributeValue, dynamic condition) {
-    if ((attributeValue as Object).isMap) {
-      // Loop through items in attributeValue
-      if ((attributeValue as Map).isJsonArray) {
-        for (final item in attributeValue.values) {
-          // If isOperatorObject(condition)
-          if (isOperatorObject(condition)) {
-            // If evalConditionValue(condition, item), break out of loop and
-            //return true
-            if (evalConditionValue(condition, item)) {
-              return true;
-            }
-          }
-          // Else if evalCondition(item, condition), break out of loop and
+    // Loop through items in attributeValue
+    if ((attributeValue as Object).isArray) {
+      for (final item in attributeValue as List) {
+        // If isOperatorObject(condition)
+        if (isOperatorObject(condition)) {
+          // If evalConditionValue(condition, item), break out of loop and
           //return true
-          else if (evaluateCondition(item, condition)) {
+          if (evalConditionValue(condition, item)) {
             return true;
           }
+        }
+        // Else if evalCondition(item, condition), break out of loop and
+        //return true
+        else if (evaluateCondition(item, condition)) {
+          return true;
         }
       }
     }
@@ -278,8 +260,7 @@ class GBConditionEvaluator {
       String operator, dynamic attributeValue, dynamic conditionValue) {
     /// Evaluate TYPE operator - whether both are of same type
     if (operator == r"$type") {
-      return getType(attributeValue).toString() ==
-          attributeValue?.values.first.toString();
+      return getType(attributeValue).toString() == attributeValue?.toString();
     }
     // Evaluate NOT operator - whether condition doesn't contain attribute
     if (operator == r"$not") {
@@ -287,8 +268,9 @@ class GBConditionEvaluator {
     }
     // Evaluate EXISTS operator - whether condition contains attribute
     if (operator == r"$exists") {
-      var targetPrimitiveValue = conditionValue.values.first;
-      if (targetPrimitiveValue == "false" && attributeValue == null) {
+      var targetPrimitiveValue = conditionValue;
+      if (targetPrimitiveValue.toString() == "false" &&
+          attributeValue == null) {
         return true;
       } else if (targetPrimitiveValue == "true") {
         return true;
@@ -296,118 +278,102 @@ class GBConditionEvaluator {
     }
 
     /// There are three operators where conditionValue is an array
-    if ((conditionValue as Object).isMap) {
-      if ((conditionValue as Map).isJsonArray) {
-        switch (operator) {
-          case r'$in':
-            return conditionValue.containsValue(attributeValue);
 
-          /// Evaluate NIN operator - attributeValue not in the conditionValue
-          /// array.
-          case r'$nin':
-            return !conditionValue.containsValue(attributeValue);
+    if ((conditionValue as Object).isArray) {
+      switch (operator) {
+        case '\$in':
+          return (conditionValue as List).contains(attributeValue);
 
-          /// Evaluate ALL operator - whether condition contains all attribute
-          case r'$all':
-            if ((attributeValue as Object).isMap) {
-              if ((attributeValue as Map).isJsonArray) {
-                /// Loop through conditionValue array
-                /// If none of the elements in the attributeValue array pass
-                /// evalConditionValue(conditionValue[i], attributeValue[j]),
-                /// return false.
-                for (var x = 0; x < conditionValue.values.length; x++) {
-                  var result = false;
-                  if (attributeValue.isNotEmpty) {
-                    for (var i = 0; i < attributeValue.values.length; i++) {
-                      if (evalConditionValue(conditionValue.values.toList()[x],
-                          attributeValue.values.toList()[i])) {
-                        result = true;
-                      }
-                    }
-                  }
-                  if (!result) {
-                    return result;
+        /// Evaluate NIN operator - attributeValue not in the conditionValue
+        /// array.
+        case '\$nin':
+          return !(conditionValue as List).contains(attributeValue);
+
+        /// Evaluate ALL operator - whether condition contains all attribute
+        case '\$all':
+          if ((attributeValue as Object).isArray) {
+            /// Loop through conditionValue array
+            /// If none of the elements in the attributeValue array pass
+            /// evalConditionValue(conditionValue[i], attributeValue[j]),
+            /// return false.
+            for (var x = 0; x < (conditionValue as List).length; x++) {
+              var result = false;
+              if ((attributeValue as List).isNotEmpty) {
+                for (var i = 0; i < attributeValue.length; i++) {
+                  if (evalConditionValue(
+                      conditionValue[x], attributeValue[i])) {
+                    result = true;
                   }
                 }
-                return true;
               }
-              return false;
-            } else {
-              /// If attributeValue is not an array, return false
-              return false;
+              if (!result) {
+                return result;
+              }
             }
-          default:
+            return true;
+          } else {
+            /// If attributeValue is not an array, return false
             return false;
-        }
+          }
+        default:
+          return false;
       }
-    } else if ((attributeValue as Object).isMap) {
-      if ((attributeValue as Map).isJsonArray) {
-        switch (operator) {
+    } else if ((attributeValue as Object).isArray) {
+      switch (operator) {
 
-          /// Evaluate ELEMENT-MATCH operator - whether condition matches attribute
-          case "\$elemMatch":
-            return elemMatch(attributeValue, conditionValue);
+        /// Evaluate ELEMENT-MATCH operator - whether condition matches attribute
+        case "\$elemMatch":
+          return elemMatch(attributeValue, conditionValue);
 
-          /// Evaluate SIE operator - whether condition size is same as that
-          /// of attribute
-          case "\$size":
-            return evalConditionValue(
-              conditionValue,
-              attributeValue,
-            );
+        /// Evaluate SIE operator - whether condition size is same as that
+        /// of attribute
+        case "\$size":
+          return evalConditionValue(
+            conditionValue,
+            attributeValue,
+          );
 
-          default:
-        }
+        default:
       }
     } else if ((attributeValue).isPrimitive && (conditionValue).isPrimitive) {
       var targetPrimitiveValue = conditionValue;
       var sourcePrimitiveValue = attributeValue;
+      final parsedTarget = double.tryParse(targetPrimitiveValue.toString());
+      final parsedSource = double.tryParse(sourcePrimitiveValue.toString());
+
+      if (parsedTarget == null || parsedSource == null) {
+        return false;
+      }
 
       switch (operator) {
 
         /// Evaluate EQ operator - whether condition equals to attribute
-        case r'$eq':
+        case '\$eq':
           return sourcePrimitiveValue == targetPrimitiveValue;
 
         /// Evaluate NE operator - whether condition doesn't equal to attribute
-        case r'$ne':
+        case '\$ne':
           return sourcePrimitiveValue != targetPrimitiveValue;
 
         // Evaluate LT operator - whether attribute less than to condition
-        case r'lt':
-          if (attributeValue.isDouble && conditionValue.isDouble) {
-            return (double.parse(attributeValue.toString()) <
-                double.parse(conditionValue.toString()));
-          }
+        case '\$lt':
           return double.parse(sourcePrimitiveValue.toString()) <
               double.parse(targetPrimitiveValue.toString());
 
         /// Evaluate LTE operator - whether attribute less than or equal to condition
-        case r'$lte':
-          if (attributeValue.isDouble && conditionValue.isDouble) {
-            return (double.parse(attributeValue.toString()) <=
-                double.parse(conditionValue.toString()));
-          }
+        case '\$lte':
           return double.parse(sourcePrimitiveValue.toString()) <=
               double.parse(targetPrimitiveValue.toString());
 
         // Evaluate GT operator - whether attribute greater than to condition
-        case r'gt':
-          if (attributeValue.isDouble && conditionValue.isDouble) {
-            return (double.parse(attributeValue.toString()) >
-                double.parse(conditionValue.toString()));
-          }
+        case '\$gt':
           return double.parse(sourcePrimitiveValue.toString()) >
               double.parse(targetPrimitiveValue.toString());
 
-        case r'$gte':
-          if (attributeValue.isDouble && conditionValue.isDouble) {
-            return (double.parse(attributeValue.toString()) >=
-                double.parse(conditionValue.toString()));
-          }
+        case '\$gte':
           return double.parse(sourcePrimitiveValue.toString()) >=
               double.parse(targetPrimitiveValue.toString());
-        case r'$regex':
+        case '\$regex':
           try {
             final regEx = RegExp(targetPrimitiveValue.toString());
             return regEx.hasMatch(sourcePrimitiveValue.toString());

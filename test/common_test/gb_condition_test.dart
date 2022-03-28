@@ -1,192 +1,36 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:r_sdk_m/src/Helper/helper.dart';
-import 'package:r_sdk_m/src/Utils/gb_utils.dart';
+import 'package:r_sdk_m/src/Evaluator/condition_evaluator.dart';
 import 'package:r_sdk_m/src/Utils/utils.dart';
 
 import '../Helper/gb_test_helper.dart';
 
 void main() {
-  group('GBUtils', () {
-    List<GBBucketRange> getPairedData(List<List<dynamic>> items) {
-      final List<Tuple2<double, double>> pairedExpectedResults = [];
-      for (final item in items) {
-        final pair = item.zipWithNext<double?>();
-        pairedExpectedResults.add(Tuple2.fromList(pair));
-      }
-      return pairedExpectedResults;
-    }
+  group('Condition test', () {
+    List evaluateCondition;
+    evaluateCondition = GBTestHelper.getEvalConditionData();
 
-    test('Test Hash', () {
-      final evaluateCondition = GBTestHelper.getFNVHashData();
-      List<String> failedScenarios = <String>[];
-      List<String> passedScenarios = <String>[];
+    test('Test conditions', () {
+      final failedScenarios = <String>[];
+      final passedScenarios = <String>[];
       for (final item in evaluateCondition) {
-        final testContext = item[0];
-        final experiment = item[1];
-
-        final result = GBUtils().hash(testContext);
-
-        final status = item[0].toString() +
-            '\nExpected Result - ' +
-            item[1].toString() +
-            '\nActual result - ' +
-            result.toString() +
-            '\n' +
-            'of experiment' +
-            experiment.toString();
-
-        if (experiment.toString() == result.toString()) {
-          passedScenarios.add(status);
-        } else {
-          failedScenarios.add(status);
-        }
-      }
-      expect(failedScenarios.length, 0);
-    });
-
-    test('Test Bucket Range', () {
-      bool compareBucket(List<List<double>> expectedResult,
-          List<GBBucketRange> calculatedResult) {
-        var pairedExpectedResult = getPairedData(expectedResult);
-        if (pairedExpectedResult.length != expectedResult.length) {
-          return false;
-        }
-        var result = true;
-        for (var i = 0; i < pairedExpectedResult.length; i++) {
-          var source = pairedExpectedResult[i];
-          var target = calculatedResult[i];
-
-          if (source.item1 != target.item1 || source.item2 != target.item2) {
-            result = false;
-            break;
-          }
-        }
-        return result;
-      }
-
-      final evalConditions = GBTestHelper.getBucketRangeData();
-      List<String> failedScenarios = <String>[];
-      List<String> passedScenarios = <String>[];
-      for (final item in evalConditions) {
         if ((item as Object?).isArray) {
-          ///
           final localItem = item as List;
-          ////
-          final numVariation = localItem[1][0];
-          ////
-          final coverage = localItem[1][1];
-
-          List<double>? weights;
-
-          if (localItem[1][2] != null) {
-            weights = (localItem[1][2] as List)
-                .map((e) => double.parse(e.toString()))
-                .toList();
-          }
-          final bucketRange = GBUtils().getBucketRanges(
-              numVariation, double.parse(coverage.toString()), weights ?? []);
-
-          /// For status.
-          final status = item[0].toString() +
+          final evaluator = GBConditionEvaluator();
+          final result =
+              evaluator.evaluateCondition(localItem[2], localItem[1]);
+          final status = localItem[0].toString() +
               "\nExpected Result - " +
-              item[2].toString() +
-              "\nActual result - " +
-              bucketRange.toString() +
-              "\n";
-
-          /// Should be subtracted from.
-          List<List<double>> comparer = [];
-          for (var element in (localItem[2] as List)) {
-            final subList = <double>[];
-            for (var element in (element as List)) {
-              subList.add(double.parse(element.toString()));
-            }
-            comparer.add(subList);
-          }
-          if (compareBucket(comparer, bucketRange!)) {
-            passedScenarios.add(status);
-          } else {
-            failedScenarios.add(status);
-          }
-        }
-      }
-      expect(failedScenarios.length, 0);
-    });
-
-    test('Choose Variation', () {
-      final evalCondition = GBTestHelper.getChooseVariationData();
-      final failedScenarios = <String>[];
-      final passedScenarios = <String>[];
-
-      for (var item in evalCondition) {
-        if ((item as Object?).isArray) {
-          final localItem = item as List;
-          final hash = double.tryParse(item[1].toString());
-
-          /// It should be subtracted from part.
-          List<List<double>> comparer = [];
-          for (var element in (localItem[2] as List)) {
-            final subList = <double>[];
-            for (var element in (element as List)) {
-              subList.add(double.parse(element.toString()));
-            }
-            comparer.add(subList);
-          }
-
-          ///
-          final rangeData = getPairedData(comparer);
-
-          var result = GBUtils().chooseVariation(hash ?? 1, rangeData);
-
-          if (localItem[3].toString() == result.toString()) {
-            passedScenarios.add(item.toString());
-          } else {
-            failedScenarios.add(item.toString());
-          }
-        }
-      }
-      expect(failedScenarios.length, 0);
-    });
-
-    test('Equal Weights', () {
-      final evalCondition = GBTestHelper.getEqualWeightsData();
-      final failedScenarios = <String>[];
-      final passedScenarios = <String>[];
-      bool testResult = true;
-
-      for (var item in evalCondition) {
-        if ((item as Object?).isArray) {
-          final localItem = item as List;
-          final numVariation = double.parse(localItem[0].toString());
-          final result = GBUtils().getEqualWeights(numVariation.toInt());
-          final status = "Expected Result - " +
-              item[1].toString() +
+              localItem[3].toString() +
               "\nActual result - " +
               result.toString() +
-              "\n";
-
-          if ((localItem[1] as List).length != result.length) {
-            testResult = false;
-          } else {
-            for (var i = 0; i < result.length; i++) {
-              final source = double.tryParse(localItem[1][i].toString());
-              final target = result[i];
-              if (source.toString().substring(0, 2) !=
-                  target.toString().substring(0, 2)) {
-                testResult = false;
-                break;
-              }
-            }
-          }
-          if (testResult) {
+              "\n\n";
+          if (localItem[3].toString() == result.toString()) {
             passedScenarios.add(status);
           } else {
             failedScenarios.add(status);
           }
         }
       }
-      expect(testResult, true);
-      expect(failedScenarios.length, 0);
     });
   });
 }

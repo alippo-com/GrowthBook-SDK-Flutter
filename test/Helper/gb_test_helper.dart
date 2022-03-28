@@ -6,35 +6,35 @@ import '../test_cases/test_case.dart';
 class GBTestHelper {
   static final testData = jsonDecode(gbTestCases);
 
-  static List<dynamic> getEvalConditionData() {
+  static List getEvalConditionData() {
     return testData['evalCondition'];
   }
 
-  static List<dynamic> getRunExperimentData() {
+  static List getRunExperimentData() {
     return testData['run'];
   }
 
-  static List<dynamic> getFNVHashData() {
+  static List getFNVHashData() {
     return testData['hash'];
   }
 
-  static List<dynamic> getFeatureData() {
+  static List getFeatureData() {
     return testData['feature'];
   }
 
-  static List<dynamic> getBucketRangeData() {
+  static List getBucketRangeData() {
     return testData['getBucketRange'];
   }
 
-  static List<dynamic> getInNameSpaceData() {
+  static List getInNameSpaceData() {
     return testData['inNamespace'];
   }
 
-  static List<dynamic> getChooseVariationData() {
+  static List getChooseVariationData() {
     return testData['chooseVariation'];
   }
 
-  static List<dynamic> getEqualWeightsData() {
+  static List getEqualWeightsData() {
     return testData['getEqualWeights'];
   }
 }
