@@ -14,14 +14,16 @@ class GBExperimentEvaluator {
     required GBContext context,
     required GBExperiment experiment,
   }) {
-    /// If experiment.variations has fewer than 2 variations, return immediately (not in experiment, variationId 0)
+    /// If experiment.variations has fewer than 2 variations, return immediately
+    ///  (not in experiment, variationId 0)
     ///
     /// If context.enabled is false, return immediately (not in experiment, variationId 0)
     if (experiment.variations!.length < 2 || !context.enabled!) {
       return _getExperimentResult(experiment: experiment, gbContext: context);
     }
 
-    /// If context.forcedVariations[experiment.trackingKey] is defined, return immediately (not in experiment, forced variation)
+    /// If context.forcedVariations[experiment.trackingKey] is defined,
+    /// return immediately (not in experiment, forced variation)
     final forcedVariation = context.forcedVariation?[experiment.key];
     if (forcedVariation != null) {
       return _getExperimentResult(
@@ -30,29 +32,32 @@ class GBExperimentEvaluator {
           gbContext: context);
     }
 
-    /// If experiment.action is set to false, return immediately (not in experiment, variationId 0)
-    if ((experiment.deactivated)) {
+    /// If experiment.action is set to false, return immediately
+    /// (not in experiment, variationId 0)
+    if (experiment.deactivated) {
       return _getExperimentResult(experiment: experiment, gbContext: context);
     }
 
-    // Get the user hash attribute and value (context.attributes[experiment.hashAttribute || "id"]) and if empty, return immediately (not in experiment, variationId 0)
+    // Get the user hash attribute and value (context.attributes[experiment.hashAttribute || "id"])
+    // and if empty, return immediately (not in experiment, variationId 0)
     final attributeValue =
         context.attributes?[experiment.hashAttribute ?? Constant.idAttribute];
     if (attributeValue == null) {
       return _getExperimentResult(experiment: experiment, gbContext: context);
     }
 
-    /// TODO: name_space remaining.
-    /// If experiment.namespace is set, check if hash value is included in the range and if not, return immediately (not in experiment, variationId 0)
-    // if (experiment.namespace != null) {
-    //   var namespace = GBUtils().getGBNameSpace(experiment.namespace);
-    //   if (experiment.namespace != null &&
-    //       !GBUtils().inNamespace(attributeValue, namespace)) {
-    //     return _getExperimentResult(experiment: experiment, gbContext: context);
-    //   }
-    // }
+    /// If experiment.namespace is set, check if hash value is included in the
+    ///  range and if not, return immediately (not in experiment, variationId 0)
+    if (experiment.namespace != null) {
+      var namespace = GBUtils().getGBNameSpace(experiment.namespace!);
+      if (experiment.namespace != null &&
+          !GBUtils().inNamespace(attributeValue, namespace!)) {
+        return _getExperimentResult(experiment: experiment, gbContext: context);
+      }
+    }
 
-    // If experiment.condition is set and the condition evaluates to false, return immediately (not in experiment, variationId 0)
+    // If experiment.condition is set and the condition evaluates to false,
+    // return immediately (not in experiment, variationId 0)
     if (experiment.condition != null) {
       final attr = context.attributes;
       if (!GBConditionEvaluator()
@@ -72,7 +77,22 @@ class GBExperimentEvaluator {
     final coverage = experiment.coverage ?? 1;
     experiment.coverage = coverage;
 
-    // If experiment.force is set, return immediately (not in experiment, variationId experiment.force)
+    /// Calculate bucket ranges for the variations
+    /// Convert weights/coverage to ranges
+    final List<GBBucketRange> bucketRange = GBUtils().getBucketRanges(
+        experiment.variations!.length, coverage, weights as List<double>);
+
+    final hash = GBUtils().hash(attributeValue + experiment.key);
+    late final int assigned;
+    if (hash != null) {}
+    assigned = GBUtils().chooseVariation(hash!, bucketRange);
+    // If not assigned a variation (assigned === -1), return immediately (not in experiment, variationId 0)
+    if (assigned == -1) {
+      return _getExperimentResult(experiment: experiment, gbContext: context);
+    }
+
+    /// If experiment.force is set, return immediately (not in experiment,
+    /// variationId experiment.force)
     final forceExp = experiment.force;
     if (forceExp != null) {
       return _getExperimentResult(
@@ -84,10 +104,8 @@ class GBExperimentEvaluator {
     }
 
     // If context.qaMode is true, return immediately (not in experiment, variationId 0)
-    if (context.qaMode != null) {
-      if (context.qaMode!) {
-        return _getExperimentResult(experiment: experiment, gbContext: context);
-      }
+    if (context.qaMode ?? false) {
+      return _getExperimentResult(experiment: experiment, gbContext: context);
     }
 
     final result = _getExperimentResult(
@@ -136,7 +154,7 @@ class GBExperimentEvaluator {
       variationID: targetVariationIndex,
       value: targetValue,
       hasAttributes: hashAttribute,
-      hashValue: hashValue as String,
+      hashValue: hashValue as String?,
     );
   }
 }

@@ -103,7 +103,7 @@ void main() {
             }
             comparer.add(subList);
           }
-          if (compareBucket(comparer, bucketRange!)) {
+          if (compareBucket(comparer, bucketRange)) {
             passedScenarios.add(status);
           } else {
             failedScenarios.add(status);

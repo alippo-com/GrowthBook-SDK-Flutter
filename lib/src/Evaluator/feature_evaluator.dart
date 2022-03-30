@@ -4,6 +4,7 @@ import 'package:r_sdk_m/src/model/context.dart';
 import 'package:r_sdk_m/src/model/features.dart';
 
 import '../Utils/gb_utils.dart';
+import '../Utils/utils.dart';
 import '../model/experiment.dart';
 
 /// Feature Evaluator Class
@@ -11,9 +12,11 @@ import '../model/experiment.dart';
 /// Returns Calculated Feature Result against that key
 
 class GBFeatureEvaluator {
-  GBFeatureResult evaluateFeature(GBContext context, String key) {
+  GBFeatureResult evaluateFeature(GBContext context, String featureKey) {
     try {
-      final targetFeature = context.features[key];
+      /// If we are not able to find feature on the basis of the passed featureKey
+      /// then we are going to return unKnownFeature.
+      final targetFeature = context.features[featureKey];
       if (targetFeature == null) {
         return _prepareResult(
           value: null,
@@ -32,10 +35,8 @@ class GBFeatureEvaluator {
 
           if (rule.condition != null) {
             final attr = context.attributes;
-            if (GBConditionEvaluator().evaluateCondition(
-              attr!,
-              rule.condition!,
-            )) {
+            if (!GBConditionEvaluator()
+                .evaluateCondition(attr, rule.condition!)) {
               continue;
             }
           }
@@ -44,20 +45,18 @@ class GBFeatureEvaluator {
           if (rule.force != null) {
             /// If rule.coverage is set
             if (rule.coverage != null) {
-              // final Key = rule.hashAttribute ?? Constant.idAttribute;
+              final key = rule.hashAttribute ?? Constant.idAttribute;
+              final attributeValue = context.attributes?[key] as String? ?? '';
 
-              final attributeValue = context.attributes?[key];
-
-              if (attributeValue == null) {
+              if (attributeValue.isEmpty) {
                 continue;
               } else {
                 // Compute a hash using the Fowler–Noll–Vo algorithm (specifically fnv32-1a)
-                final hashFNV = GBUtils().hash(attributeValue.toString() + key);
+                final hashFNV = GBUtils().hash(attributeValue + featureKey);
                 // If the hash is greater than rule.coverage, skip the rule
-                if (rule.coverage != null) {
-                  if (hashFNV != null && hashFNV > rule.coverage!) {
-                    continue;
-                  }
+
+                if (hashFNV != null && hashFNV > rule.coverage!) {
+                  continue;
                 }
               }
             }
@@ -65,18 +64,15 @@ class GBFeatureEvaluator {
               value: rule.force,
               source: GBFeatureSource.force,
             );
-          }
-
-          /// If rule.force is not set.
-          else {
+          } else {
             final exp = GBExperiment(
-              key: rule.key ?? key,
+              key: rule.key ?? featureKey,
               variations: rule.variations ?? [],
               coverage: rule.coverage,
-              //// TODO : Check this.
-              namespace: rule.nameSpace,
               weights: rule.weights,
               hashAttribute: rule.hashAttribute,
+              //// TODO : Check this.
+              namespace: rule.nameSpace,
             );
 
             final result = GBExperimentEvaluator()

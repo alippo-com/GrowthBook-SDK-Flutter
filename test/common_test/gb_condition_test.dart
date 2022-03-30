@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:r_sdk_m/src/Evaluator/condition_evaluator.dart';
 import 'package:r_sdk_m/src/Utils/utils.dart';
@@ -28,6 +30,7 @@ void main() {
             passedScenarios.add(status);
           } else {
             failedScenarios.add(status);
+            log(status);
           }
         }
       }

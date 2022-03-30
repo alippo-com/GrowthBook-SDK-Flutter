@@ -14,6 +14,16 @@ class GBExperiment {
     this.force,
   });
 
+  factory GBExperiment.fromMap(Map<String, dynamic> map) => GBExperiment(
+      key: map['key'],
+      namespace: map['namespace'],
+      variations: map['variations'],
+      hashAttribute: map['hashAttribute'],
+      weights: map['weights'],
+      active: map['active'] ?? true,
+      coverage: map['coverage'],
+      force: map['force']);
+
   /// The globally unique tracking key for the experiment
   String? key;
 
@@ -21,7 +31,7 @@ class GBExperiment {
   List? variations = [];
 
   /// A tuple that contains the namespace identifier, plus a range of coverage for the experiment
-  List<Map>? namespace;
+  List? namespace;
 
   /// All users included in the experiment will be forced into the specific variation index
   String? hashAttribute;

@@ -40,6 +40,7 @@ extension DoubleExt on double {
   }
 }
 
+/// Will zip the element.
 extension PairingExtension on List {
   List zipWithNext<T>() {
     final second = this[1];

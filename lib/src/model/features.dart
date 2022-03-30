@@ -1,5 +1,9 @@
+import 'package:enhanced_enum/enhanced_enum.dart';
+
 import '../Utils/constant.dart';
 import 'experiment.dart';
+
+part 'features.g.dart';
 
 /// A Feature object consists of possible values plus rules for how to assign values to users.
 class GBFeature {
@@ -30,6 +34,7 @@ class GBFeature {
 }
 
 /// Rule object consists of various definitions to apply to calculate feature value
+
 class GBFeatureRule {
   GBFeatureRule({
     this.condition,
@@ -84,17 +89,22 @@ class GBFeatureRule {
 }
 
 /// Enum For defining feature value source.
+@EnhancedEnum()
 enum GBFeatureSource {
   /// Queried Feature doesn't exist in GrowthBook.
+  @EnhancedEnumValue(name: 'unknownFeature')
   unknownFeature,
 
   /// Default Value for the Feature is being processed.
+  @EnhancedEnumValue(name: 'defaultValue')
   defaultValue,
 
   /// Forced Value for the Feature is being processed.
+  @EnhancedEnumValue(name: 'force')
   force,
 
   /// Experiment Value for the Feature is being processed.
+  @EnhancedEnumValue(name: 'experiment')
   experiment
 }
 

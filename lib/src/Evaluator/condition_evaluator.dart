@@ -1,31 +1,41 @@
+import 'package:enhanced_enum/enhanced_enum.dart';
 import 'package:r_sdk_m/src/Utils/constant.dart';
 import 'package:r_sdk_m/src/Utils/extension.dart';
+
+part 'condition_evaluator.g.dart';
 
 /// Both experiments and features can define targeting conditions using a syntax modeled after MongoDB queries.
 /// These conditions can have arbitrary nesting levels and evaluating them requires recursion.
 /// There are a handful of functions to define, and be aware that some of them may reference function definitions further below.
-
 /// Enum For different Attribute Types supported by GrowthBook.
+@EnhancedEnum()
 enum GBAttributeType {
   /// String Type Attribute.
+  @EnhancedEnumValue(name: 'string')
   gbString,
 
   /// Number Type Attribute.
+  @EnhancedEnumValue(name: 'number')
   gbNumber,
 
   /// Boolean Type Attribute.
+  @EnhancedEnumValue(name: 'boolean')
   gbBoolean,
 
   //// Array Type Attribute.
+  @EnhancedEnumValue(name: 'array')
   gbArray,
 
   /// Object Type Attribute.
+  @EnhancedEnumValue(name: 'object')
   gbObject,
 
   /// Null Type Attribute.
+  @EnhancedEnumValue(name: 'null')
   gbNull,
 
   /// Not Supported Type Attribute.
+  @EnhancedEnumValue(name: 'unknown')
   gbUnknown
 }
 
@@ -83,7 +93,8 @@ class GBConditionEvaluator {
     } else {
       // Loop through the conditionObjects
       for (var i = 0; i < conditionObj.length; i++) {
-        // If evalCondition(attributes, conditionObj[i]) is true, break out of the loop and return true
+        // If evalCondition(attributes, conditionObj[i]) is true, break out of
+        // the loop and return true
         if (evaluateCondition(attributes, conditionObj[i])) {
           return true;
         }
@@ -98,7 +109,8 @@ class GBConditionEvaluator {
     // Loop through the conditionObjects
 
     for (var i = 0; i < conditionObj.length; i++) {
-      // If evalCondition(attributes, conditionObj[i]) is false, break out of the loop and return false
+      // If evalCondition(attributes, conditionObj[i]) is false, break out of
+      // the loop and return false
       if (!evaluateCondition(attributes, conditionObj[i])) {
         return false;
       }
@@ -107,7 +119,8 @@ class GBConditionEvaluator {
     return true;
   }
 
-  /// This accepts a parsed JSON object as input and returns true if every key in the object starts with $
+  /// This accepts a parsed JSON object as input and returns true if every key
+  /// in the object starts with $
   bool isOperatorObject(dynamic obj) {
     var isOperator = true;
     if ((obj as Object?).isMap) {
@@ -191,11 +204,21 @@ class GBConditionEvaluator {
 
     // If conditionValue is array, return true if it's "equal" - "equal" should
     // do a deep comparison for arrays.
-    if (conditionValue.isArray) {
+    if ((conditionValue as Object).isArray) {
       if ((attributeValue as Object).isArray) {
         if ((conditionValue as List).length ==
             (attributeValue as List).length) {
-          return attributeValue.length == conditionValue.length;
+          bool contains = true;
+          for (var item in attributeValue) {
+            /// Check if contain all value in same order.
+            if (conditionValue.contains(item) &&
+                conditionValue.indexOf(item) == attributeValue.indexOf(item)) {
+              continue;
+            } else {
+              contains = false;
+            }
+          }
+          return contains;
         } else {
           return false;
         }
@@ -205,7 +228,7 @@ class GBConditionEvaluator {
     }
 
     // If conditionValue is an object, loop over each key/value pair:
-    if ((conditionValue as Object).isMap) {
+    if (conditionValue.isMap) {
       if (isOperatorObject(conditionValue as Map<String, dynamic>)) {
         for (final key in conditionValue.keys) {
           // If evalOperatorCondition(key, attributeValue, value)
@@ -259,26 +282,26 @@ class GBConditionEvaluator {
   bool evalOperatorCondition(
       String operator, dynamic attributeValue, dynamic conditionValue) {
     /// Evaluate TYPE operator - whether both are of same type
-    if (operator == r"$type") {
-      return getType(attributeValue).toString() == attributeValue?.toString();
+    if (operator == "\$type") {
+      return getType(attributeValue).name == conditionValue;
     }
     // Evaluate NOT operator - whether condition doesn't contain attribute
-    if (operator == r"$not") {
+    if (operator == "\$not") {
       return !evalConditionValue(conditionValue, attributeValue);
     }
     // Evaluate EXISTS operator - whether condition contains attribute
-    if (operator == r"$exists") {
+    if (operator == "\$exists") {
       var targetPrimitiveValue = conditionValue;
       if (targetPrimitiveValue.toString() == "false" &&
           attributeValue == null) {
         return true;
-      } else if (targetPrimitiveValue == "true") {
+      } else if (targetPrimitiveValue.toString() == "true" &&
+          attributeValue != null) {
         return true;
       }
     }
 
     /// There are three operators where conditionValue is an array
-
     if ((conditionValue as Object).isArray) {
       switch (operator) {
         case '\$in':
@@ -330,53 +353,48 @@ class GBConditionEvaluator {
         case "\$size":
           return evalConditionValue(
             conditionValue,
-            attributeValue,
+            (attributeValue as List).length,
           );
 
         default:
       }
     } else if ((attributeValue).isPrimitive && (conditionValue).isPrimitive) {
-      var targetPrimitiveValue = conditionValue;
-      var sourcePrimitiveValue = attributeValue;
-      final parsedTarget = double.tryParse(targetPrimitiveValue.toString());
-      final parsedSource = double.tryParse(sourcePrimitiveValue.toString());
-
-      if (parsedTarget == null || parsedSource == null) {
-        return false;
-      }
+      final parsedTarget = double.tryParse(conditionValue.toString());
+      final parsedSource = double.tryParse(attributeValue.toString());
 
       switch (operator) {
 
         /// Evaluate EQ operator - whether condition equals to attribute
         case '\$eq':
-          return sourcePrimitiveValue == targetPrimitiveValue;
+          return attributeValue == conditionValue;
 
         /// Evaluate NE operator - whether condition doesn't equal to attribute
         case '\$ne':
-          return sourcePrimitiveValue != targetPrimitiveValue;
+          return attributeValue != conditionValue;
 
         // Evaluate LT operator - whether attribute less than to condition
         case '\$lt':
-          return double.parse(sourcePrimitiveValue.toString()) <
-              double.parse(targetPrimitiveValue.toString());
+          if (parsedSource == null || parsedTarget == null) return false;
+          return parsedSource < parsedTarget;
 
         /// Evaluate LTE operator - whether attribute less than or equal to condition
         case '\$lte':
-          return double.parse(sourcePrimitiveValue.toString()) <=
-              double.parse(targetPrimitiveValue.toString());
+          if (parsedSource == null || parsedTarget == null) return false;
+          return parsedSource <= parsedTarget;
 
         // Evaluate GT operator - whether attribute greater than to condition
         case '\$gt':
-          return double.parse(sourcePrimitiveValue.toString()) >
-              double.parse(targetPrimitiveValue.toString());
+          if (parsedSource == null || parsedTarget == null) return false;
+          return parsedSource > parsedTarget;
 
         case '\$gte':
-          return double.parse(sourcePrimitiveValue.toString()) >=
-              double.parse(targetPrimitiveValue.toString());
+          if (parsedSource == null || parsedTarget == null) return false;
+          return parsedSource >= parsedTarget;
+
         case '\$regex':
           try {
-            final regEx = RegExp(targetPrimitiveValue.toString());
-            return regEx.hasMatch(sourcePrimitiveValue.toString());
+            final regEx = RegExp(conditionValue.toString());
+            return regEx.hasMatch(attributeValue.toString());
           } catch (e) {
             return false;
           }
