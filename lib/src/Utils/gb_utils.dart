@@ -113,7 +113,8 @@ class GBUtils {
       final end = namespace[2];
 
       if (start != null && end != null) {
-        return GBNameSpace(title, start, end);
+        return GBNameSpace(title, double.parse(start.toString()),
+            double.parse(end.toString()));
       }
     }
 

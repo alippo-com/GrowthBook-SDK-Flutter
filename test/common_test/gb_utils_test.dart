@@ -188,5 +188,28 @@ void main() {
       expect(testResult, true);
       expect(failedScenarios.length, 0);
     });
+
+    test('TestInNameSpace', () {
+      final evaluateConditions = GBTestHelper.getInNameSpaceData();
+      final failedScenarios = <String>[];
+      final passedScenarios = <String>[];
+      for (var item in evaluateConditions) {
+        final userId = item[1];
+        final array = item[2];
+        final nameSpace = GBUtils().getGBNameSpace(array);
+        final result = GBUtils().inNamespace(userId, nameSpace!);
+        final status = item[0].toString() +
+            "\nExpected Result - " +
+            item[3].toString() +
+            "\nActual result - " +
+            result.toString() +
+            "\n";
+        if (item[3].toString() == result.toString()) {
+          passedScenarios.add(status);
+        } else {
+          failedScenarios.add(status);
+        }
+      }
+    });
   });
 }

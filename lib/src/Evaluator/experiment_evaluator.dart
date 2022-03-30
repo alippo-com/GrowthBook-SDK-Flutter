@@ -80,7 +80,11 @@ class GBExperimentEvaluator {
     /// Calculate bucket ranges for the variations
     /// Convert weights/coverage to ranges
     final List<GBBucketRange> bucketRange = GBUtils().getBucketRanges(
-        experiment.variations!.length, coverage, weights as List<double>);
+        experiment.variations!.length,
+        coverage,
+        weights != null
+            ? weights.map((e) => double.parse(e.toString())).toList()
+            : []);
 
     final hash = GBUtils().hash(attributeValue + experiment.key);
     late final int assigned;
@@ -109,6 +113,7 @@ class GBExperimentEvaluator {
     }
 
     final result = _getExperimentResult(
+      variationIndex: assigned,
       experiment: experiment,
       inExperiment: true,
       gbContext: context,

@@ -67,7 +67,7 @@ void main() {
           passedScenarios.add(status);
         } else {
           failedScenarios.add(status);
-          // print(status);
+          print(status);
           // log(status);
 //           print(
 //               '''"${result.value.toString()}" == "${expectedResult.value.toString()}"
@@ -81,7 +81,7 @@ void main() {
 // ''');
         }
       }
-      // print(failedScenarios.length);
+      print(failedScenarios.length);
     });
   });
 }

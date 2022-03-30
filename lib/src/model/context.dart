@@ -27,7 +27,7 @@ class GBContext {
   Map<String, dynamic>? attributes;
 
   /// Force specific experiments to always assign a specific variation (used for QA).
-  Map<String, int>? forcedVariation;
+  Map<String, dynamic>? forcedVariation;
 
   /// If true, random assignment is disabled and only explicitly forced variations are used.
   bool? qaMode;
