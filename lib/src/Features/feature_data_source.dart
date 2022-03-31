@@ -8,16 +8,15 @@ abstract class FeaturesFlowDelegate {
 }
 
 class FeatureDataSource {
-  FeatureDataSource({
-    required this.context,
-    required this.client,
-  });
+  FeatureDataSource(
+      {required this.context, required this.client, required this.onError});
   final GBContext context;
   final BaseClient client;
+  final OnError onError;
 
   Future<FeaturedDataModel> fetchFeatures() async {
     final api = context.hostURL! + Constant.featurePath + context.apiKey!;
-    await client.consumeGetRequest(api, onSuccess);
+    await client.consumeGetRequest(api, onSuccess, onError);
     setUpModel();
     return model;
   }

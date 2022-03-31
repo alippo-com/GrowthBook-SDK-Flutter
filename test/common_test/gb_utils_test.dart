@@ -37,6 +37,7 @@ void main() {
 
         if (experiment.toString() == result.toString()) {
           passedScenarios.add(status);
+          print(status);
         } else {
           failedScenarios.add(status);
         }
@@ -136,7 +137,7 @@ void main() {
           ///
           final rangeData = getPairedData(comparer);
 
-          var result = GBUtils().chooseVariation(hash ?? 1, rangeData);
+          var result = GBUtils().chooseVariation(hash!, rangeData);
 
           if (localItem[3].toString() == result.toString()) {
             passedScenarios.add(item.toString());

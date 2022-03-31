@@ -74,7 +74,7 @@ class GBExperimentEvaluator {
           GBUtils().getEqualWeights(experiment.variations?.length ?? 1);
     }
 
-    final coverage = experiment.coverage ?? 1;
+    final coverage = experiment.coverage ?? 1.0;
     experiment.coverage = coverage;
 
     /// Calculate bucket ranges for the variations
@@ -88,8 +88,10 @@ class GBExperimentEvaluator {
 
     final hash = GBUtils().hash(attributeValue + experiment.key);
     late final int assigned;
-    if (hash != null) {}
-    assigned = GBUtils().chooseVariation(hash!, bucketRange);
+    if (hash != null) {
+      assigned = GBUtils().chooseVariation(hash, bucketRange);
+      print(assigned);
+    }
     // If not assigned a variation (assigned === -1), return immediately (not in experiment, variationId 0)
     if (assigned == -1) {
       return _getExperimentResult(experiment: experiment, gbContext: context);

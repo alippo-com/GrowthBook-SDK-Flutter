@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:r_sdk_m/growth_book.dart';
 import 'package:r_sdk_m/src/Utils/constant.dart';
@@ -43,7 +45,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   /// Initialization of controllers.
   late TabController _tabController;
   final userAttr = {
-    Constant.idAttribute: '12',
+    Constant.idAttribute: Platform.isAndroid ? "foo" : "foobar",
   };
   late final GrowthBookSDK gb;
   @override
@@ -112,7 +114,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           Text(tabNames[i]),
                           ElevatedButton(
                               onPressed: () {
-                                print(gb.feature('tab_feature').on);
+                                gb.feature('tab_feature');
                               },
                               child: const Text('Press'))
                         ],

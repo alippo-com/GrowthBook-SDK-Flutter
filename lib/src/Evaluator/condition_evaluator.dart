@@ -1,4 +1,5 @@
 import 'package:enhanced_enum/enhanced_enum.dart';
+import 'package:flutter/foundation.dart';
 import 'package:r_sdk_m/src/Utils/constant.dart';
 import 'package:r_sdk_m/src/Utils/extension.dart';
 
@@ -241,7 +242,11 @@ class GBConditionEvaluator {
           }
         }
       } else if (attributeValue != null) {
-        return conditionValue == attributeValue;
+        if (attributeValue is Map) {
+          return mapEquals(conditionValue, attributeValue);
+        } else {
+          return attributeValue == conditionValue;
+        }
       } else {
         return false;
       }
@@ -291,37 +296,36 @@ class GBConditionEvaluator {
     }
     // Evaluate EXISTS operator - whether condition contains attribute
     if (operator == "\$exists") {
-      var targetPrimitiveValue = conditionValue;
-      if (targetPrimitiveValue.toString() == "false" &&
-          attributeValue == null) {
+      if (conditionValue.toString() == "false" &&
+          attributeValue.toString() == "null") {
         return true;
-      } else if (targetPrimitiveValue.toString() == "true" &&
-          attributeValue != null) {
+      } else if (conditionValue.toString() == "true" &&
+          attributeValue.toString() != "null") {
         return true;
       }
     }
 
     /// There are three operators where conditionValue is an array
-    if ((conditionValue as Object).isArray) {
+    if (conditionValue is List) {
       switch (operator) {
         case '\$in':
-          return (conditionValue as List).contains(attributeValue);
+          return conditionValue.contains(attributeValue);
 
         /// Evaluate NIN operator - attributeValue not in the conditionValue
         /// array.
         case '\$nin':
-          return !(conditionValue as List).contains(attributeValue);
+          return !conditionValue.contains(attributeValue);
 
         /// Evaluate ALL operator - whether condition contains all attribute
         case '\$all':
-          if ((attributeValue as Object).isArray) {
+          if (attributeValue is List) {
             /// Loop through conditionValue array
             /// If none of the elements in the attributeValue array pass
             /// evalConditionValue(conditionValue[i], attributeValue[j]),
             /// return false.
-            for (var x = 0; x < (conditionValue as List).length; x++) {
+            for (var x = 0; x < (conditionValue).length; x++) {
               var result = false;
-              if ((attributeValue as List).isNotEmpty) {
+              if ((attributeValue).isNotEmpty) {
                 for (var i = 0; i < attributeValue.length; i++) {
                   if (evalConditionValue(
                       conditionValue[x], attributeValue[i])) {
@@ -358,7 +362,8 @@ class GBConditionEvaluator {
 
         default:
       }
-    } else if ((attributeValue).isPrimitive && (conditionValue).isPrimitive) {
+    } else if ((attributeValue).isPrimitive &&
+        (conditionValue as Object).isPrimitive) {
       final parsedTarget = double.tryParse(conditionValue.toString());
       final parsedSource = double.tryParse(attributeValue.toString());
 

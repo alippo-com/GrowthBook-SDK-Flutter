@@ -117,7 +117,8 @@ class GrowthBookSDK extends FeaturesFlowDelegate {
   Future<void> refresh() async {
     final featureViewModel = FeatureViewModel(
       delegate: this,
-      source: FeatureDataSource(client: _baseClient, context: _context),
+      source: FeatureDataSource(
+          client: _baseClient, context: _context, onError: (e, s) {}),
     );
     await featureViewModel.fetchFeature().then((value) {
       if (afterFetch != null) {
