@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-
+// coverage:ignore-file
 part of 'condition_evaluator.dart';
 
 // **************************************************************************
@@ -17,8 +17,7 @@ extension GBAttributeTypeFromStringExtension on Iterable<GBAttributeType> {
       'null': GBAttributeType.gbNull,
       'unknown': GBAttributeType.gbUnknown,
     }[val];
-// ignore: unnecessary_this
-    return this.contains(override) ? override : null;
+    return contains(override) ? override : null;
   }
 }
 

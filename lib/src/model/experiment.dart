@@ -7,6 +7,7 @@ class GBExperiment {
     this.key,
     this.variations,
     this.namespace,
+    this.condition,
     this.hashAttribute,
     this.weights,
     this.active = true,
@@ -22,7 +23,8 @@ class GBExperiment {
       weights: map['weights'],
       active: map['active'] ?? true,
       coverage: map['coverage'],
-      force: map['force']);
+      force: map['force'],
+      condition: map['condition']);
 
   /// The globally unique tracking key for the experiment
   String? key;

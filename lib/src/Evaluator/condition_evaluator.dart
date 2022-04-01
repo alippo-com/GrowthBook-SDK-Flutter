@@ -75,10 +75,12 @@ class GBConditionEvaluator {
       }
       // Loop through the conditionObj key/value pairs
       for (final key in conditionOBJ.keys) {
-        final element = getPath(attributes, key); //1
-        final value = conditionOBJ[key]; //{"$ne : 1"}
-        if (!evalConditionValue(value, element)) {
-          return false;
+        final element = getPath(attributes, key);
+        final value = conditionOBJ[key];
+        if (value != null) {
+          if (!evalConditionValue(value, element)) {
+            return false;
+          }
         }
       }
     }
@@ -93,10 +95,10 @@ class GBConditionEvaluator {
       return true;
     } else {
       // Loop through the conditionObjects
-      for (var i = 0; i < conditionObj.length; i++) {
+      for (var item in conditionObj) {
         // If evalCondition(attributes, conditionObj[i]) is true, break out of
         // the loop and return true
-        if (evaluateCondition(attributes, conditionObj[i])) {
+        if (evaluateCondition(attributes, item)) {
           return true;
         }
       }
@@ -109,10 +111,11 @@ class GBConditionEvaluator {
   bool evalAnd(dynamic attributes, List conditionObj) {
     // Loop through the conditionObjects
 
-    for (var i = 0; i < conditionObj.length; i++) {
-      // If evalCondition(attributes, conditionObj[i]) is false, break out of
+    // Loop through the conditionObjects
+    for (var item in conditionObj) {
+      // If evalCondition(attributes, conditionObj[i]) is true, break out of
       // the loop and return false
-      if (!evaluateCondition(attributes, conditionObj[i])) {
+      if (!evaluateCondition(attributes, item)) {
         return false;
       }
     }
@@ -199,27 +202,16 @@ class GBConditionEvaluator {
     // If conditionValue is a string, number, boolean, return true if it's
     // "equal" to attributeValue and false if not.
     if ((conditionValue as Object?).isPrimitive &&
-        ((attributeValue) as Object?).isPrimitive) {
+        (attributeValue as Object?).isPrimitive) {
       return conditionValue == attributeValue;
     }
 
     // If conditionValue is array, return true if it's "equal" - "equal" should
     // do a deep comparison for arrays.
-    if ((conditionValue as Object).isArray) {
-      if ((attributeValue as Object).isArray) {
-        if ((conditionValue as List).length ==
-            (attributeValue as List).length) {
-          bool contains = true;
-          for (var item in attributeValue) {
-            /// Check if contain all value in same order.
-            if (conditionValue.contains(item) &&
-                conditionValue.indexOf(item) == attributeValue.indexOf(item)) {
-              continue;
-            } else {
-              contains = false;
-            }
-          }
-          return contains;
+    if (conditionValue is List) {
+      if (attributeValue is List) {
+        if (conditionValue.length == attributeValue.length) {
+          return listEquals(conditionValue, attributeValue);
         } else {
           return false;
         }
@@ -229,16 +221,14 @@ class GBConditionEvaluator {
     }
 
     // If conditionValue is an object, loop over each key/value pair:
-    if (conditionValue.isMap) {
-      if (isOperatorObject(conditionValue as Map<String, dynamic>)) {
-        for (final key in conditionValue.keys) {
+    if (conditionValue is Map) {
+      if (isOperatorObject(conditionValue)) {
+        for (var key in conditionValue.keys) {
           // If evalOperatorCondition(key, attributeValue, value)
           // is false, return false
-          if (attributeValue != null) {
-            if (!evalOperatorCondition(
-                key, attributeValue, conditionValue[key])) {
-              return false;
-            }
+          if (!evalOperatorCondition(
+              key, attributeValue, conditionValue[key])) {
+            return false;
           }
         }
       } else if (attributeValue != null) {
@@ -260,8 +250,8 @@ class GBConditionEvaluator {
   /// array items must match the condition
   bool elemMatch(dynamic attributeValue, dynamic condition) {
     // Loop through items in attributeValue
-    if ((attributeValue as Object).isArray) {
-      for (final item in attributeValue as List) {
+    if (attributeValue is List) {
+      for (final item in attributeValue) {
         // If isOperatorObject(condition)
         if (isOperatorObject(condition)) {
           // If evalConditionValue(condition, item), break out of loop and
@@ -296,11 +286,10 @@ class GBConditionEvaluator {
     }
     // Evaluate EXISTS operator - whether condition contains attribute
     if (operator == "\$exists") {
-      if (conditionValue.toString() == "false" &&
-          attributeValue.toString() == "null") {
+      if (conditionValue.toString() == 'false' && attributeValue == null) {
         return true;
-      } else if (conditionValue.toString() == "true" &&
-          attributeValue.toString() != "null") {
+      } else if (conditionValue.toString() == 'true' &&
+          attributeValue != null) {
         return true;
       }
     }
@@ -323,20 +312,20 @@ class GBConditionEvaluator {
             /// If none of the elements in the attributeValue array pass
             /// evalConditionValue(conditionValue[i], attributeValue[j]),
             /// return false.
-            for (var x = 0; x < (conditionValue).length; x++) {
+            // for (var x = 0; x < (conditionValue).length; x++) {
+
+            for (var con in conditionValue) {
               var result = false;
-              if ((attributeValue).isNotEmpty) {
-                for (var i = 0; i < attributeValue.length; i++) {
-                  if (evalConditionValue(
-                      conditionValue[x], attributeValue[i])) {
-                    result = true;
-                  }
+              for (var attr in attributeValue) {
+                if (evalConditionValue(con, attr)) {
+                  result = true;
                 }
               }
               if (!result) {
                 return result;
               }
             }
+
             return true;
           } else {
             /// If attributeValue is not an array, return false
@@ -345,7 +334,7 @@ class GBConditionEvaluator {
         default:
           return false;
       }
-    } else if ((attributeValue as Object).isArray) {
+    } else if (attributeValue is List) {
       switch (operator) {
 
         /// Evaluate ELEMENT-MATCH operator - whether condition matches attribute
@@ -357,13 +346,13 @@ class GBConditionEvaluator {
         case "\$size":
           return evalConditionValue(
             conditionValue,
-            (attributeValue as List).length,
+            (attributeValue).length,
           );
 
         default:
       }
-    } else if ((attributeValue).isPrimitive &&
-        (conditionValue as Object).isPrimitive) {
+    } else if ((attributeValue as Object?).isPrimitive &&
+        (conditionValue as Object?).isPrimitive) {
       final parsedTarget = double.tryParse(conditionValue.toString());
       final parsedSource = double.tryParse(attributeValue.toString());
 

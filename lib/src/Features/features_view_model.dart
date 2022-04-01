@@ -16,7 +16,6 @@ class FeatureViewModel {
       delegate.featuresFetchedSuccessfully(model.feature);
       customLogger('FeatureVieModel have fetched features successfully.');
     } catch (e) {
-      customLogger('FeatureViewModel Failed to fetch features');
       rethrow;
     }
   }

@@ -1,8 +1,5 @@
-import 'dart:io' show Platform;
-
 import 'package:flutter/material.dart';
 import 'package:r_sdk_m/growth_book.dart';
-import 'package:r_sdk_m/src/Utils/constant.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,9 +41,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   /// Initialization of controllers.
   late TabController _tabController;
-  final userAttr = {
-    Constant.idAttribute: Platform.isAndroid ? "foo" : "foobar",
-  };
+  final userAttr = {"id": "1", "browser": "chrome"};
   late final GrowthBookSDK gb;
   @override
   void initState() {
@@ -114,7 +109,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           Text(tabNames[i]),
                           ElevatedButton(
                               onPressed: () {
-                                gb.feature('tab_feature');
+                                print(gb.feature('tab_feature').on);
                               },
                               child: const Text('Press'))
                         ],

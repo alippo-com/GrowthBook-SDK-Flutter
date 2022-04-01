@@ -15,6 +15,8 @@ void main() {
     test('Evaluate Feature', () {
       final failedScenarios = <String>[];
       final passedScenarios = <String>[];
+      int failingIndex = 0;
+      final listOfFailingIndex = <int>[];
 
       for (var item in evaluateCondition) {
         if (item is List) {
@@ -49,12 +51,12 @@ void main() {
             passedScenarios.add(status);
           } else {
             failedScenarios.add(status);
-            print(status);
+            listOfFailingIndex.add(failingIndex);
           }
+          failingIndex++;
         }
       }
-      print(failedScenarios.length);
-      print(evaluateCondition.length);
+      expect(failedScenarios.length, 0);
     });
   });
 }

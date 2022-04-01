@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:r_sdk_m/src/Evaluator/feature_evaluator.dart';
+import 'package:r_sdk_m/src/Utils/growth_book_logger.dart';
 import 'package:r_sdk_m/src/model/context.dart';
 
 import '../Helper/gb_test_helper.dart';
@@ -8,9 +9,15 @@ void main() {
   group('Feature Evaluator', () {
     late final List evaluateCondition;
     setUpAll(() {
-      evaluateCondition = GBTestHelper.getFeatureData();
+      evaluateCondition = [
+        // ...GBTestHelper.getFeatureData(),
+        GBTestHelper.getFeatureData()[19],
+      ];
     });
     test('Test Feature', () {
+      /// Counter for getting index of failing tests.
+      int index = 0;
+      final failedIndex = <int>[];
       final failedScenarios = <String>[];
       final passedScenarios = <String>[];
 
@@ -19,9 +26,9 @@ void main() {
         final attributes = testData.attributes;
         final gbContext = GBContext(
             enabled: true,
+            qaMode: false,
             attributes: attributes,
             forcedVariation: {},
-            qaMode: true,
             trackingCallBack: (_, __) {});
         if (testData.features != null) {
           gbContext.features = testData.features!;
@@ -67,21 +74,15 @@ void main() {
           passedScenarios.add(status);
         } else {
           failedScenarios.add(status);
+          failedIndex.add(index);
           print(status);
-          // log(status);
-//           print(
-//               '''"${result.value.toString()}" == "${expectedResult.value.toString()}"
-// "${result.on.toString()}" == "${expectedResult.on.toString()}"
-// "${result.off.toString()}" == "${expectedResult.off.toString()}"
-// "${result.source?.name.toString()}" == "${expectedResult.source}"
-// "${result.experiment?.key}" == "${expectedResult.experiment?.key}"
-// "${result.experimentResult?.variationID}" ==
-// "${expectedResult.experimentResult?.variationId}"
-
-// ''');
         }
+        index++;
       }
-      print(failedScenarios.length);
+      customLogger(
+          'Passed Test ${passedScenarios.length} out of ${evaluateCondition.length}');
+      // expect(failedScenarios.length, 0);
+      print(failedIndex);
     });
   });
 }

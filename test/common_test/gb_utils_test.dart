@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:r_sdk_m/src/Helper/helper.dart';
 import 'package:r_sdk_m/src/Utils/gb_utils.dart';
 import 'package:r_sdk_m/src/Utils/utils.dart';
+import 'package:tuple/tuple.dart';
 
 import '../Helper/gb_test_helper.dart';
 
@@ -37,7 +37,6 @@ void main() {
 
         if (experiment.toString() == result.toString()) {
           passedScenarios.add(status);
-          print(status);
         } else {
           failedScenarios.add(status);
         }

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+// coverage:ignore-file
 /// Extension for checking runtime_time_type of object in special references;
 /// 1.String
 /// 2.List

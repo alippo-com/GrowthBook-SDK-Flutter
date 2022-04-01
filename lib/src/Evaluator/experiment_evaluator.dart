@@ -42,7 +42,7 @@ class GBExperimentEvaluator {
     // and if empty, return immediately (not in experiment, variationId 0)
     final attributeValue =
         context.attributes?[experiment.hashAttribute ?? Constant.idAttribute];
-    if (attributeValue == null) {
+    if (attributeValue == null || attributeValue.toString().isEmpty) {
       return _getExperimentResult(experiment: experiment, gbContext: context);
     }
 
@@ -61,13 +61,13 @@ class GBExperimentEvaluator {
     if (experiment.condition != null) {
       final attr = context.attributes;
       if (!GBConditionEvaluator()
-          .evaluateCondition(attr ?? {}, experiment.condition!)) {
+          .evaluateCondition(attr!, experiment.condition!)) {
         return _getExperimentResult(experiment: experiment, gbContext: context);
       }
     }
 
     /// Default variation weights and coverage if not specified
-    final weights = experiment.weights;
+    var weights = experiment.weights;
     if (weights == null) {
       // Default weights to an even split between all variations
       experiment.weights =
@@ -82,15 +82,16 @@ class GBExperimentEvaluator {
     final List<GBBucketRange> bucketRange = GBUtils().getBucketRanges(
         experiment.variations!.length,
         coverage,
-        weights != null
-            ? weights.map((e) => double.parse(e.toString())).toList()
+        experiment.weights != null
+            ? experiment.weights!
+                .map((e) => double.parse(e.toString()))
+                .toList()
             : []);
 
     final hash = GBUtils().hash(attributeValue + experiment.key);
     late final int assigned;
     if (hash != null) {
       assigned = GBUtils().chooseVariation(hash, bucketRange);
-      print(assigned);
     }
     // If not assigned a variation (assigned === -1), return immediately (not in experiment, variationId 0)
     if (assigned == -1) {
@@ -154,7 +155,7 @@ class GBExperimentEvaluator {
     // Hash Attribute - used for Experiment Calculations
     final hashAttribute = experiment.hashAttribute ?? Constant.idAttribute;
     // Hash Value against hash attribute
-    final hashValue = gbContext.attributes?[hashAttribute] ?? "";
+    final hashValue = gbContext.attributes?[hashAttribute];
 
     return GBExperimentResult(
       inExperiment: inExperiment,

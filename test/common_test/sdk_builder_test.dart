@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:r_sdk_m/growth_book.dart';
-import 'package:r_sdk_m/src/Utils/utils.dart';
 import 'package:r_sdk_m/src/model/features.dart';
 
 import '../Mocks/network_mock.dart';
@@ -38,6 +37,7 @@ void main() {
 
     test('testSDKInitializationData', () {
       const variations = <String, int>{};
+      bool fetched = false;
       final sdk = GBSDKBuilderApp(
               apiKey: testApiKey,
               hostURL: testHostURL,
@@ -45,14 +45,18 @@ void main() {
               growthBookTrackingCallBack: (exp, result) {})
           .setQAMode(true)
           .setForcedVariations(variations)
-          .initialize();
+          .initialize()
+        ..afterFetch = () {
+          fetched = true;
+        };
+      sdk.afterFetch!();
       expect(sdk.context.enabled, true);
       expect(sdk.context.qaMode, true);
+      expect(fetched, true);
     });
 
     test('testSDKFeatureData', () async {
       late GrowthBookSDK sdk;
-      final path = testHostURL + Constant.featurePath + testApiKey;
       final client = MockNetworkClient();
       sdk = GBSDKBuilderApp(
               apiKey: testApiKey,
