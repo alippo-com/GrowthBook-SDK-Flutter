@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:r_sdk_m/src/Features/feature_data_source.dart';
-import 'package:r_sdk_m/src/Features/features_view_model.dart';
-import 'package:r_sdk_m/src/model/context.dart';
+import 'package:growthbook_sdk_flutter/src/Features/feature_data_source.dart';
+import 'package:growthbook_sdk_flutter/src/Features/features_view_model.dart';
+import 'package:growthbook_sdk_flutter/src/model/context.dart';
 
 import '../Mocks/network_mock.dart';
 import '../Mocks/network_view_model_mock.dart';

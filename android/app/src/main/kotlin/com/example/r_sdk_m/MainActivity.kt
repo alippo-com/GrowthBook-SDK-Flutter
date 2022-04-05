@@ -1,4 +1,4 @@
-package com.example.r_sdk_m
+package com.example.growthbook_sdk_flutter
 
 import io.flutter.embedding.android.FlutterActivity
 

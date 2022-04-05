@@ -1,7 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:r_sdk_m/src/Evaluator/experiment_evaluator.dart';
-import 'package:r_sdk_m/src/model/context.dart';
-import 'package:r_sdk_m/src/model/experiment.dart';
+import 'package:growthbook_sdk_flutter/src/Evaluator/experiment_evaluator.dart';
+import 'package:growthbook_sdk_flutter/src/Utils/utils.dart';
+import 'package:growthbook_sdk_flutter/src/model/context.dart';
+import 'package:growthbook_sdk_flutter/src/model/experiment.dart';
 
 import '../Helper/gb_test_helper.dart';
 
@@ -56,6 +57,8 @@ void main() {
           failingIndex++;
         }
       }
+      customLogger(
+          'Passed Test ${passedScenarios.length} out of ${evaluateCondition.length}');
       expect(failedScenarios.length, 0);
     });
   });

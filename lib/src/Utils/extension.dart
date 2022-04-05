@@ -48,3 +48,14 @@ extension PairingExtension on List {
     return <T>[first, second];
   }
 }
+
+extension StringWeight on String {
+  int calculateWeight() {
+    final List<int> data = codeUnits;
+    int sum = 0;
+    for (int i in data) {
+      sum = sum + i;
+    }
+    return sum;
+  }
+}

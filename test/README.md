@@ -18,4 +18,3 @@ flutter test --coverage
 8. Use Coverage Gutters extension in specific file to check coverage line vise.
 <br></br>
 
-<img align="left" src="https://github.com/DK070202/growth_book_sdk_flutter/blob/test/asset/ss3.png" height="500">

@@ -1,17 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter_test/flutter_test.dart';
-import 'package:r_sdk_m/src/Evaluator/condition_evaluator.dart';
+import 'package:growthbook_sdk_flutter/src/Evaluator/condition_evaluator.dart';
+import 'package:growthbook_sdk_flutter/src/Utils/utils.dart';
 
 import '../Helper/gb_test_helper.dart';
 
 void main() {
   group('Condition test', () {
     List evaluateCondition;
-    evaluateCondition = [
-      GBTestHelper.getEvalConditionData()[39],
-      // ...GBTestHelper.getEvalConditionData(),
-    ];
+    evaluateCondition = GBTestHelper.getEvalConditionData();
 
     test('Test conditions', () {
       /// Counter for getting index of failing tests.
@@ -35,14 +31,72 @@ void main() {
             passedScenarios.add(status);
           } else {
             failedScenarios.add(status);
-            log(status);
             failedIndex.add(index);
           }
         }
         index++;
       }
-      print(failedIndex);
-      print(failedIndex.length);
+      customLogger(
+          'Passed Test ${passedScenarios.length} out of ${evaluateCondition.length}');
+      expect(failedScenarios.length, 0);
     });
   });
 }
+/// 
+/// This cases are extracted out from the test case file.
+/// Failing test cases name : $gt    /$lt     strings - pass
+/// Related cases : 3
+///  
+///  [
+///    "$gt    /$lt     strings - fail $gt    ",
+///    {
+///      "word": {
+///        "$gt": "alphabet",
+///        "$lt": "zebra"
+///      }
+///    },
+///    {
+///      "word": "alphabet"
+///    },
+///    false
+///  ],
+///  [
+///    "$gt    /$lt     strings - fail $lt    ",
+///    {
+///      "word": {
+///        "$gt": "alphabet",
+///        "$lt": "zebra"
+///      }
+///    },
+///    {
+///      "word": "zebra"
+///    },
+///    false
+///  ],
+///  [
+///    "$gt    /$lt     strings - pass",
+///    {
+///      "word": {
+///        "$gt": "alphabet",
+///        "$lt": "zebra"
+///      }
+///    },
+///    {
+///      "word": "always"
+///    },
+///    true
+///  ],
+///  [
+///    "$gt    /$lt     strings - fail uppercase",
+///    {
+///      "word": {
+///        "$gt": "alphabet",
+///        "$lt": "zebra"
+///      }
+///    },
+///    {
+///      "word": "AZL"
+///    },
+///    false
+///  ], 
+/// 

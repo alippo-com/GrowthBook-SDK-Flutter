@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:r_sdk_m/src/Utils/gb_utils.dart';
-import 'package:r_sdk_m/src/Utils/utils.dart';
+import 'package:growthbook_sdk_flutter/src/Utils/gb_utils.dart';
+import 'package:growthbook_sdk_flutter/src/Utils/utils.dart';
 import 'package:tuple/tuple.dart';
 
 import '../Helper/gb_test_helper.dart';
@@ -41,6 +41,8 @@ void main() {
           failedScenarios.add(status);
         }
       }
+      customLogger(
+          'Passed Test ${passedScenarios.length} out of ${evaluateCondition.length}');
       expect(failedScenarios.length, 0);
     });
 
@@ -110,6 +112,8 @@ void main() {
           }
         }
       }
+      customLogger(
+          'Passed Test ${passedScenarios.length} out of ${evalConditions.length}');
       expect(failedScenarios.length, 0);
     });
 
@@ -145,6 +149,8 @@ void main() {
           }
         }
       }
+      customLogger(
+          'Passed Test ${passedScenarios.length} out of ${evalCondition.length}');
       expect(failedScenarios.length, 0);
     });
 
@@ -187,6 +193,10 @@ void main() {
       }
       expect(testResult, true);
       expect(failedScenarios.length, 0);
+
+      customLogger(
+          'Passed Test ${passedScenarios.length} out of ${evalCondition.length}');
+      expect(failedScenarios.length, 0);
     });
 
     test('TestInNameSpace', () {
@@ -210,6 +220,9 @@ void main() {
           failedScenarios.add(status);
         }
       }
+      customLogger(
+          'Passed Test ${passedScenarios.length} out of ${evaluateConditions.length}');
+      expect(failedScenarios.length, 0);
     });
   });
 }

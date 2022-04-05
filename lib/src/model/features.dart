@@ -66,13 +66,14 @@ class GBFeatureRule {
   List<double>? weights;
 
   /// A tuple that contains the namespace identifier, plus a range of coverage for the experiment.
-  List<Map<double, double>>? nameSpace;
+  List? nameSpace;
 
   /// What user attribute should be used to assign variations (defaults to id)
   String? hashAttribute;
 
   factory GBFeatureRule.fromMap(Map<String, dynamic> mappedData) {
     return GBFeatureRule(
+      nameSpace: mappedData['namespace'],
       condition: mappedData['condition'],
       coverage: (mappedData['coverage'] as num?)?.toDouble(),
       variations: mappedData['variations'] != null

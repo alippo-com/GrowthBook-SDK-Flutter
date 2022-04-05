@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:r_sdk_m/src/Network/network.dart';
+import 'package:growthbook_sdk_flutter/src/Network/network.dart';
 
 class MockNetworkClient extends BaseClient {
   @override

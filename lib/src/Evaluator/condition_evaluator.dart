@@ -1,7 +1,7 @@
 import 'package:enhanced_enum/enhanced_enum.dart';
 import 'package:flutter/foundation.dart';
-import 'package:r_sdk_m/src/Utils/constant.dart';
-import 'package:r_sdk_m/src/Utils/extension.dart';
+import 'package:growthbook_sdk_flutter/src/Utils/constant.dart';
+import 'package:growthbook_sdk_flutter/src/Utils/extension.dart';
 
 part 'condition_evaluator.g.dart';
 
@@ -353,37 +353,44 @@ class GBConditionEvaluator {
       }
     } else if ((attributeValue as Object?).isPrimitive &&
         (conditionValue as Object?).isPrimitive) {
-      final parsedTarget = double.tryParse(conditionValue.toString());
-      final parsedSource = double.tryParse(attributeValue.toString());
+      late final num target;
+      late final num source;
+      void setupVariable() {
+        if (attributeValue is num && conditionValue is num) {
+          target = conditionValue;
+          source = attributeValue;
+        } else if (attributeValue is String && conditionValue is String) {
+          target = conditionValue.calculateWeight();
+          source = attributeValue.calculateWeight();
+        }
+      }
+
+      setupVariable();
 
       switch (operator) {
 
         /// Evaluate EQ operator - whether condition equals to attribute
         case '\$eq':
-          return attributeValue == conditionValue;
+          return source == target;
 
         /// Evaluate NE operator - whether condition doesn't equal to attribute
         case '\$ne':
-          return attributeValue != conditionValue;
+          return source != target;
 
         // Evaluate LT operator - whether attribute less than to condition
         case '\$lt':
-          if (parsedSource == null || parsedTarget == null) return false;
-          return parsedSource < parsedTarget;
+          return source < target;
 
         /// Evaluate LTE operator - whether attribute less than or equal to condition
         case '\$lte':
-          if (parsedSource == null || parsedTarget == null) return false;
-          return parsedSource <= parsedTarget;
+          return source <= target;
 
         // Evaluate GT operator - whether attribute greater than to condition
         case '\$gt':
-          if (parsedSource == null || parsedTarget == null) return false;
-          return parsedSource > parsedTarget;
+          return source > target;
 
         case '\$gte':
-          if (parsedSource == null || parsedTarget == null) return false;
-          return parsedSource >= parsedTarget;
+          return source >= target;
 
         case '\$regex':
           try {

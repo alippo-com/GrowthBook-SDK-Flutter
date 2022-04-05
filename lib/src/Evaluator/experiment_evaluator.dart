@@ -1,6 +1,6 @@
-import 'package:r_sdk_m/src/Utils/constant.dart';
-import 'package:r_sdk_m/src/model/context.dart';
-import 'package:r_sdk_m/src/model/experiment.dart';
+import 'package:growthbook_sdk_flutter/src/Utils/constant.dart';
+import 'package:growthbook_sdk_flutter/src/model/context.dart';
+import 'package:growthbook_sdk_flutter/src/model/experiment.dart';
 
 import '../Utils/gb_utils.dart';
 import 'condition_evaluator.dart';

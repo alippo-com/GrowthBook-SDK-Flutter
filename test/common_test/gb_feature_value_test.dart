@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:r_sdk_m/src/Evaluator/feature_evaluator.dart';
-import 'package:r_sdk_m/src/Utils/growth_book_logger.dart';
-import 'package:r_sdk_m/src/model/context.dart';
+import 'package:growthbook_sdk_flutter/src/Evaluator/feature_evaluator.dart';
+import 'package:growthbook_sdk_flutter/src/Utils/growth_book_logger.dart';
+import 'package:growthbook_sdk_flutter/src/model/context.dart';
 
 import '../Helper/gb_test_helper.dart';
 
@@ -9,10 +9,7 @@ void main() {
   group('Feature Evaluator', () {
     late final List evaluateCondition;
     setUpAll(() {
-      evaluateCondition = [
-        // ...GBTestHelper.getFeatureData(),
-        GBTestHelper.getFeatureData()[19],
-      ];
+      evaluateCondition = GBTestHelper.getFeatureData();
     });
     test('Test Feature', () {
       /// Counter for getting index of failing tests.
@@ -75,14 +72,12 @@ void main() {
         } else {
           failedScenarios.add(status);
           failedIndex.add(index);
-          print(status);
         }
         index++;
       }
       customLogger(
           'Passed Test ${passedScenarios.length} out of ${evaluateCondition.length}');
-      // expect(failedScenarios.length, 0);
-      print(failedIndex);
+      expect(failedScenarios.length, 0);
     });
   });
 }

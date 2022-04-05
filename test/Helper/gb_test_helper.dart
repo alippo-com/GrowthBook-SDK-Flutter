@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:r_sdk_m/src/Utils/utils.dart';
-import 'package:r_sdk_m/src/model/experiment.dart';
-import 'package:r_sdk_m/src/model/features.dart';
+import 'package:growthbook_sdk_flutter/src/Utils/utils.dart';
+import 'package:growthbook_sdk_flutter/src/model/experiment.dart';
+import 'package:growthbook_sdk_flutter/src/model/features.dart';
 
 import '../test_cases/test_case.dart';
 

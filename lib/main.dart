@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:r_sdk_m/growth_book.dart';
+import 'package:growthbook_sdk_flutter/growth_book.dart';
 
 void main() {
   runApp(const MyApp());

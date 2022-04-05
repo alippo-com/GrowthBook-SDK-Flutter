@@ -1,4 +1,4 @@
-import 'package:r_sdk_m/src/Utils/constant.dart';
+import 'package:growthbook_sdk_flutter/src/Utils/constant.dart';
 
 import 'extension.dart';
 
