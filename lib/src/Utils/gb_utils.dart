@@ -1,4 +1,4 @@
-import 'package:r_sdk_m/src/Utils/constant.dart';
+import 'package:growthbook_sdk_flutter/src/Utils/constant.dart';
 
 import 'extension.dart';
 
@@ -60,7 +60,7 @@ class GBUtils {
 
   ///This converts and experiment's coverage and variation weights into an array
   /// of bucket ranges.
-  List<GBBucketRange>? getBucketRanges(
+  List<GBBucketRange> getBucketRanges(
       int numVariations, double coverage, List<double> weights) {
     List<GBBucketRange> bucketRange;
 
@@ -107,16 +107,16 @@ class GBUtils {
 
   ///Convert JsonArray to GBNameSpace
   GBNameSpace? getGBNameSpace(List namespace) {
-    // if (namespace.values.isEmpty >= 3) {
-    //     val title = namespace[0].jsonPrimitive.content
-    //     val start = namespace[1].jsonPrimitive.floatOrNull
-    //     val end = namespace[2].jsonPrimitive.floatOrNull
+    if (namespace.length >= 3) {
+      final title = namespace[0];
+      final start = namespace[1];
+      final end = namespace[2];
 
-    //     if (start != null && end != null) {
-    //         return GBNameSpace(title, start, end);
-    //     }
-
-    // }
+      if (start != null && end != null) {
+        return GBNameSpace(title, double.parse(start.toString()),
+            double.parse(end.toString()));
+      }
+    }
 
     return null;
   }

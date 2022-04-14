@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:r_sdk_m/growth_book.dart';
-import 'package:r_sdk_m/src/Utils/constant.dart';
+import 'package:growthbook_sdk_flutter/growth_book.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,9 +41,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   /// Initialization of controllers.
   late TabController _tabController;
-  final userAttr = {
-    Constant.idAttribute: '12',
-  };
+  final userAttr = {"id": "1", "browser": "chrome"};
   late final GrowthBookSDK gb;
   @override
   void initState() {

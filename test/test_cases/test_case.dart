@@ -2,9 +2,9 @@ const String gbTestCases = r'''
     {
       "evalCondition": [
         [
-          "${'$'}not     - pass",
+          "$not     - pass",
           {
-            "${'$'}not": {
+            "$not": {
               "name": "hello"
             }
           },
@@ -14,9 +14,9 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}not     - fail",
+          "$not     - fail",
           {
-            "${'$'}not": {
+            "$not": {
               "name": "hello"
             }
           },
@@ -26,19 +26,19 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}and    /${'$'}or     - all true",
+          "$and    /$or     - all true",
           {
-            "${'$'}and": [
+            "$and": [
               {
                 "father.age": {
-                  "${'$'}gt": 65
+                  "$gt": 65
                 }
               },
               {
-                "${'$'}or": [
+                "$or": [
                   {
                     "bday": {
-                      "${'$'}regex": "-12-25${'$'}"
+                      "$regex": "-12-25$"
                     }
                   },
                   {
@@ -58,19 +58,19 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}and    /${'$'}or     - first or true",
+          "$and    /$or     - first or true",
           {
-            "${'$'}and": [
+            "$and": [
               {
                 "father.age": {
-                  "${'$'}gt": 65
+                  "$gt": 65
                 }
               },
               {
-                "${'$'}or": [
+                "$or": [
                   {
                     "bday": {
-                      "${'$'}regex": "-12-25${'$'}"
+                      "$regex": "-12-25$"
                     }
                   },
                   {
@@ -90,19 +90,19 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}and    /${'$'}or     - second or true",
+          "$and    /$or     - second or true",
           {
-            "${'$'}and": [
+            "$and": [
               {
                 "father.age": {
-                  "${'$'}gt": 65
+                  "$gt": 65
                 }
               },
               {
-                "${'$'}or": [
+                "$or": [
                   {
                     "bday": {
-                      "${'$'}regex": "-12-25${'$'}"
+                      "$regex": "-12-25$"
                     }
                   },
                   {
@@ -122,19 +122,19 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}and    /${'$'}or     - first and false",
+          "$and    /$or     - first and false",
           {
-            "${'$'}and": [
+            "$and": [
               {
                 "father.age": {
-                  "${'$'}gt": 65
+                  "$gt": 65
                 }
               },
               {
-                "${'$'}or": [
+                "$or": [
                   {
                     "bday": {
-                      "${'$'}regex": "-12-25${'$'}"
+                      "$regex": "-12-25$"
                     }
                   },
                   {
@@ -154,19 +154,19 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}and    /${'$'}or     - both or false",
+          "$and    /$or     - both or false",
           {
-            "${'$'}and": [
+            "$and": [
               {
                 "father.age": {
-                  "${'$'}gt": 65
+                  "$gt": 65
                 }
               },
               {
-                "${'$'}or": [
+                "$or": [
                   {
                     "bday": {
-                      "${'$'}regex": "-12-25${'$'}"
+                      "$regex": "-12-25$"
                     }
                   },
                   {
@@ -186,19 +186,19 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}and    /${'$'}or     - both and false",
+          "$and    /$or     - both and false",
           {
-            "${'$'}and": [
+            "$and": [
               {
                 "father.age": {
-                  "${'$'}gt": 65
+                  "$gt": 65
                 }
               },
               {
-                "${'$'}or": [
+                "$or": [
                   {
                     "bday": {
-                      "${'$'}regex": "-12-25${'$'}"
+                      "$regex": "-12-25$"
                     }
                   },
                   {
@@ -218,10 +218,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}exists     - false pass",
+          "$exists     - false pass",
           {
             "pets.dog.name": {
-              "${'$'}exists": false
+              "$exists": false
             }
           },
           {
@@ -230,10 +230,10 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}exists     - false fail",
+          "$exists     - false fail",
           {
             "pets.dog.name": {
-              "${'$'}exists": false
+              "$exists": false
             }
           },
           {
@@ -246,10 +246,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}exists     - true fail",
+          "$exists     - true fail",
           {
             "pets.dog.name": {
-              "${'$'}exists": true
+              "$exists": true
             }
           },
           {
@@ -258,10 +258,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}exists     - true pass",
+          "$exists     - true pass",
           {
             "pets.dog.name": {
-              "${'$'}exists": true
+              "$exists": true
             }
           },
           {
@@ -288,10 +288,10 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}in - pass",
+          "$in - pass",
           {
             "num": {
-              "${'$'}in": [
+              "$in": [
                 1,
                 2,
                 3
@@ -304,10 +304,10 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}in - fail",
+          "$in - fail",
           {
             "num": {
-              "${'$'}in": [
+              "$in": [
                 1,
                 2,
                 3
@@ -320,10 +320,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}nin     - pass",
+          "$nin     - pass",
           {
             "num": {
-              "${'$'}nin": [
+              "$nin": [
                 1,
                 2,
                 3
@@ -336,10 +336,10 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}nin     - fail",
+          "$nin     - fail",
           {
             "num": {
-              "${'$'}nin": [
+              "$nin": [
                 1,
                 2,
                 3
@@ -352,11 +352,11 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}elemMatch     - pass - flat arrays",
+          "$elemMatch     - pass - flat arrays",
           {
             "nums": {
-              "${'$'}elemMatch": {
-                "${'$'}gt": 10
+              "$elemMatch": {
+                "$gt": 10
               }
             }
           },
@@ -371,11 +371,11 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}elemMatch     - fail - flat arrays",
+          "$elemMatch     - fail - flat arrays",
           {
             "nums": {
-              "${'$'}elemMatch": {
-                "${'$'}gt": 10
+              "$elemMatch": {
+                "$gt": 10
               }
             }
           },
@@ -393,7 +393,7 @@ const String gbTestCases = r'''
           "missing attribute - fail",
           {
             "pets.dog.name": {
-              "${'$'}in": [
+              "$in": [
                 "fido"
               ]
             }
@@ -404,9 +404,9 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "empty ${'$'}or     - pass",
+          "empty $or     - pass",
           {
-            "${'$'}or": [
+            "$or": [
               
             ]
           },
@@ -416,9 +416,9 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "empty ${'$'}and     - pass",
+          "empty $and     - pass",
           {
-            "${'$'}and": [
+            "$and": [
               
             ]
           },
@@ -438,10 +438,10 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}eq     - pass",
+          "$eq     - pass",
           {
             "occupation": {
-              "${'$'}eq": "engineer"
+              "$eq": "engineer"
             }
           },
           {
@@ -450,10 +450,10 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}eq     - fail",
+          "$eq     - fail",
           {
             "occupation": {
-              "${'$'}eq": "engineer"
+              "$eq": "engineer"
             }
           },
           {
@@ -462,10 +462,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}ne     - pass",
+          "$ne     - pass",
           {
             "level": {
-              "${'$'}ne": "senior"
+              "$ne": "senior"
             }
           },
           {
@@ -474,10 +474,10 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}ne     - fail",
+          "$ne     - fail",
           {
             "level": {
-              "${'$'}ne": "senior"
+              "$ne": "senior"
             }
           },
           {
@@ -486,10 +486,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}regex     - pass",
+          "$regex     - pass",
           {
             "userAgent": {
-              "${'$'}regex": "(Mobile|Tablet)"
+              "$regex": "(Mobile|Tablet)"
             }
           },
           {
@@ -498,10 +498,10 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}regex     - fail",
+          "$regex     - fail",
           {
             "userAgent": {
-              "${'$'}regex": "(Mobile|Tablet)"
+              "$regex": "(Mobile|Tablet)"
             }
           },
           {
@@ -510,11 +510,11 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}gt    /${'$'}lt     numbers - pass",
+          "$gt    /$lt     numbers - pass",
           {
             "age": {
-              "${'$'}gt": 30,
-              "${'$'}lt": 60
+              "$gt": 30,
+              "$lt": 60
             }
           },
           {
@@ -523,11 +523,11 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}gt    /${'$'}lt     numbers - fail ${'$'}lt    ",
+          "$gt    /$lt     numbers - fail $lt    ",
           {
             "age": {
-              "${'$'}gt": 30,
-              "${'$'}lt": 60
+              "$gt": 30,
+              "$lt": 60
             }
           },
           {
@@ -536,11 +536,11 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}gt    /${'$'}lt     numbers - fail ${'$'}gt    ",
+          "$gt    /$lt     numbers - fail $gt    ",
           {
             "age": {
-              "${'$'}gt": 30,
-              "${'$'}lt": 60
+              "$gt": 30,
+              "$lt": 60
             }
           },
           {
@@ -549,11 +549,11 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}gte    /${'$'}lte     numbers - pass",
+          "$gte    /$lte     numbers - pass",
           {
             "age": {
-              "${'$'}gte": 30,
-              "${'$'}lte": 60
+              "$gte": 30,
+              "$lte": 60
             }
           },
           {
@@ -562,11 +562,11 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}gte    /${'$'}lte     numbers - pass ${'$'}gte    ",
+          "$gte    /$lte     numbers - pass $gte    ",
           {
             "age": {
-              "${'$'}gte": 30,
-              "${'$'}lte": 60
+              "$gte": 30,
+              "$lte": 60
             }
           },
           {
@@ -575,11 +575,11 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}gte    /${'$'}lte     numbers - pass ${'$'}lte    ",
+          "$gte    /$lte     numbers - pass $lte    ",
           {
             "age": {
-              "${'$'}gte": 30,
-              "${'$'}lte": 60
+              "$gte": 30,
+              "$lte": 60
             }
           },
           {
@@ -588,11 +588,11 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}gte    /${'$'}lte     numbers - fail ${'$'}lte    ",
+          "$gte    /$lte     numbers - fail $lte    ",
           {
             "age": {
-              "${'$'}gte": 30,
-              "${'$'}lte": 60
+              "$gte": 30,
+              "$lte": 60
             }
           },
           {
@@ -601,11 +601,11 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}gte    /${'$'}lte     numbers - fail ${'$'}gte    ",
+          "$gte    /$lte     numbers - fail $gte    ",
           {
             "age": {
-              "${'$'}gt": 30,
-              "${'$'}lt": 60
+              "$gt": 30,
+              "$lt": 60
             }
           },
           {
@@ -614,62 +614,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}gt    /${'$'}lt     strings - fail ${'$'}gt    ",
-          {
-            "word": {
-              "${'$'}gt": "alphabet",
-              "${'$'}lt": "zebra"
-            }
-          },
-          {
-            "word": "alphabet"
-          },
-          false
-        ],
-        [
-          "${'$'}gt    /${'$'}lt     strings - fail ${'$'}lt    ",
-          {
-            "word": {
-              "${'$'}gt": "alphabet",
-              "${'$'}lt": "zebra"
-            }
-          },
-          {
-            "word": "zebra"
-          },
-          false
-        ],
-        [
-          "${'$'}gt    /${'$'}lt     strings - pass",
-          {
-            "word": {
-              "${'$'}gt": "alphabet",
-              "${'$'}lt": "zebra"
-            }
-          },
-          {
-            "word": "always"
-          },
-          true
-        ],
-        [
-          "${'$'}gt    /${'$'}lt     strings - fail uppercase",
-          {
-            "word": {
-              "${'$'}gt": "alphabet",
-              "${'$'}lt": "zebra"
-            }
-          },
-          {
-            "word": "AZL"
-          },
-          false
-        ],
-        [
-          "${'$'}type     string - pass",
+          "$type     string - pass",
           {
             "a": {
-              "${'$'}type": "string"
+              "$type": "string"
             }
           },
           {
@@ -678,10 +626,10 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}type     string - fail",
+          "$type     string - fail",
           {
             "a": {
-              "${'$'}type": "string"
+              "$type": "string"
             }
           },
           {
@@ -690,10 +638,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}type     null - pass",
+          "$type     null - pass",
           {
             "a": {
-              "${'$'}type": "null"
+              "$type": "null"
             }
           },
           {
@@ -702,10 +650,10 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}type     null - fail",
+          "$type     null - fail",
           {
             "a": {
-              "${'$'}type": "null"
+              "$type": "null"
             }
           },
           {
@@ -714,10 +662,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}type     boolean - pass",
+          "$type     boolean - pass",
           {
             "a": {
-              "${'$'}type": "boolean"
+              "$type": "boolean"
             }
           },
           {
@@ -726,10 +674,10 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}type     boolean - fail",
+          "$type     boolean - fail",
           {
             "a": {
-              "${'$'}type": "boolean"
+              "$type": "boolean"
             }
           },
           {
@@ -738,10 +686,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}type     number - pass",
+          "$type     number - pass",
           {
             "a": {
-              "${'$'}type": "number"
+              "$type": "number"
             }
           },
           {
@@ -750,10 +698,10 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}type     number - fail",
+          "$type     number - fail",
           {
             "a": {
-              "${'$'}type": "number"
+              "$type": "number"
             }
           },
           {
@@ -762,10 +710,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}type     object - pass",
+          "$type     object - pass",
           {
             "a": {
-              "${'$'}type": "object"
+              "$type": "object"
             }
           },
           {
@@ -776,10 +724,10 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}type     object - fail",
+          "$type     object - fail",
           {
             "a": {
-              "${'$'}type": "object"
+              "$type": "object"
             }
           },
           {
@@ -788,10 +736,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}type     array - pass",
+          "$type     array - pass",
           {
             "a": {
-              "${'$'}type": "array"
+              "$type": "array"
             }
           },
           {
@@ -803,10 +751,10 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}type     array - fail",
+          "$type     array - fail",
           {
             "a": {
-              "${'$'}type": "array"
+              "$type": "array"
             }
           },
           {
@@ -818,7 +766,7 @@ const String gbTestCases = r'''
           "unknown operator - pass",
           {
             "name": {
-              "${'$'}regx": "hello"
+              "$regx": "hello"
             }
           },
           {
@@ -827,10 +775,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}regex     invalid - pass",
+          "$regex     invalid - pass",
           {
             "name": {
-              "${'$'}regex": "/???***[)"
+              "$regex": "/???***[)"
             }
           },
           {
@@ -839,10 +787,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}regex     invalid - fail",
+          "$regex     invalid - fail",
           {
             "name": {
-              "${'$'}regex": "/???***[)"
+              "$regex": "/???***[)"
             }
           },
           {
@@ -851,10 +799,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}size     number - pass",
+          "$size     number - pass",
           {
             "tags": {
-              "${'$'}size": 3
+              "$size": 3
             }
           },
           {
@@ -867,10 +815,10 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}size     number - fail small",
+          "$size     number - fail small",
           {
             "tags": {
-              "${'$'}size": 3
+              "$size": 3
             }
           },
           {
@@ -882,10 +830,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}size     number - fail large",
+          "$size     number - fail large",
           {
             "tags": {
-              "${'$'}size": 3
+              "$size": 3
             }
           },
           {
@@ -899,10 +847,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}size     number - fail not array",
+          "$size     number - fail not array",
           {
             "tags": {
-              "${'$'}size": 3
+              "$size": 3
             }
           },
           {
@@ -911,11 +859,11 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}size     nested - pass",
+          "$size     nested - pass",
           {
             "tags": {
-              "${'$'}size": {
-                "${'$'}gt": 2
+              "$size": {
+                "$gt": 2
               }
             }
           },
@@ -929,11 +877,11 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}size     nested - fail equal",
+          "$size     nested - fail equal",
           {
             "tags": {
-              "${'$'}size": {
-                "${'$'}gt": 2
+              "$size": {
+                "$gt": 2
               }
             }
           },
@@ -946,11 +894,11 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}size     nested - fail less than",
+          "$size     nested - fail less than",
           {
             "tags": {
-              "${'$'}size": {
-                "${'$'}gt": 2
+              "$size": {
+                "$gt": 2
               }
             }
           },
@@ -962,12 +910,12 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}elemMatch     nested - pass",
+          "$elemMatch     nested - pass",
           {
             "hobbies": {
-              "${'$'}elemMatch": {
+              "$elemMatch": {
                 "name": {
-                  "${'$'}regex": "^ping"
+                  "$regex": "^ping"
                 }
               }
             }
@@ -988,12 +936,12 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}elemMatch     nested - fail",
+          "$elemMatch     nested - fail",
           {
             "hobbies": {
-              "${'$'}elemMatch": {
+              "$elemMatch": {
                 "name": {
-                  "${'$'}regex": "^ping"
+                  "$regex": "^ping"
                 }
               }
             }
@@ -1011,12 +959,12 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}elemMatch     nested - fail not array",
+          "$elemMatch     nested - fail not array",
           {
             "hobbies": {
-              "${'$'}elemMatch": {
+              "$elemMatch": {
                 "name": {
-                  "${'$'}regex": "^ping"
+                  "$regex": "^ping"
                 }
               }
             }
@@ -1027,11 +975,11 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}not     - pass",
+          "$not     - pass",
           {
             "name": {
-              "${'$'}not": {
-                "${'$'}regex": "^hello"
+              "$not": {
+                "$regex": "^hello"
               }
             }
           },
@@ -1041,11 +989,11 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}not     - fail",
+          "$not     - fail",
           {
             "name": {
-              "${'$'}not": {
-                "${'$'}regex": "^hello"
+              "$not": {
+                "$regex": "^hello"
               }
             }
           },
@@ -1055,10 +1003,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}all     - pass",
+          "$all     - pass",
           {
             "tags": {
-              "${'$'}all": [
+              "$all": [
                 "one",
                 "three"
               ]
@@ -1074,10 +1022,10 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}all     - fail",
+          "$all     - fail",
           {
             "tags": {
-              "${'$'}all": [
+              "$all": [
                 "one",
                 "three"
               ]
@@ -1093,10 +1041,10 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}all     - fail not array",
+          "$all     - fail not array",
           {
             "tags": {
-              "${'$'}all": [
+              "$all": [
                 "one",
                 "three"
               ]
@@ -1108,15 +1056,15 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}nor     - pass",
+          "$nor     - pass",
           {
-            "${'$'}nor": [
+            "$nor": [
               {
                 "name": "john"
               },
               {
                 "age": {
-                  "${'$'}lt": 30
+                  "$lt": 30
                 }
               }
             ]
@@ -1128,15 +1076,15 @@ const String gbTestCases = r'''
           true
         ],
         [
-          "${'$'}nor     - fail both",
+          "$nor     - fail both",
           {
-            "${'$'}nor": [
+            "$nor": [
               {
                 "name": "john"
               },
               {
                 "age": {
-                  "${'$'}lt": 30
+                  "$lt": 30
                 }
               }
             ]
@@ -1148,15 +1096,15 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}nor     - fail first",
+          "$nor     - fail first",
           {
-            "${'$'}nor": [
+            "$nor": [
               {
                 "name": "john"
               },
               {
                 "age": {
-                  "${'$'}lt": 30
+                  "$lt": 30
                 }
               }
             ]
@@ -1168,15 +1116,15 @@ const String gbTestCases = r'''
           false
         ],
         [
-          "${'$'}nor     - fail second",
+          "$nor     - fail second",
           {
-            "${'$'}nor": [
+            "$nor": [
               {
                 "name": "john"
               },
               {
                 "age": {
-                  "${'$'}lt": 30
+                  "$lt": 30
                 }
               }
             ]
@@ -1814,7 +1762,7 @@ const String gbTestCases = r'''
                     "force": 1,
                     "condition": {
                       "country": {
-                        "${'$'}in": [
+                        "$in": [
                           "US",
                           "CA"
                         ]
@@ -1849,7 +1797,7 @@ const String gbTestCases = r'''
                     "force": 1,
                     "condition": {
                       "country": {
-                        "${'$'}in": [
+                        "$in": [
                           "US",
                           "CA"
                         ]

@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "r_sdk_m",
+            "name": "growthbook_sdk_flutter",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "r_sdk_m (profile mode)",
+            "name": "growthbook_sdk_flutter (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "r_sdk_m (release mode)",
+            "name": "growthbook_sdk_flutter (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

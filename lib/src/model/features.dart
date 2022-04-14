@@ -1,5 +1,9 @@
+import 'package:enhanced_enum/enhanced_enum.dart';
+
 import '../Utils/constant.dart';
 import 'experiment.dart';
+
+part 'features.g.dart';
 
 /// A Feature object consists of possible values plus rules for how to assign values to users.
 class GBFeature {
@@ -30,6 +34,7 @@ class GBFeature {
 }
 
 /// Rule object consists of various definitions to apply to calculate feature value
+
 class GBFeatureRule {
   GBFeatureRule({
     this.condition,
@@ -61,13 +66,14 @@ class GBFeatureRule {
   List<double>? weights;
 
   /// A tuple that contains the namespace identifier, plus a range of coverage for the experiment.
-  List<Map<double, double>>? nameSpace;
+  List? nameSpace;
 
   /// What user attribute should be used to assign variations (defaults to id)
   String? hashAttribute;
 
   factory GBFeatureRule.fromMap(Map<String, dynamic> mappedData) {
     return GBFeatureRule(
+      nameSpace: mappedData['namespace'],
       condition: mappedData['condition'],
       coverage: (mappedData['coverage'] as num?)?.toDouble(),
       variations: mappedData['variations'] != null
@@ -84,17 +90,22 @@ class GBFeatureRule {
 }
 
 /// Enum For defining feature value source.
+@EnhancedEnum()
 enum GBFeatureSource {
   /// Queried Feature doesn't exist in GrowthBook.
+  @EnhancedEnumValue(name: 'unknownFeature')
   unknownFeature,
 
   /// Default Value for the Feature is being processed.
+  @EnhancedEnumValue(name: 'defaultValue')
   defaultValue,
 
   /// Forced Value for the Feature is being processed.
+  @EnhancedEnumValue(name: 'force')
   force,
 
   /// Experiment Value for the Feature is being processed.
+  @EnhancedEnumValue(name: 'experiment')
   experiment
 }
 

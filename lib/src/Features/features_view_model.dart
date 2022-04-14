@@ -1,5 +1,5 @@
-import 'package:r_sdk_m/src/Features/feature_data_source.dart';
-import 'package:r_sdk_m/src/Utils/utils.dart';
+import 'package:growthbook_sdk_flutter/src/Features/feature_data_source.dart';
+import 'package:growthbook_sdk_flutter/src/Utils/utils.dart';
 
 class FeatureViewModel {
   const FeatureViewModel({
@@ -16,7 +16,6 @@ class FeatureViewModel {
       delegate.featuresFetchedSuccessfully(model.feature);
       customLogger('FeatureVieModel have fetched features successfully.');
     } catch (e) {
-      customLogger('FeatureViewModel Failed to fetch features');
       rethrow;
     }
   }

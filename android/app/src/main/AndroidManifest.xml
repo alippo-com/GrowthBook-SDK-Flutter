@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.r_sdk_m">
+    package="com.example.growthbook_sdk_flutter">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="r_sdk_m"
+        android:label="growthbook_sdk_flutter"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

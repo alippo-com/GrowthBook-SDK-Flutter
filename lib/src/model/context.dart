@@ -1,4 +1,4 @@
-import 'package:r_sdk_m/src/model/features.dart';
+import 'package:growthbook_sdk_flutter/src/model/features.dart';
 
 import '../Utils/constant.dart';
 
@@ -27,7 +27,7 @@ class GBContext {
   Map<String, dynamic>? attributes;
 
   /// Force specific experiments to always assign a specific variation (used for QA).
-  Map<String, int>? forcedVariation;
+  Map<String, dynamic>? forcedVariation;
 
   /// If true, random assignment is disabled and only explicitly forced variations are used.
   bool? qaMode;

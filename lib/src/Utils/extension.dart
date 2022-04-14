@@ -1,5 +1,6 @@
 import 'dart:math';
 
+// coverage:ignore-file
 /// Extension for checking runtime_time_type of object in special references;
 /// 1.String
 /// 2.List
@@ -40,9 +41,21 @@ extension DoubleExt on double {
   }
 }
 
+/// Will zip the element.
 extension PairingExtension on List {
   List zipWithNext<T>() {
     final second = this[1];
     return <T>[first, second];
+  }
+}
+
+extension StringWeight on String {
+  int calculateWeight() {
+    final List<int> data = codeUnits;
+    int sum = 0;
+    for (int i in data) {
+      sum = sum + i;
+    }
+    return sum;
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:r_sdk_m/src/Evaluator/feature_evaluator.dart';
-import 'package:r_sdk_m/src/Features/features_view_model.dart';
-import 'package:r_sdk_m/src/Network/network.dart';
-import 'package:r_sdk_m/src/model/features.dart';
+import 'package:growthbook_sdk_flutter/src/Evaluator/feature_evaluator.dart';
+import 'package:growthbook_sdk_flutter/src/Features/features_view_model.dart';
+import 'package:growthbook_sdk_flutter/src/Network/network.dart';
+import 'package:growthbook_sdk_flutter/src/model/features.dart';
 
 import 'src/Features/feature_data_source.dart';
 import 'src/Utils/utils.dart';
@@ -117,7 +117,8 @@ class GrowthBookSDK extends FeaturesFlowDelegate {
   Future<void> refresh() async {
     final featureViewModel = FeatureViewModel(
       delegate: this,
-      source: FeatureDataSource(client: _baseClient, context: _context),
+      source: FeatureDataSource(
+          client: _baseClient, context: _context, onError: (e, s) {}),
     );
     await featureViewModel.fetchFeature().then((value) {
       if (afterFetch != null) {
