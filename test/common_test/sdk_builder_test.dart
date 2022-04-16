@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:growthbook_sdk_flutter/growth_book.dart';
+import 'package:growthbook_sdk_flutter/src/growth_book_sdk.dart';
 import 'package:growthbook_sdk_flutter/src/model/features.dart';
 
 import '../Mocks/network_mock.dart';
