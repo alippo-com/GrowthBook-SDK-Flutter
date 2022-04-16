@@ -56,9 +56,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
     /// Initializing SDK.
     gb = GBSDKBuilderApp(
-            apiKey: 'key_prod_284897d8a1c89689',
+            apiKey: '<Key>',
             hostURL:
-                'http://a2c0156b9af934bcaa8f539de1928e85-2035136552.ap-south-1.elb.amazonaws.com:3100/',
+                '<Host URL>',
             attributes: userAttr,
             growthBookTrackingCallBack: (experiment, experimentResult) {
               /// Track feature.
