@@ -116,7 +116,8 @@ class GrowthBookSDK extends FeaturesFlowDelegate {
 
   GBFeatures get features => _context.features;
 
-  Stream<StateHelper> get stream => _sdkStreamController.stream;
+  Stream<StateHelper> get stream =>
+      _sdkStreamController.stream.asBroadcastStream();
 
   final BaseClient _baseClient;
 
