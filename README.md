@@ -1,18 +1,24 @@
-![](https://docs.growthbook.io/images/hero.png)
+# GrowthBook SDK for flutter.
 
-# Growth Book - SDK
+![](https://docs.growthbook.io/images/hero2.png)
 
-![](https://camo.githubusercontent.com/b1d9ad56ab51c4ad1417e9a5ad2a8fe63bcc4755e584ec7defef83755c23f923/687474703a2f2f696d672e736869656c64732e696f2f62616467652f706c6174666f726d2d616e64726f69642d3645444238442e7376673f7374796c653d666c6174) ![](https://camo.githubusercontent.com/1fec6f0d044c5e1d73656bfceed9a78fd4121b17e82a2705d2a47f6fd1f0e3e5/687474703a2f2f696d672e736869656c64732e696f2f62616467652f706c6174666f726d2d696f732d4344434443442e7376673f7374796c653d666c6174) ![](https://camo.githubusercontent.com/4ac08d7fb1bcb8ef26388cd2bf53b49626e1ab7cbda581162a946dd43e6a2726/687474703a2f2f696d672e736869656c64732e696f2f62616467652f706c6174666f726d2d74766f732d3830383038302e7376673f7374796c653d666c6174) ![](https://camo.githubusercontent.com/135dbadae40f9cabe7a3a040f9380fb485cff36c90909f3c1ae36b81c304426b/687474703a2f2f696d672e736869656c64732e696f2f62616467652f706c6174666f726d2d77617463686f732d4330433043302e7376673f7374796c653d666c6174)
+
+
+## Overview
+
+GrowthBook is an open source feature flagging and experimentation platform that makes it easy to adjust what features are shown users, and run A/B tests, without deploying new code. There are two parts to GrowthBook, the GrowthBook Application, and the SDKs which implement this functionality to your code base. This Flutter SDK allows you to use GrowthBook with your Flutter based mobile application.
+
+![](https://camo.githubusercontent.com/b1d9ad56ab51c4ad1417e9a5ad2a8fe63bcc4755e584ec7defef83755c23f923/687474703a2f2f696d672e736869656c64732e696f2f62616467652f706c6174666f726d2d616e64726f69642d3645444238442e7376673f7374796c653d666c6174) ![](https://camo.githubusercontent.com/1fec6f0d044c5e1d73656bfceed9a78fd4121b17e82a2705d2a47f6fd1f0e3e5/687474703a2f2f696d672e736869656c64732e696f2f62616467652f706c6174666f726d2d696f732d4344434443442e7376673f7374796c653d666c6174)
 
 
 
 
 - **Lightweight and fast**
 - **Supports**
-  - **Android version 21 & above**
-  - **iOS version 12 & Above**
-  - **Apple TvOS version 13 & Above**
-  - **Apple WatchOS version 7 & Above**
+  - **Android**
+  - **iOS**
+  - **Mac**
+  - **Windows**
 - **Use your existing event tracking (GA, Segment, Mixpanel, custom)**
 - **Adjust variation weights and targeting without deploying new code**
 
@@ -20,7 +26,7 @@
 
 ## Installation
 
-
+1. Add GrowthBook SDK as dependency in your pubspec.yaml file.
 ```yaml
 growthbook_sdk_flutter: ^1.0.0
 ```
@@ -29,7 +35,7 @@ growthbook_sdk_flutter: ^1.0.0
 
 Integration is super easy:
 
-1. Create a Growth Book API key
+1. Create a GrowthBook API key from the GrowthBook App.
 2. At the start of your app,  do SDK Initialization as per below
 
 Now you can start/stop tests, adjust coverage and variation weights, and apply a winning variation to 100% of traffic, all within the Growth Book App without deploying code changes to your site.
@@ -38,7 +44,7 @@ Now you can start/stop tests, adjust coverage and variation weights, and apply a
 final GrowthBookSDK sdkInstance = GBSDKBuilderApp(
   apiKey: "<API_KEY>",
   attributes: {
-    /// Spicify attributes.
+    /// Specify attributes.
   },
   growthBookTrackingCallBack: (gbExperiment, gbExperimentResult) {},
   hostURL: '<GrowthBook_URL>',
@@ -52,7 +58,7 @@ There are additional properties which can be setup at the time of initialization
     final GrowthBookSDK newSdkInstance = GBSDKBuilderApp(
     apiKey: "<API_KEY>",
     attributes: {
-     /// Spicify user attributes.
+     /// Specify user attributes.
     },
     growthBookTrackingCallBack: (gbExperiment, gbExperimentResult) {},
     hostURL: '<GrowthBook_URL>',
