@@ -36,7 +36,7 @@ growthbook_sdk_flutter: ^1.0.0
 Integration is super easy:
 
 1. Create a GrowthBook API key from the GrowthBook App.
-2. At the start of your app,  do SDK Initialization as per below
+2. Initialize the SDK at the start of your app using the API key, as below.
 
 Now you can start/stop tests, adjust coverage and variation weights, and apply a winning variation to 100% of traffic, all within the Growth Book App without deploying code changes to your site.
 
