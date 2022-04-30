@@ -1,15 +1,13 @@
-// import '../../growth_book.dart';
+/// It will be helpful incase we want to show status of our sdk
+/// builder.
 
-// /// This enum would be helpful in case of identifying current-state of
-// /// [GrowthBookSDK] and trigger events accordingly.
-// ///
-// enum GBState {
-//   /// While fetching data.
-//   loading,
+enum StateHelper {
+  /// While fetching.
+  loading,
 
-//   /// While loading is completed.
-//   fetched,
+  /// While fetched.
+  fetched,
 
-//   /// While fetching gets failed.
-//   failed
-// }
+  /// While error ocurred.
+  error
+}

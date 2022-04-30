@@ -1,12 +1,16 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
 import 'package:growthbook_sdk_flutter/src/Evaluator/feature_evaluator.dart';
 import 'package:growthbook_sdk_flutter/src/Features/features_view_model.dart';
+import 'package:growthbook_sdk_flutter/src/Helper/state_helper.dart';
 import 'package:growthbook_sdk_flutter/src/Network/network.dart';
 import 'package:growthbook_sdk_flutter/src/model/features.dart';
 
-import 'src/Features/feature_data_source.dart';
-import 'src/Utils/utils.dart';
-import 'src/model/context.dart';
+import 'Features/feature_data_source.dart';
+import 'Utils/utils.dart';
+import 'model/context.dart';
+
+typedef VoidCallback = void Function();
 
 abstract class SDKBuilder {
   SDKBuilder({
@@ -81,9 +85,11 @@ class GBSDKBuilderApp extends SDKBuilder {
   }
 }
 
-// The main export of the libraries is a simple GrowthBook wrapper class that
-// takes a Context object in the constructor.
-// It exposes two main methods: feature and run.
+/// The main export of the libraries is a simple GrowthBook wrapper class that
+/// takes a Context object in the constructor.
+/// It exposes two main methods: feature and run.
+/// It also includes stream of [StateHelper] which can be utilized in case
+/// sdk is not loaded yet and we want to show some in place.
 class GrowthBookSDK extends FeaturesFlowDelegate {
   GrowthBookSDK(
       {required GBContext context,
@@ -91,12 +97,15 @@ class GrowthBookSDK extends FeaturesFlowDelegate {
       BaseClient? client,
       VoidCallback? afterFetch})
       : _context = context,
+        _sdkStreamController = StreamController<StateHelper>(),
         _baseClient = client ?? DioClient() {
     if (features != null) {
       _context.features = features;
     }
+    _sdkStreamController.sink.add(StateHelper.loading);
     refresh();
   }
+  final StreamController<StateHelper> _sdkStreamController;
 
   VoidCallback? afterFetch;
 
@@ -107,24 +116,31 @@ class GrowthBookSDK extends FeaturesFlowDelegate {
 
   GBFeatures get features => _context.features;
 
+  Stream<StateHelper> get stream =>
+      _sdkStreamController.stream.asBroadcastStream();
+
   final BaseClient _baseClient;
 
   @override
   void featuresFetchedSuccessfully(GBFeatures gbFeatures) {
     _context.features = gbFeatures;
+    if (afterFetch != null) {
+      afterFetch!.call();
+    }
+    _sdkStreamController.sink.add(StateHelper.fetched);
   }
 
   Future<void> refresh() async {
     final featureViewModel = FeatureViewModel(
       delegate: this,
       source: FeatureDataSource(
-          client: _baseClient, context: _context, onError: (e, s) {}),
+          client: _baseClient,
+          context: _context,
+          onError: (e, s) {
+            _sdkStreamController.sink.add(StateHelper.error);
+          }),
     );
-    await featureViewModel.fetchFeature().then((value) {
-      if (afterFetch != null) {
-        afterFetch!.call();
-      }
-    });
+    await featureViewModel.fetchFeature();
   }
 
   GBFeatureResult feature(String id) {
