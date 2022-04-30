@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:growthbook_sdk_flutter/growth_book.dart';
 
@@ -41,24 +43,22 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   /// Initialization of controllers.
   late TabController _tabController;
-  final userAttr = {"id": "1", "browser": "chrome"};
+  final userAttr = {"id": Platform.isIOS ? "foo" : "foo_bar"};
   late final GrowthBookSDK gb;
   @override
   void initState() {
     _tabController = TabController(length: tabNames.length, vsync: this);
-    tabs = <Tab>[
-      ...tabNames
-          .map((e) => Tab(
-                text: e,
-              ))
-          .toList()
-    ];
+    tabs = <Tab>[...tabNames.map((e) => Tab(text: e)).toList()];
 
     /// Initializing SDK.
+    initializeSDK();
+    super.initState();
+  }
+
+  void initializeSDK() {
     gb = GBSDKBuilderApp(
-            apiKey: '<Key>',
-            hostURL:
-                '<Host URL>',
+            apiKey: '<KEY>',
+            hostURL: '<HOST URL>',
             attributes: userAttr,
             growthBookTrackingCallBack: (experiment, experimentResult) {
               /// Track feature.
@@ -67,11 +67,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       ..afterFetch = () {
         setState(() {});
       };
-    super.initState();
   }
 
   Widget _getRightWidget() {
-    if (gb.feature('tab_feature').on!) {
+    if (gb.feature('random').on!) {
       return TabBar(
         isScrollable: true,
         tabs: tabs,
