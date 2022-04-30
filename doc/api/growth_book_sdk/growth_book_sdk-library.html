@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="growth_book_sdk library API docs, for the Dart programming language.">
+  <title>growth_book_sdk library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">growthbook_sdk_flutter</a></li>
+    <li class="self-crumb">growth_book_sdk library</li>
+  </ol>
+  <div class="self-name">growth_book_sdk</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-library">growth_book_sdk</span> library 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+ 
+</h1></div>
+
+    
+
+
+    <section class="summary offset-anchor" id="classes">
+      <h2>Classes</h2>
+
+      <dl>
+        <dt id="GBContext">
+  <span class="name "><a href="../growth_book_sdk/GBContext-class.html">GBContext</a></span> 
+
+</dt>
+<dd>
+  Defines the GrowthBook context. 
+</dd>
+
+        <dt id="GBExperiment">
+  <span class="name "><a href="../growth_book_sdk/GBExperiment-class.html">GBExperiment</a></span> 
+
+</dt>
+<dd>
+  Defines a single experiment 
+</dd>
+
+        <dt id="GBExperimentResult">
+  <span class="name "><a href="../growth_book_sdk/GBExperimentResult-class.html">GBExperimentResult</a></span> 
+
+</dt>
+<dd>
+  The result of running an Experiment given a specific Context 
+</dd>
+
+        <dt id="GBFeature">
+  <span class="name "><a href="../growth_book_sdk/GBFeature-class.html">GBFeature</a></span> 
+
+</dt>
+<dd>
+  A Feature object consists of possible values plus rules for how to assign values to users. 
+</dd>
+
+        <dt id="GBFeatureResult">
+  <span class="name "><a href="../growth_book_sdk/GBFeatureResult-class.html">GBFeatureResult</a></span> 
+
+</dt>
+<dd>
+  Result for Feature 
+</dd>
+
+        <dt id="GBFeatureRule">
+  <span class="name "><a href="../growth_book_sdk/GBFeatureRule-class.html">GBFeatureRule</a></span> 
+
+</dt>
+<dd>
+  Rule object consists of various definitions to apply to calculate feature value 
+</dd>
+
+        <dt id="GBSDKBuilderApp">
+  <span class="name "><a href="../growth_book_sdk/GBSDKBuilderApp-class.html">GBSDKBuilderApp</a></span> 
+
+</dt>
+<dd>
+   
+</dd>
+
+        <dt id="GrowthBookSDK">
+  <span class="name "><a href="../growth_book_sdk/GrowthBookSDK-class.html">GrowthBookSDK</a></span> 
+
+</dt>
+<dd>
+  The main export of the libraries is a simple GrowthBook wrapper class that
+takes a Context object in the constructor.
+It exposes two main methods: feature and run.
+It also includes stream of <code>StateHelper</code> which can be utilized in case
+sdk is not loaded yet and we want to show some in place. 
+</dd>
+
+        <dt id="SDKBuilder">
+  <span class="name "><a href="../growth_book_sdk/SDKBuilder-class.html">SDKBuilder</a></span> 
+
+</dt>
+<dd>
+   
+</dd>
+
+      </dl>
+    </section>
+
+
+    <section class="summary offset-anchor" id="extensions">
+      <h2>Extensions</h2>
+
+      <dl>
+        <dt id="GBFeatureSourceEnhancedEnum">
+    <span class="name "><a href="../growth_book_sdk/GBFeatureSourceEnhancedEnum.html">GBFeatureSourceEnhancedEnum</a></span> 
+
+</dt>
+<dd>
+     
+</dd>
+
+
+        <dt id="GBFeatureSourceFromStringExtension">
+    <span class="name "><a href="../growth_book_sdk/GBFeatureSourceFromStringExtension.html">GBFeatureSourceFromStringExtension</a></span> 
+
+</dt>
+<dd>
+     
+</dd>
+
+
+      </dl>
+    </section>
+
+
+
+
+    <section class="summary offset-anchor" id="enums">
+      <h2>Enums</h2>
+
+      <dl>
+        <dt id="GBFeatureSource">
+  <span class="name "><a href="../growth_book_sdk/GBFeatureSource.html">GBFeatureSource</a></span> 
+
+</dt>
+<dd>
+  Enum For defining feature value source. 
+</dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="typedefs">
+      <h2>Typedefs</h2>
+
+      <dl>
+          
+  <dt id="VoidCallback" class="callable">
+    <span class="name"><a href="../growth_book_sdk/VoidCallback.html">VoidCallback</a></span><span class="signature">
+      <span class="returntype parameter">= void Function<span class="signature">()</span></span>
+    </span>
+    
+
+  </dt>
+  <dd>
+     
+    
+
+  </dd>
+
+      </dl>
+    </section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../index.html">growthbook_sdk_flutter</a></li>
+  <li class="self-crumb">growth_book_sdk library</li>
+</ol>
+
+
+    <h5><span class="package-name">growthbook_sdk_flutter</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="../growth_book_sdk/growth_book_sdk-library.html">growth_book_sdk</a></li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+    <h5>growth_book_sdk library</h5>
+    <ol>
+  <li class="section-title"><a href="../growth_book_sdk/growth_book_sdk-library.html#classes">Classes</a></li>
+  <li><a href="../growth_book_sdk/GBContext-class.html">GBContext</a></li>
+  <li><a href="../growth_book_sdk/GBExperiment-class.html">GBExperiment</a></li>
+  <li><a href="../growth_book_sdk/GBExperimentResult-class.html">GBExperimentResult</a></li>
+  <li><a href="../growth_book_sdk/GBFeature-class.html">GBFeature</a></li>
+  <li><a href="../growth_book_sdk/GBFeatureResult-class.html">GBFeatureResult</a></li>
+  <li><a href="../growth_book_sdk/GBFeatureRule-class.html">GBFeatureRule</a></li>
+  <li><a href="../growth_book_sdk/GBSDKBuilderApp-class.html">GBSDKBuilderApp</a></li>
+  <li><a href="../growth_book_sdk/GrowthBookSDK-class.html">GrowthBookSDK</a></li>
+  <li><a href="../growth_book_sdk/SDKBuilder-class.html">SDKBuilder</a></li>
+
+  <li class="section-title"><a href="../growth_book_sdk/growth_book_sdk-library.html#extensions">Extensions</a></li>
+  <li><a href="../growth_book_sdk/GBFeatureSourceEnhancedEnum.html">GBFeatureSourceEnhancedEnum</a></li>
+  <li><a href="../growth_book_sdk/GBFeatureSourceFromStringExtension.html">GBFeatureSourceFromStringExtension</a></li>
+
+
+
+
+
+  <li class="section-title"><a href="../growth_book_sdk/growth_book_sdk-library.html#enums">Enums</a></li>
+  <li><a href="../growth_book_sdk/GBFeatureSource.html">GBFeatureSource</a></li>
+
+  <li class="section-title"><a href="../growth_book_sdk/growth_book_sdk-library.html#typedefs">Typedefs</a></li>
+  <li><a href="../growth_book_sdk/VoidCallback.html">VoidCallback</a></li>
+
+</ol>
+
+  </div><!--/sidebar-offcanvas-right-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    growthbook_sdk_flutter
+      1.0.0+1
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

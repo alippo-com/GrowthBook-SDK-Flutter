@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:growthbook_sdk_flutter/growth_book.dart';
+import 'package:growthbook_sdk_flutter/growth_book_sdk.dart';
 
 void main() {
   runApp(const MyApp());
