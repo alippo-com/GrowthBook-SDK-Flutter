@@ -1,7 +1,7 @@
-import '../Features/features_model.dart';
-import '../Network/network.dart';
-import '../Utils/constant.dart';
-import '../model/context.dart';
+import '../features/features_model.dart';
+import '../model/model.dart';
+import '../network/network.dart';
+import '../utils/utils.dart';
 
 abstract class FeaturesFlowDelegate {
   void featuresFetchedSuccessfully(GBFeatures gbFeatures);
