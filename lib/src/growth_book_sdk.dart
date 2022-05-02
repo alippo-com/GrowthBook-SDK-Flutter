@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:growthbook_sdk_flutter/src/Evaluator/feature_evaluator.dart';
-import 'package:growthbook_sdk_flutter/src/Features/features_view_model.dart';
-import 'package:growthbook_sdk_flutter/src/Helper/state_helper.dart';
-import 'package:growthbook_sdk_flutter/src/Network/network.dart';
-import 'package:growthbook_sdk_flutter/src/model/features.dart';
+import 'package:growthbook_sdk_flutter/src/evaluator/feature_evaluator.dart';
+import 'package:growthbook_sdk_flutter/src/features/features_view_model.dart';
+import 'package:growthbook_sdk_flutter/src/helper/state_helper.dart';
+import 'package:growthbook_sdk_flutter/src/network/network.dart';
 
-import 'Features/feature_data_source.dart';
-import 'Utils/utils.dart';
-import 'model/context.dart';
+import 'features/feature_data_source.dart';
+import 'model/model.dart';
+import 'utils/utils.dart';
 
 typedef VoidCallback = void Function();
 

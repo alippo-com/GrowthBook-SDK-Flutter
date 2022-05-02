@@ -1,7 +1,6 @@
 import 'package:enhanced_enum/enhanced_enum.dart';
 import 'package:flutter/foundation.dart';
-import 'package:growthbook_sdk_flutter/src/Utils/constant.dart';
-import 'package:growthbook_sdk_flutter/src/Utils/extension.dart';
+import 'package:growthbook_sdk_flutter/src/utils/utils.dart';
 
 part 'condition_evaluator.g.dart';
 

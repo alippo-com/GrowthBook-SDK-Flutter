@@ -1,8 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:growthbook_sdk_flutter/src/growth_book_sdk.dart';
-import 'package:growthbook_sdk_flutter/src/model/features.dart';
+import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
-import '../Mocks/network_mock.dart';
+import '../mocks/network_mock.dart';
 
 void main() {
   group('SDK_BUILDER_TEST', () {

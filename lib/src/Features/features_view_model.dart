@@ -1,5 +1,5 @@
-import 'package:growthbook_sdk_flutter/src/Features/feature_data_source.dart';
-import 'package:growthbook_sdk_flutter/src/Utils/utils.dart';
+import 'package:growthbook_sdk_flutter/src/features/feature_data_source.dart';
+import 'package:growthbook_sdk_flutter/src/utils/utils.dart';
 
 class FeatureViewModel {
   const FeatureViewModel({

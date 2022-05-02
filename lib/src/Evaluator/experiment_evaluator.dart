@@ -1,8 +1,7 @@
-import 'package:growthbook_sdk_flutter/src/Utils/constant.dart';
-import 'package:growthbook_sdk_flutter/src/model/context.dart';
-import 'package:growthbook_sdk_flutter/src/model/experiment.dart';
+import 'package:growthbook_sdk_flutter/src/model/model.dart';
+import 'package:growthbook_sdk_flutter/src/utils/constant.dart';
 
-import '../Utils/gb_utils.dart';
+import '../utils/gb_utils.dart';
 import 'condition_evaluator.dart';
 
 /// Experiment Evaluator Class
