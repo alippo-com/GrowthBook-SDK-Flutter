@@ -1,5 +1,4 @@
-import 'package:growthbook_sdk_flutter/src/features/feature_data_source.dart';
-import 'package:growthbook_sdk_flutter/src/utils/utils.dart';
+import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
 class DataSourceMock extends FeaturesFlowDelegate {
   /// For data response.

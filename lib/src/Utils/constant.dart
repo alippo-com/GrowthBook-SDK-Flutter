@@ -1,7 +1,5 @@
+import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 import 'package:tuple/tuple.dart';
-
-import '../model/experiment.dart';
-import '../model/features.dart';
 
 /// Constant class for GrowthBook
 class Constant {

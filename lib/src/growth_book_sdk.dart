@@ -1,13 +1,6 @@
 import 'dart:async';
 
-import 'package:growthbook_sdk_flutter/src/evaluator/feature_evaluator.dart';
-import 'package:growthbook_sdk_flutter/src/features/features_view_model.dart';
-import 'package:growthbook_sdk_flutter/src/helper/state_helper.dart';
-import 'package:growthbook_sdk_flutter/src/network/network.dart';
-
-import 'features/feature_data_source.dart';
-import 'model/model.dart';
-import 'utils/utils.dart';
+import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
 typedef VoidCallback = void Function();
 

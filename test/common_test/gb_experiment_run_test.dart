@@ -1,8 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:growthbook_sdk_flutter/src/Evaluator/experiment_evaluator.dart';
-import 'package:growthbook_sdk_flutter/src/Utils/utils.dart';
-import 'package:growthbook_sdk_flutter/src/model/context.dart';
-import 'package:growthbook_sdk_flutter/src/model/experiment.dart';
+import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
 import '../Helper/gb_test_helper.dart';
 
