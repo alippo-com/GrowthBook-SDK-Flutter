@@ -107,10 +107,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         children: [
                           Text(tabNames[i]),
                           ElevatedButton(
-                              onPressed: () {
-                                print(gb.feature('tab_feature').on);
-                              },
-                              child: const Text('Press'))
+                              onPressed: () {}, child: const Text('Press'))
                         ],
                       ),
                     ),
