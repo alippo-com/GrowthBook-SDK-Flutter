@@ -79,9 +79,8 @@ class GBFeatureRule {
           : null,
       key: mappedData['key'],
       weights: mappedData['weights'] != null
-          ? List<double>.from((mappedData['weights'] as List<num>)
-              .map((e) => e.toDouble())
-              .toList())
+          ? List<double>.from(
+              (mappedData['weights'] as List).map((e) => e.toDouble()).toList())
           : null,
       force: mappedData['force'],
       hashAttribute: mappedData["hashAttribute"],
