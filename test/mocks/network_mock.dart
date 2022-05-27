@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:growthbook_sdk_flutter/src/network/network.dart';
+import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
-class MockNetworkClient extends BaseClient {
+class MockNetworkClient implements BaseClient {
   @override
   consumeGetRequest(String path, OnSuccess onSuccess, OnError onError) {
     final pseudoResponse = jsonDecode(MockResponse.successResponse);

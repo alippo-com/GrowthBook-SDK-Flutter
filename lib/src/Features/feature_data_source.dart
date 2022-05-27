@@ -1,7 +1,4 @@
-import '../features/features_model.dart';
-import '../model/model.dart';
-import '../network/network.dart';
-import '../utils/utils.dart';
+import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
 abstract class FeaturesFlowDelegate {
   void featuresFetchedSuccessfully(GBFeatures gbFeatures);

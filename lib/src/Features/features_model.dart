@@ -1,5 +1,4 @@
-import 'package:growthbook_sdk_flutter/src/model/features.dart';
-import 'package:growthbook_sdk_flutter/src/utils/utils.dart';
+import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
 class FeaturedDataModel {
   FeaturedDataModel({required this.feature});

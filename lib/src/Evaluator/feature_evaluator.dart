@@ -1,11 +1,4 @@
-import 'package:growthbook_sdk_flutter/src/evaluator/condition_evaluator.dart';
-import 'package:growthbook_sdk_flutter/src/evaluator/experiment_evaluator.dart';
-import 'package:growthbook_sdk_flutter/src/model/context.dart';
-import 'package:growthbook_sdk_flutter/src/model/features.dart';
-
-import '../model/experiment.dart';
-// import '../Utils/gb_utils.dart';
-import '../utils/utils.dart';
+import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
 /// Feature Evaluator Class
 /// Takes Context and Feature Key

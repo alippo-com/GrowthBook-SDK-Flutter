@@ -1,8 +1,4 @@
-import 'package:growthbook_sdk_flutter/src/model/model.dart';
-import 'package:growthbook_sdk_flutter/src/utils/constant.dart';
-
-import '../utils/gb_utils.dart';
-import 'condition_evaluator.dart';
+import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
 /// Experiment Evaluator Class
 /// Takes Context & Experiment & returns Experiment Result

@@ -1,7 +1,5 @@
 import 'package:enhanced_enum/enhanced_enum.dart';
-
-import '../Utils/constant.dart';
-import 'experiment.dart';
+import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
 part 'features.g.dart';
 

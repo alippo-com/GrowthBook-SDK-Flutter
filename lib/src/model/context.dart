@@ -1,6 +1,4 @@
-import 'package:growthbook_sdk_flutter/src/model/features.dart';
-
-import '../Utils/constant.dart';
+import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
 /// Defines the GrowthBook context.
 class GBContext {

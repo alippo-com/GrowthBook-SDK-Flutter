@@ -1,4 +1,4 @@
-import '../Utils/constant.dart';
+import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
 /// Defines a single experiment
 
