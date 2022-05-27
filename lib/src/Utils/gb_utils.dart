@@ -1,6 +1,4 @@
-import 'package:growthbook_sdk_flutter/src/Utils/constant.dart';
-
-import 'extension.dart';
+import 'package:growthbook_sdk_flutter/src/utils/utils.dart';
 
 /// Fowler-Noll-Vo hash - 32 bit
 class FNV {
