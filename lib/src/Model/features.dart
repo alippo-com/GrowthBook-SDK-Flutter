@@ -1,9 +1,11 @@
 import 'package:enhanced_enum/enhanced_enum.dart';
 import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'features.g.dart';
 
 /// A Feature object consists of possible values plus rules for how to assign values to users.
+@JsonSerializable(createToJson: false)
 class GBFeature {
   GBFeature({
     this.rules,
@@ -17,22 +19,12 @@ class GBFeature {
   ///  The default value (should use null if not specified)
   dynamic defaultValue;
 
-  factory GBFeature.fromMap(Map<String, dynamic> dataMap) {
-    return GBFeature(
-      rules: dataMap['rules'] != null
-          ? List<GBFeatureRule>.from(
-              (dataMap['rules'] as List).map(
-                (e) => GBFeatureRule.fromMap(e),
-              ),
-            )
-          : null,
-      defaultValue: dataMap["defaultValue"],
-    );
-  }
+  factory GBFeature.fromJson(Map<String, dynamic> value) =>
+      _$GBFeatureFromJson(value);
 }
 
 /// Rule object consists of various definitions to apply to calculate feature value
-
+@JsonSerializable(createToJson: false)
 class GBFeatureRule {
   GBFeatureRule({
     this.condition,
@@ -69,23 +61,8 @@ class GBFeatureRule {
   /// What user attribute should be used to assign variations (defaults to id)
   String? hashAttribute;
 
-  factory GBFeatureRule.fromMap(Map<String, dynamic> mappedData) {
-    return GBFeatureRule(
-      nameSpace: mappedData['namespace'],
-      condition: mappedData['condition'],
-      coverage: (mappedData['coverage'] as num?)?.toDouble(),
-      variations: mappedData['variations'] != null
-          ? List<dynamic>.from(mappedData['variations'].map((e) => e))
-          : null,
-      key: mappedData['key'],
-      weights: mappedData['weights'] != null
-          ? List<double>.from(
-              (mappedData['weights'] as List).map((e) => e.toDouble()).toList())
-          : null,
-      force: mappedData['force'],
-      hashAttribute: mappedData["hashAttribute"],
-    );
-  }
+  factory GBFeatureRule.fromJson(Map<String, dynamic> value) =>
+      _$GBFeatureRuleFromJson(value);
 }
 
 /// Enum For defining feature value source.

@@ -1,7 +1,10 @@
 import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'experiment.g.dart';
 
 /// Defines a single experiment
-
+@JsonSerializable(createToJson: false)
 class GBExperiment {
   GBExperiment({
     this.key,
@@ -14,17 +17,6 @@ class GBExperiment {
     this.coverage,
     this.force,
   });
-
-  factory GBExperiment.fromMap(Map<String, dynamic> map) => GBExperiment(
-      key: map['key'],
-      namespace: map['namespace'],
-      variations: map['variations'],
-      hashAttribute: map['hashAttribute'],
-      weights: map['weights'],
-      active: map['active'] ?? true,
-      coverage: map['coverage'],
-      force: map['force'],
-      condition: map['condition']);
 
   /// The globally unique tracking key for the experiment
   String? key;
@@ -55,6 +47,9 @@ class GBExperiment {
 
   ///Check if experiment is not active.
   bool get deactivated => !active;
+
+  factory GBExperiment.fromJson(Map<String, dynamic> value) =>
+      _$GBExperimentFromJson(value);
 }
 
 /// The result of running an Experiment given a specific Context

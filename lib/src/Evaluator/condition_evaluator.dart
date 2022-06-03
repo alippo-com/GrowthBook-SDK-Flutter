@@ -2,7 +2,7 @@ import 'package:enhanced_enum/enhanced_enum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
-part 'condition_evaluator.g.dart';
+// part 'condition_evaluator.g.dart';
 
 /// Both experiments and features can define targeting conditions using a syntax modeled after MongoDB queries.
 /// These conditions can have arbitrary nesting levels and evaluating them requires recursion.

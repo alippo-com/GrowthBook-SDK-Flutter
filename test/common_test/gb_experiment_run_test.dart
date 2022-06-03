@@ -19,7 +19,7 @@ void main() {
       for (var item in evaluateCondition) {
         if (item is List) {
           final testContext = GBContextTest.fromMap(item[1]);
-          final experiment = GBExperiment.fromMap(item[2]);
+          final experiment = GBExperiment.fromJson(item[2]);
 
           final attr = testContext.attributes;
 

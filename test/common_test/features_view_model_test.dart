@@ -9,10 +9,9 @@ void main() {
     late FeatureViewModel featureViewModel;
     late DataSourceMock dataSourceMock;
     late GBContext context;
-    const testApiKey = 'key_prod_284897d8a1c89689';
+    const testApiKey = '<SOME KEY>';
     const attr = <String, String>{};
-    const testHostURL =
-        'http://a2c0156b9af934bcaa8f539de1928e85-2035136552.ap-south-1.elb.amazonaws.com:3100/';
+    const testHostURL = '<HOST URL>';
 
     setUp(() {
       context = GBContext(
