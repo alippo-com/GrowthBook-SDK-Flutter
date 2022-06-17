@@ -63,7 +63,7 @@ class GBFeatureEvaluator {
               coverage: rule.coverage,
               weights: rule.weights,
               hashAttribute: rule.hashAttribute,
-              namespace: rule.nameSpace,
+              namespace: rule.namespace,
               force: rule.force);
 
           final result = GBExperimentEvaluator()

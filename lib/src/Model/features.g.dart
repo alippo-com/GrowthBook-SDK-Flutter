@@ -82,6 +82,6 @@ GBFeatureRule _$GBFeatureRuleFromJson(Map<String, dynamic> json) =>
       weights: (json['weights'] as List<dynamic>?)
           ?.map((e) => (e as num).toDouble())
           .toList(),
-      nameSpace: json['nameSpace'] as List<dynamic>?,
+      namespace: json['namespace'] as List<dynamic>?,
       hashAttribute: json['hashAttribute'] as String?,
     );

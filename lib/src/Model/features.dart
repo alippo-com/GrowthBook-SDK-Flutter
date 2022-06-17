@@ -33,7 +33,7 @@ class GBFeatureRule {
     this.variations,
     this.key,
     this.weights,
-    this.nameSpace,
+    this.namespace,
     this.hashAttribute,
   });
 
@@ -56,7 +56,7 @@ class GBFeatureRule {
   List<double>? weights;
 
   /// A tuple that contains the namespace identifier, plus a range of coverage for the experiment.
-  List? nameSpace;
+  List? namespace;
 
   /// What user attribute should be used to assign variations (defaults to id)
   String? hashAttribute;
