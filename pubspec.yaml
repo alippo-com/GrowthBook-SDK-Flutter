@@ -22,4 +22,5 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^1.0.0
   build_runner: ^2.1.11
+  enhanced_enum_generator: ^0.1.1
 
