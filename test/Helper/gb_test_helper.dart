@@ -53,7 +53,7 @@ class GBFeaturesTest {
             (map['features'] as Map<String, dynamic>? ?? {}).map((key, value) {
           return MapEntry(
             key,
-            GBFeature.fromMap(value),
+            GBFeature.fromJson(value),
           );
         }));
   }
@@ -81,7 +81,7 @@ class GBFeatureResultTest {
         off: map['off'],
         source: map['source'],
         experiment: map['experiment'] != null
-            ? GBExperiment.fromMap(map['experiment'])
+            ? GBExperiment.fromJson(map['experiment'])
             : null,
         experimentResult: map['experimentResult'] != null
             ? GBExperimentResultTest.fromMap(
