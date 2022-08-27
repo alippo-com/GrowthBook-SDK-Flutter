@@ -74,7 +74,7 @@ GBFeature _$GBFeatureFromJson(Map<String, dynamic> json) => GBFeature(
 
 GBFeatureRule _$GBFeatureRuleFromJson(Map<String, dynamic> json) =>
     GBFeatureRule(
-      condition: json['condition'] as Map<String, dynamic>?,
+      condition: json['condition'],
       coverage: (json['coverage'] as num?)?.toDouble(),
       force: json['force'],
       variations: json['variations'] as List<dynamic>?,

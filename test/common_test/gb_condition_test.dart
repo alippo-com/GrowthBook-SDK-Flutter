@@ -19,8 +19,7 @@ void main() {
         if (item is List) {
           final localItem = item;
           final evaluator = GBConditionEvaluator();
-          final result =
-              evaluator.evaluateCondition(localItem[2], localItem[1]);
+          final result = evaluator.evaluateCondition(localItem[2], localItem[1]);
           final status = localItem[0].toString() +
               "\nExpected Result - " +
               localItem[3].toString() +
@@ -36,67 +35,9 @@ void main() {
         }
         index++;
       }
+      expect(failedScenarios.length, 0);
       customLogger(
           'Passed Test ${passedScenarios.length} out of ${evaluateCondition.length}');
-      expect(failedScenarios.length, 0);
     });
   });
 }
-/// 
-/// This cases are extracted out from the test case file.
-/// Failing test cases name : $gt    /$lt     strings - pass
-/// Related cases : 3
-///  
-///  [
-///    "$gt    /$lt     strings - fail $gt    ",
-///    {
-///      "word": {
-///        "$gt": "alphabet",
-///        "$lt": "zebra"
-///      }
-///    },
-///    {
-///      "word": "alphabet"
-///    },
-///    false
-///  ],
-///  [
-///    "$gt    /$lt     strings - fail $lt    ",
-///    {
-///      "word": {
-///        "$gt": "alphabet",
-///        "$lt": "zebra"
-///      }
-///    },
-///    {
-///      "word": "zebra"
-///    },
-///    false
-///  ],
-///  [
-///    "$gt    /$lt     strings - pass",
-///    {
-///      "word": {
-///        "$gt": "alphabet",
-///        "$lt": "zebra"
-///      }
-///    },
-///    {
-///      "word": "always"
-///    },
-///    true
-///  ],
-///  [
-///    "$gt    /$lt     strings - fail uppercase",
-///    {
-///      "word": {
-///        "$gt": "alphabet",
-///        "$lt": "zebra"
-///      }
-///    },
-///    {
-///      "word": "AZL"
-///    },
-///    false
-///  ], 
-/// 

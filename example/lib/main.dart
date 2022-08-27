@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
@@ -47,18 +48,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   late final GrowthBookSDK gb;
   @override
   void initState() {
+    super.initState();
     _tabController = TabController(length: tabNames.length, vsync: this);
     tabs = <Tab>[...tabNames.map((e) => Tab(text: e)).toList()];
-
-    /// Initializing SDK.
     initializeSDK();
-    super.initState();
   }
 
   void initializeSDK() {
     gb = GBSDKBuilderApp(
-            apiKey: '<KEY>',
-            hostURL: '<HOST URL>',
+            apiKey: kReleaseMode ? '<PROD_KEY>' : '<DEV_KEY>',
+            hostURL: '<HOST_URL>',
             attributes: userAttr,
             growthBookTrackingCallBack: (experiment, experimentResult) {
               /// Track feature.
@@ -91,31 +90,37 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            _getRightWidget(),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  for (var i = 0; i < tabNames.length; i++)
-                    Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(tabNames[i]),
-                          ElevatedButton(
-                              onPressed: () {}, child: const Text('Press'))
-                        ],
-                      ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('GrowthBook SDK'),
+      ),
+      body: Column(
+        children: [
+          _getRightWidget(),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                for (var i = 0; i < tabNames.length; i++)
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(tabNames[i]),
+                        ElevatedButton(
+                          onPressed: () {
+                            //
+                            gb.features.forEach((key, value) {});
+                          },
+                          child: const Text('Press'),
+                        )
+                      ],
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

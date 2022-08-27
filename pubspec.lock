@@ -140,7 +140,7 @@ packages:
       name: collection
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.15.0"
+    version: "1.16.0"
   convert:
     dependency: transitive
     description:
@@ -169,27 +169,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.6"
-  enhanced_enum:
-    dependency: "direct main"
-    description:
-      name: enhanced_enum
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.2"
-  enhanced_enum_generator:
-    dependency: "direct dev"
-    description:
-      name: enhanced_enum_generator
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.2"
   fake_async:
     dependency: transitive
     description:
       name: fake_async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.3.0"
   file:
     dependency: transitive
     description:
@@ -311,7 +297,7 @@ packages:
       name: material_color_utilities
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.3"
+    version: "0.1.4"
   meta:
     dependency: transitive
     description:
@@ -339,7 +325,7 @@ packages:
       name: path
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.0"
+    version: "1.8.1"
   pool:
     dependency: transitive
     description:
@@ -407,7 +393,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.1"
+    version: "1.8.2"
   stack_trace:
     dependency: transitive
     description:
@@ -449,7 +435,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.8"
+    version: "0.4.9"
   timing:
     dependency: transitive
     description:
@@ -477,7 +463,7 @@ packages:
       name: vector_math
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.2"
   watcher:
     dependency: transitive
     description:
@@ -500,4 +486,4 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.16.2 <3.0.0"
+  dart: ">=2.17.2 <3.0.0"
