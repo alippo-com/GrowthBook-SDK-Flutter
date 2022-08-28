@@ -163,19 +163,6 @@ class GBFeature {
 
   ///  The default value (should use null if not specified)
   dynamic defaultValue;
-
-  factory GBFeature.fromMap(Map<String, dynamic> dataMap) {
-    return GBFeature(
-      rules: dataMap['rules'] != null
-          ? List<GBFeatureRule>.from(
-              (dataMap['rules'] as List).map(
-                (e) => GBFeatureRule.fromMap(e),
-              ),
-            )
-          : null,
-      defaultValue: dataMap["defaultValue"],
-    );
-  }
 }
 
 
@@ -216,43 +203,21 @@ class GBFeatureRule {
 
   /// What user attribute should be used to assign variations (defaults to id)
   String? hashAttribute;
-
-  factory GBFeatureRule.fromMap(Map<String, dynamic> mappedData) {
-    return GBFeatureRule(
-      nameSpace: mappedData['namespace'],
-      condition: mappedData['condition'],
-      coverage: (mappedData['coverage'] as num?)?.toDouble(),
-      variations: mappedData['variations'] != null
-          ? List<dynamic>.from(mappedData['variations'].map((e) => e))
-          : null,
-      key: mappedData['key'],
-      weights: mappedData['weights'] != null
-          ? List<double>.from(mappedData['weights'])
-          : null,
-      force: mappedData['force'],
-      hashAttribute: mappedData["hashAttribute"],
-    );
-  }
 }
 
 
 /// Enum For defining feature value source.
-@EnhancedEnum()
 enum GBFeatureSource {
   /// Queried Feature doesn't exist in GrowthBook.
-  @EnhancedEnumValue(name: 'unknownFeature')
   unknownFeature,
 
   /// Default Value for the Feature is being processed.
-  @EnhancedEnumValue(name: 'defaultValue')
   defaultValue,
 
   /// Forced Value for the Feature is being processed.
-  @EnhancedEnumValue(name: 'force')
   force,
 
   /// Experiment Value for the Feature is being processed.
-  @EnhancedEnumValue(name: 'experiment')
   experiment
 }
 

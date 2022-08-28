@@ -1,6 +1,6 @@
 name: growthbook_sdk_flutter
 description: GrowthBook SDK for flutter.
-version: 1.0.0+1
+version: 1.1.0+2
 homepage: https://github.com/alippo-com/GrowthBook-SDK-Flutter
 
 environment:
