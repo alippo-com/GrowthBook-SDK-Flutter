@@ -58,7 +58,8 @@ class GBUtils {
 
   ///This converts and experiment's coverage and variation weights into an array
   /// of bucket ranges.
-  List<GBBucketRange> getBucketRanges(int numVariations, double coverage, List<double> weights) {
+  List<GBBucketRange> getBucketRanges(
+      int numVariations, double coverage, List<double> weights) {
     List<GBBucketRange> bucketRange;
 
     // Clamp the value of coverage to between 0 and 1 inclusive.
@@ -71,7 +72,8 @@ class GBUtils {
     }
     // Default to equal weights if the sum is not equal 1 (or close enough when
     // rounding errors are factored in):
-    final weightsSum = targetWeights.fold<double>(0, (previousValue, element) => previousValue + element);
+    final weightsSum = targetWeights.fold<double>(
+        0, (previousValue, element) => previousValue + element);
     if (weightsSum < 0.99 || weightsSum > 1.01) {
       targetWeights = getEqualWeights(numVariations);
     }
@@ -109,7 +111,8 @@ class GBUtils {
       final end = namespace[2];
 
       if (start != null && end != null) {
-        return GBNameSpace(title, double.parse(start.toString()), double.parse(end.toString()));
+        return GBNameSpace(title, double.parse(start.toString()),
+            double.parse(end.toString()));
       }
     }
 
