@@ -1,4 +1,3 @@
-import 'package:enhanced_enum/enhanced_enum.dart';
 import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -19,8 +18,7 @@ class GBFeature {
   ///  The default value (should use null if not specified)
   dynamic defaultValue;
 
-  factory GBFeature.fromJson(Map<String, dynamic> value) =>
-      _$GBFeatureFromJson(value);
+  factory GBFeature.fromJson(Map<String, dynamic> value) => _$GBFeatureFromJson(value);
 }
 
 /// Rule object consists of various definitions to apply to calculate feature value
@@ -66,23 +64,22 @@ class GBFeatureRule {
 }
 
 /// Enum For defining feature value source.
-@EnhancedEnum()
+
 enum GBFeatureSource {
   /// Queried Feature doesn't exist in GrowthBook.
-  @EnhancedEnumValue(name: 'unknownFeature')
-  unknownFeature,
+  unknownFeature("unknownFeature"),
 
   /// Default Value for the Feature is being processed.
-  @EnhancedEnumValue(name: 'defaultValue')
-  defaultValue,
+  defaultValue("defaultValue"),
 
   /// Forced Value for the Feature is being processed.
-  @EnhancedEnumValue(name: 'force')
-  force,
+  force("force"),
 
   /// Experiment Value for the Feature is being processed.
-  @EnhancedEnumValue(name: 'experiment')
-  experiment
+  experiment("experiment");
+
+  const GBFeatureSource(this.name);
+  final String name;
 }
 
 /// Result for Feature

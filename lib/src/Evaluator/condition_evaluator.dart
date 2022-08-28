@@ -1,42 +1,38 @@
-import 'package:enhanced_enum/enhanced_enum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
-
-part 'condition_evaluator.g.dart';
 
 /// Both experiments and features can define targeting conditions using a syntax modeled after MongoDB queries.
 /// These conditions can have arbitrary nesting levels and evaluating them requires recursion.
 /// There are a handful of functions to define, and be aware that some of them may reference function definitions further below.
 /// Enum For different Attribute Types supported by GrowthBook.
-@EnhancedEnum()
 enum GBAttributeType {
   /// String Type Attribute.
-  @EnhancedEnumValue(name: 'string')
-  gbString,
+  gbString('string'),
 
   /// Number Type Attribute.
-  @EnhancedEnumValue(name: 'number')
-  gbNumber,
+  gbNumber('number'),
 
   /// Boolean Type Attribute.
-  @EnhancedEnumValue(name: 'boolean')
-  gbBoolean,
+  gbBoolean('boolean'),
 
   //// Array Type Attribute.
-  @EnhancedEnumValue(name: 'array')
-  gbArray,
+  gbArray('array'),
 
   /// Object Type Attribute.
-  @EnhancedEnumValue(name: 'object')
-  gbObject,
+  gbObject('object'),
 
   /// Null Type Attribute.
-  @EnhancedEnumValue(name: 'null')
-  gbNull,
+  gbNull('null'),
 
   /// Not Supported Type Attribute.
-  @EnhancedEnumValue(name: 'unknown')
-  gbUnknown
+  gbUnknown('unknown');
+
+  const GBAttributeType(this.name);
+
+  final String name;
+
+  @override
+  String toString() => name;
 }
 
 /// Evaluator class fro condition.
@@ -45,10 +41,12 @@ class GBConditionEvaluator {
   /// - attributes : User Attributes
   /// - condition : to be evaluated
 
-  bool evaluateCondition(dynamic attributes, GBCondition conditionOBJ) {
+  bool evaluateCondition(Map<String, dynamic> attributes, Object conditionOBJ) {
     if (conditionOBJ.isArray) {
       return false;
     } else {
+      conditionOBJ as Map;
+
       /// If conditionObj has a key $or, return evalOr(attributes, condition["$or"])
       var targetItems = conditionOBJ["\$or"];
       if (targetItems != null) {
@@ -87,7 +85,7 @@ class GBConditionEvaluator {
     return true;
   }
 
-  ///   Evaluate OR conditions against given attributes
+  /// Evaluate OR conditions against given attributes
   bool evalOr(Map<String, dynamic> attributes, List conditionObj) {
     // If conditionObj is empty, return true
     if (conditionObj.isEmpty) {
@@ -225,8 +223,7 @@ class GBConditionEvaluator {
         for (var key in conditionValue.keys) {
           // If evalOperatorCondition(key, attributeValue, value)
           // is false, return false
-          if (!evalOperatorCondition(
-              key, attributeValue, conditionValue[key])) {
+          if (!evalOperatorCondition(key, attributeValue, conditionValue[key])) {
             return false;
           }
         }
@@ -287,8 +284,7 @@ class GBConditionEvaluator {
     if (operator == "\$exists") {
       if (conditionValue.toString() == 'false' && attributeValue == null) {
         return true;
-      } else if (conditionValue.toString() == 'true' &&
-          attributeValue != null) {
+      } else if (conditionValue.toString() == 'true' && attributeValue != null) {
         return true;
       }
     }
@@ -311,8 +307,6 @@ class GBConditionEvaluator {
             /// If none of the elements in the attributeValue array pass
             /// evalConditionValue(conditionValue[i], attributeValue[j]),
             /// return false.
-            // for (var x = 0; x < (conditionValue).length; x++) {
-
             for (var con in conditionValue) {
               var result = false;
               for (var attr in attributeValue) {
@@ -352,54 +346,104 @@ class GBConditionEvaluator {
       }
     } else if ((attributeValue as Object?).isPrimitive &&
         (conditionValue as Object?).isPrimitive) {
-      late final num target;
-      late final num source;
-      void setupVariable() {
-        if (attributeValue is num && conditionValue is num) {
-          target = conditionValue;
-          source = attributeValue;
-        } else if (attributeValue is String && conditionValue is String) {
-          target = conditionValue.calculateWeight();
-          source = attributeValue.calculateWeight();
+      /// If condition is bool.
+      if (conditionValue.isBoolean && attributeValue.isBoolean) {
+        bool evaluatedValue = false;
+        switch (operator) {
+          case "\$eq":
+            evaluatedValue = conditionValue == attributeValue;
+            break;
+          case "\$ne":
+            evaluatedValue = conditionValue != attributeValue;
+            break;
         }
+        return evaluatedValue;
       }
 
-      setupVariable();
+      /// If condition is num.
+      if (conditionValue.isNumber && attributeValue.isNumber) {
+        conditionValue as num;
+        attributeValue as num;
+        bool evaluatedValue = false;
+        switch (operator) {
 
-      switch (operator) {
+          /// Evaluate EQ operator - whether condition equals to attribute
+          case '\$eq':
+            evaluatedValue = conditionValue == attributeValue;
+            break;
 
-        /// Evaluate EQ operator - whether condition equals to attribute
-        case '\$eq':
-          return source == target;
+          /// Evaluate NE operator - whether condition doesn't equal to attribute
+          case '\$ne':
+            evaluatedValue = conditionValue != attributeValue;
+            break;
+          // Evaluate LT operator - whether attribute less than to condition
+          case '\$lt':
+            evaluatedValue = attributeValue < conditionValue;
+            break;
 
-        /// Evaluate NE operator - whether condition doesn't equal to attribute
-        case '\$ne':
-          return source != target;
+          /// Evaluate LTE operator - whether attribute less than or equal to condition
+          case '\$lte':
+            evaluatedValue = attributeValue <= conditionValue;
+            break;
+          // Evaluate GT operator - whether attribute greater than to condition
+          case '\$gt':
+            evaluatedValue = attributeValue > conditionValue;
+            break;
+          case '\$gte':
+            evaluatedValue = attributeValue >= conditionValue;
+            break;
+          default:
+            conditionValue = false;
+        }
+        return evaluatedValue;
+      }
 
-        // Evaluate LT operator - whether attribute less than to condition
-        case '\$lt':
-          return source < target;
+      if (conditionValue.isString && attributeValue.isString) {
+        bool evaluatedValue = false;
+        conditionValue as String;
+        attributeValue as String;
+        switch (operator) {
 
-        /// Evaluate LTE operator - whether attribute less than or equal to condition
-        case '\$lte':
-          return source <= target;
+          /// Evaluate EQ operator - whether condition equals to attribute
+          case '\$eq':
+            evaluatedValue = conditionValue == attributeValue;
+            break;
 
-        // Evaluate GT operator - whether attribute greater than to condition
-        case '\$gt':
-          return source > target;
+          /// Evaluate NE operator - whether condition doesn't equal to attribute
+          case '\$ne':
+            evaluatedValue = conditionValue != attributeValue;
+            break;
+          // Evaluate LT operator - whether attribute less than to condition
+          case '\$lt':
+            evaluatedValue = attributeValue < conditionValue;
+            break;
 
-        case '\$gte':
-          return source >= target;
-
-        case '\$regex':
-          try {
-            final regEx = RegExp(conditionValue.toString());
-            return regEx.hasMatch(attributeValue.toString());
-          } catch (e) {
-            return false;
-          }
+          /// Evaluate LTE operator - whether attribute less than or equal to condition
+          case '\$lte':
+            evaluatedValue = attributeValue <= conditionValue;
+            break;
+          // Evaluate GT operator - whether attribute greater than to condition
+          case '\$gt':
+            evaluatedValue = attributeValue > conditionValue;
+            break;
+          case '\$gte':
+            evaluatedValue = attributeValue >= conditionValue;
+            break;
+          case '\$regex':
+            try {
+              final regEx = RegExp(conditionValue.toString());
+              evaluatedValue = regEx.hasMatch(attributeValue.toString());
+            } catch (e) {
+              evaluatedValue = false;
+            }
+            break;
+          default:
+            conditionValue = false;
+        }
+        return evaluatedValue;
       }
     }
+
     return false;
   }
 }

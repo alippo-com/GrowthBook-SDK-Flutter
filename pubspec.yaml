@@ -4,11 +4,10 @@ version: 1.0.0+1
 homepage: https://github.com/alippo-com/GrowthBook-SDK-Flutter
 
 environment:
-  sdk: ">=2.16.2 <3.0.0"
+  sdk: ">=2.17.2 <3.0.0"
 
 dependencies:
   dio: ^4.0.6
-  enhanced_enum: ^0.1.1
   flutter:
     sdk: flutter
   json_annotation: ^4.5.0
@@ -22,5 +21,4 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^1.0.0
   build_runner: ^2.1.11
-  enhanced_enum_generator: ^0.1.1
 

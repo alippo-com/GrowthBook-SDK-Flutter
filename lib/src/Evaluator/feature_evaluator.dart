@@ -26,9 +26,8 @@ class GBFeatureEvaluator {
         /// skip this rule and continue to the next one.
 
         if (rule.condition != null) {
-          final attr = context.attributes;
-          if (!GBConditionEvaluator()
-              .evaluateCondition(attr, rule.condition!)) {
+          final attr = context.attributes ?? {};
+          if (!GBConditionEvaluator().evaluateCondition(attr, rule.condition!)) {
             continue;
           }
         }
@@ -84,8 +83,7 @@ class GBFeatureEvaluator {
     }
     // Return (value = defaultValue or null, source = defaultValue)
     return _prepareResult(
-        value: targetFeature.defaultValue,
-        source: GBFeatureSource.defaultValue);
+        value: targetFeature.defaultValue, source: GBFeatureSource.defaultValue);
   }
 
   /// This is a helper method to create a FeatureResult object.

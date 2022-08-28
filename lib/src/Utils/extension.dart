@@ -41,15 +41,15 @@ extension DoubleExt on double {
   }
 }
 
-/// Will zip the element.
-extension PairingExtension on List {
-  List zipWithNext<T>() {
-    final second = this[1];
-    return <T>[first, second];
-  }
-}
+extension StringComparison on String {
+  bool operator <(String other) => calculateWeight() < other.calculateWeight();
 
-extension StringWeight on String {
+  bool operator >(String other) => calculateWeight() > other.calculateWeight();
+
+  bool operator >=(String other) => calculateWeight() >= other.calculateWeight();
+
+  bool operator <=(String other) => calculateWeight() <= other.calculateWeight();
+
   int calculateWeight() {
     final List<int> data = codeUnits;
     int sum = 0;
@@ -57,5 +57,13 @@ extension StringWeight on String {
       sum = sum + i;
     }
     return sum;
+  }
+}
+
+/// Will zip the element.
+extension PairingExtension on List {
+  List zipWithNext<T>() {
+    final second = this[1];
+    return <T>[first, second];
   }
 }

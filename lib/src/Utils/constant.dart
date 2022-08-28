@@ -25,7 +25,7 @@ typedef GBBucketRange = Tuple2<double, double>;
 typedef GBFeatures = Map<String, GBFeature>;
 
 /// Type Alias for Condition Element in GrowthBook Rules
-typedef GBCondition = Map<String, dynamic>;
+typedef GBCondition = Object;
 
 /// Handler for Refresh Cache Request
 /// It updates back whether cache was refreshed or not
