@@ -46,9 +46,11 @@ extension StringComparison on String {
 
   bool operator >(String other) => calculateWeight() > other.calculateWeight();
 
-  bool operator >=(String other) => calculateWeight() >= other.calculateWeight();
+  bool operator >=(String other) =>
+      calculateWeight() >= other.calculateWeight();
 
-  bool operator <=(String other) => calculateWeight() <= other.calculateWeight();
+  bool operator <=(String other) =>
+      calculateWeight() <= other.calculateWeight();
 
   int calculateWeight() {
     final List<int> data = codeUnits;

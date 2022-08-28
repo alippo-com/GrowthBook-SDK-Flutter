@@ -223,7 +223,8 @@ class GBConditionEvaluator {
         for (var key in conditionValue.keys) {
           // If evalOperatorCondition(key, attributeValue, value)
           // is false, return false
-          if (!evalOperatorCondition(key, attributeValue, conditionValue[key])) {
+          if (!evalOperatorCondition(
+              key, attributeValue, conditionValue[key])) {
             return false;
           }
         }
@@ -284,7 +285,8 @@ class GBConditionEvaluator {
     if (operator == "\$exists") {
       if (conditionValue.toString() == 'false' && attributeValue == null) {
         return true;
-      } else if (conditionValue.toString() == 'true' && attributeValue != null) {
+      } else if (conditionValue.toString() == 'true' &&
+          attributeValue != null) {
         return true;
       }
     }

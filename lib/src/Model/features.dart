@@ -18,7 +18,8 @@ class GBFeature {
   ///  The default value (should use null if not specified)
   dynamic defaultValue;
 
-  factory GBFeature.fromJson(Map<String, dynamic> value) => _$GBFeatureFromJson(value);
+  factory GBFeature.fromJson(Map<String, dynamic> value) =>
+      _$GBFeatureFromJson(value);
 }
 
 /// Rule object consists of various definitions to apply to calculate feature value

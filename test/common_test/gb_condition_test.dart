@@ -19,7 +19,8 @@ void main() {
         if (item is List) {
           final localItem = item;
           final evaluator = GBConditionEvaluator();
-          final result = evaluator.evaluateCondition(localItem[2], localItem[1]);
+          final result =
+              evaluator.evaluateCondition(localItem[2], localItem[1]);
           final status = localItem[0].toString() +
               "\nExpected Result - " +
               localItem[3].toString() +
