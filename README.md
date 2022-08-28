@@ -28,7 +28,7 @@ GrowthBook is an open source feature flagging and experimentation platform that 
 
 1. Add GrowthBook SDK as dependency in your pubspec.yaml file.
 ```yaml
-growthbook_sdk_flutter: ^1.0.0
+growthbook_sdk_flutter: ^1.1.0
 ```
 
 ## Integration
@@ -270,17 +270,6 @@ class GBExperiment {
     this.coverage,
     this.force,
   });
-
-  factory GBExperiment.fromMap(Map<String, dynamic> map) => GBExperiment(
-      key: map['key'],
-      namespace: map['namespace'],
-      variations: map['variations'],
-      hashAttribute: map['hashAttribute'],
-      weights: map['weights'],
-      active: map['active'] ?? true,
-      coverage: map['coverage'],
-      force: map['force'],
-      condition: map['condition']);
 
   /// The globally unique tracking key for the experiment
   String? key;
