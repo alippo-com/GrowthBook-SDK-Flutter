@@ -5,8 +5,7 @@ abstract class FeaturesFlowDelegate {
 }
 
 class FeatureDataSource {
-  FeatureDataSource(
-      {required this.context, required this.client, required this.onError});
+  FeatureDataSource({required this.context, required this.client, required this.onError});
   final GBContext context;
   final BaseClient client;
   final OnError onError;
@@ -28,6 +27,6 @@ class FeatureDataSource {
 
   /// Initialize [model] from the [data]
   void setUpModel() {
-    model = FeaturedDataModel.fromMap(data);
+    model = FeaturedDataModel.fromJson(data);
   }
 }
