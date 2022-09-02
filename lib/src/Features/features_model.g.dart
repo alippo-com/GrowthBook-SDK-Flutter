@@ -8,6 +8,6 @@ part of 'features_model.dart';
 
 FeaturedDataModel _$FeaturedDataModelFromJson(Map<String, dynamic> json) =>
     FeaturedDataModel(
-      feature: const GBFeaturesConverter()
-          .fromJson(json['feature'] as Map<String, dynamic>),
+      features: const GBFeaturesConverter()
+          .fromJson(json['features'] as Map<String, dynamic>),
     );

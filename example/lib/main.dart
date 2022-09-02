@@ -56,8 +56,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   void initializeSDK() {
     gb = GBSDKBuilderApp(
-            apiKey: kReleaseMode ? '<PROD_KEY>' : '<DEV_KEY>',
-            hostURL: '<HOST_URL>',
+            apiKey: kReleaseMode ? '<PROD_KEY>' : 'key_prod_020f80044adb8d32',
+            hostURL: 'https://gb.alippo.com/',
             attributes: userAttr,
             growthBookTrackingCallBack: (experiment, experimentResult) {
               /// Track feature.
