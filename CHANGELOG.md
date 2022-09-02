@@ -1,9 +1,6 @@
-# 1.0.0+1
+# 1.1.1+2
 
-- First Release Version.
-- AB Testing.
-- Feature Flag.
-- Percentage RollOut.
+- Fixed `features` value parsing. 
 
 # 1.1.0+2
 
@@ -14,3 +11,10 @@
 - fix: String comparison assessment.
 - Added new test cases for string comparison.
 - Changed `attr` type for `evaluateCondition`.
+
+# 1.0.0+1
+
+- First Release Version.
+- AB Testing.
+- Feature Flag.
+- Percentage RollOut.

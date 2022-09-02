@@ -12,7 +12,7 @@ class FeatureViewModel {
   Future<void> fetchFeature() async {
     try {
       final model = await source.fetchFeatures();
-      delegate.featuresFetchedSuccessfully(model.feature);
+      delegate.featuresFetchedSuccessfully(model.features);
       customLogger('FeatureVieModel have fetched features successfully.');
     } catch (e) {
       rethrow;
