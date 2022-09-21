@@ -1,3 +1,5 @@
 example_product/
 .fvm
 .vscode
+example/build
+example/.dart_tool
