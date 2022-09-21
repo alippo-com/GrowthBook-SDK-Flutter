@@ -68,19 +68,20 @@ class GBFeatureRule {
 
 enum GBFeatureSource {
   /// Queried Feature doesn't exist in GrowthBook.
-  unknownFeature("unknownFeature"),
+  /// name: unknownFeature
+  unknownFeature,
 
   /// Default Value for the Feature is being processed.
-  defaultValue("defaultValue"),
+  /// name: defaultValue
+  defaultValue,
 
   /// Forced Value for the Feature is being processed.
-  force("force"),
+  /// name: force
+  force,
 
   /// Experiment Value for the Feature is being processed.
-  experiment("experiment");
-
-  const GBFeatureSource(this.name);
-  final String name;
+  /// name: experiment
+  experiment,
 }
 
 /// Result for Feature

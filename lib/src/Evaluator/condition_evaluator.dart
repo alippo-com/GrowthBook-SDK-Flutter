@@ -7,32 +7,45 @@ import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 /// Enum For different Attribute Types supported by GrowthBook.
 enum GBAttributeType {
   /// String Type Attribute.
-  gbString('string'),
+  gbString,
 
   /// Number Type Attribute.
-  gbNumber('number'),
+  gbNumber,
 
   /// Boolean Type Attribute.
-  gbBoolean('boolean'),
+  gbBoolean,
 
   //// Array Type Attribute.
-  gbArray('array'),
+  gbArray,
 
   /// Object Type Attribute.
-  gbObject('object'),
+  gbObject,
 
   /// Null Type Attribute.
-  gbNull('null'),
+  gbNull,
 
   /// Not Supported Type Attribute.
-  gbUnknown('unknown');
+  gbUnknown
+}
 
-  const GBAttributeType(this.name);
-
-  final String name;
-
-  @override
-  String toString() => name;
+String gBAttributeTypeName(GBAttributeType type) {
+  switch (type) {
+    case GBAttributeType.gbString:
+      return 'string';
+    case GBAttributeType.gbNumber:
+      return 'number';
+    case GBAttributeType.gbBoolean:
+      return 'boolean';
+    case GBAttributeType.gbArray:
+      return 'array';
+    case GBAttributeType.gbObject:
+      return 'object';
+    case GBAttributeType.gbNull:
+      return 'null';
+    case GBAttributeType.gbUnknown:
+    default:
+      return 'unknown';
+  }
 }
 
 /// Evaluator class fro condition.
