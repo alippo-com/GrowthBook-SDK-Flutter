@@ -1,5 +1,7 @@
-# 1.1.1+2
+# 1.2.0+3
+- Backward compatibility for Flutter 3.0.0
 
+# 1.1.1+2
 - Fixed `features` value parsing. 
 
 # 1.1.0+2
