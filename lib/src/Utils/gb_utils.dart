@@ -37,7 +37,7 @@ class GBUtils {
 
   /// This checks if a userId is within an experiment namespace or not.
   bool inNamespace(String userId, GBNameSpace namespace) {
-    final hashValue = hash(userId + "__" + namespace.item1);
+    final hashValue = hash("${userId}__${namespace.item1}");
     if (hashValue != null) {
       return hashValue >= namespace.item2 && hashValue < namespace.item3;
     }

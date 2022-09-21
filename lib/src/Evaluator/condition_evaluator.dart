@@ -145,23 +145,23 @@ class GBConditionEvaluator {
       return GBAttributeType.gbNull;
     }
 
-    final _value = obj as Object;
+    final value = obj as Object;
 
-    if (_value.isPrimitive) {
-      if (_value.isString) {
+    if (value.isPrimitive) {
+      if (value.isString) {
         return GBAttributeType.gbString;
-      } else if (_value == true || _value == false) {
+      } else if (value == true || value == false) {
         return GBAttributeType.gbBoolean;
       } else {
         return GBAttributeType.gbNumber;
       }
     }
 
-    if (_value.isArray) {
+    if (value.isArray) {
       return GBAttributeType.gbArray;
     }
 
-    if (_value.isMap) {
+    if (value.isMap) {
       return GBAttributeType.gbObject;
     }
 

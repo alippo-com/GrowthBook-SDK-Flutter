@@ -25,14 +25,8 @@ void main() {
 
         final result = GBUtils().hash(testContext);
 
-        final status = item[0].toString() +
-            '\nExpected Result - ' +
-            item[1].toString() +
-            '\nActual result - ' +
-            result.toString() +
-            '\n' +
-            'of experiment' +
-            experiment.toString();
+        final status =
+            '${item[0]}\nExpected Result - ${item[1]}\nActual result - $result\nof experiment$experiment';
 
         if (experiment.toString() == result.toString()) {
           passedScenarios.add(status);
@@ -88,12 +82,8 @@ void main() {
               numVariation, double.parse(coverage.toString()), weights ?? []);
 
           /// For status.
-          final status = item[0].toString() +
-              "\nExpected Result - " +
-              item[2].toString() +
-              "\nActual result - " +
-              bucketRange.toString() +
-              "\n";
+          final status =
+              "${item[0]}\nExpected Result - ${item[2]}\nActual result - $bucketRange\n";
 
           /// Should be subtracted from.
           List<List<double>> comparer = [];
@@ -164,11 +154,8 @@ void main() {
           final localItem = item as List;
           final numVariation = double.parse(localItem[0].toString());
           final result = GBUtils().getEqualWeights(numVariation.toInt());
-          final status = "Expected Result - " +
-              item[1].toString() +
-              "\nActual result - " +
-              result.toString() +
-              "\n";
+          final status =
+              "Expected Result - ${item[1]}\nActual result - $result\n";
 
           if ((localItem[1] as List).length != result.length) {
             testResult = false;
@@ -207,12 +194,8 @@ void main() {
         final array = item[2];
         final nameSpace = GBUtils().getGBNameSpace(array);
         final result = GBUtils().inNamespace(userId, nameSpace!);
-        final status = item[0].toString() +
-            "\nExpected Result - " +
-            item[3].toString() +
-            "\nActual result - " +
-            result.toString() +
-            "\n";
+        final status =
+            "${item[0]}\nExpected Result - ${item[3]}\nActual result - $result\n";
         if (item[3].toString() == result.toString()) {
           passedScenarios.add(status);
         } else {
