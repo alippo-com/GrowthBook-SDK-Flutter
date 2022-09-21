@@ -1,5 +1,7 @@
-# 1.1.1+2
+# 1.2.0
+- Backward Compatibility 2.8.1
 
+# 1.1.1+2
 - Fixed `features` value parsing. 
 
 # 1.1.0+2
