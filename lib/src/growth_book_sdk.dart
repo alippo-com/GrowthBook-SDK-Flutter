@@ -8,7 +8,7 @@ abstract class SDKBuilder {
   SDKBuilder({
     required this.apiKey,
     required this.hostURL,
-    required this.attributes,
+    this.attributes,
     required this.growthBookTrackingCallBack,
   })  : qaMode = false,
         forcedVariations = <String, int>{},
@@ -16,7 +16,7 @@ abstract class SDKBuilder {
 
   final String apiKey;
   final String hostURL;
-  final Map<String, dynamic> attributes;
+  Map<String, dynamic>? attributes;
   final TrackingCallBack growthBookTrackingCallBack;
 
   bool qaMode;
@@ -44,7 +44,7 @@ class GBSDKBuilderApp extends SDKBuilder {
   GBSDKBuilderApp({
     required String apiKey,
     required String hostURL,
-    required Map<String, dynamic> attributes,
+    Map<String, dynamic>? attributes,
     required TrackingCallBack growthBookTrackingCallBack,
   }) : super(
             apiKey: apiKey,
