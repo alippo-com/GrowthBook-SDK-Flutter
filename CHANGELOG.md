@@ -1,3 +1,6 @@
+# 1.2.1
+- Make attributes instance nullable
+
 # 1.2.0
 - Backward Compatibility 2.8.1
 
