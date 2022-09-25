@@ -8,7 +8,7 @@ abstract class SDKBuilder {
   SDKBuilder({
     required this.apiKey,
     required this.hostURL,
-    required this.attributes,
+    this.attributes = const <String, dynamic>{},
     required this.growthBookTrackingCallBack,
   })  : qaMode = false,
         forcedVariations = <String, int>{},
@@ -16,7 +16,7 @@ abstract class SDKBuilder {
 
   final String apiKey;
   final String hostURL;
-  final Map<String, dynamic> attributes;
+  Map<String, dynamic>? attributes;
   final TrackingCallBack growthBookTrackingCallBack;
 
   bool qaMode;
@@ -42,15 +42,11 @@ abstract class SDKBuilder {
 
 class GBSDKBuilderApp extends SDKBuilder {
   GBSDKBuilderApp({
-    required String apiKey,
-    required String hostURL,
-    required Map<String, dynamic> attributes,
-    required TrackingCallBack growthBookTrackingCallBack,
-  }) : super(
-            apiKey: apiKey,
-            hostURL: hostURL,
-            attributes: attributes,
-            growthBookTrackingCallBack: growthBookTrackingCallBack) {
+    required super.apiKey,
+    required super.hostURL,
+    super.attributes = const <String, dynamic>{},
+    required super.growthBookTrackingCallBack,
+  }) {
     customLogger('GrowthBook initialized successfully.');
   }
 
