@@ -91,7 +91,6 @@ class GrowthBookSDK extends FeaturesFlowDelegate {
       _context.features = features;
     }
     _sdkStreamController.sink.add(StateHelper.loading);
-    if (context.features.isEmpty) refresh();
   }
   final StreamController<StateHelper> _sdkStreamController;
 
@@ -116,6 +115,10 @@ class GrowthBookSDK extends FeaturesFlowDelegate {
       afterFetch!.call();
     }
     _sdkStreamController.sink.add(StateHelper.fetched);
+  }
+
+  Future<void> fetchFeatures() async {
+    await refresh();
   }
 
   Future<void> refresh() async {
