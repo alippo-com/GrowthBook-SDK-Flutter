@@ -91,7 +91,7 @@ class GrowthBookSDK extends FeaturesFlowDelegate {
       _context.features = features;
     }
     _sdkStreamController.sink.add(StateHelper.loading);
-    refresh();
+    if (context.features.isEmpty) refresh();
   }
   final StreamController<StateHelper> _sdkStreamController;
 
