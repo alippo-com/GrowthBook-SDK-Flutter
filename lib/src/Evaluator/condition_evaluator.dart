@@ -203,6 +203,11 @@ class GBConditionEvaluator {
       return conditionValue == attributeValue;
     }
 
+    // Evaluate to false if attributeValue is null.
+    if (conditionValue.isPrimitive && attributeValue == null) {
+      return false;
+    }
+
     // If conditionValue is array, return true if it's "equal" - "equal" should
     // do a deep comparison for arrays.
     if (conditionValue is List) {
