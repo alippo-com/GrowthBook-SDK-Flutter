@@ -1,3 +1,6 @@
+# 1.3.0
+- Update Flutter 3
+
 # 1.2.1
 - Make attributes instance nullable
 
