@@ -1,8 +1,13 @@
-# 1.1.1+2
+# 1.2.0+0
+ - Breaking change: Made initialization of sdk asynchronous.
+ - Added run method to Evaluate experiment. 
+ - Removed SDKBuilder. 
+
+# 1.1.1
 
 - Fixed `features` value parsing. 
 
-# 1.1.0+2
+# 1.1.0
 
 - Migrated to dart 2.17.2.
 - fix: Data parsing problem.
