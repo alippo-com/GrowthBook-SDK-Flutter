@@ -4,17 +4,17 @@ import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 import '../mocks/network_mock.dart';
 
 void main() {
-  group('SDK_BUILDER_TEST', () {
-    const testApiKey = 'key_prod_284897d8a1c89689';
+  group('Initialization', () {
+    const testApiKey = '<API_KEY>';
     const attr = <String, String>{};
-    const testHostURL =
-        'http://a2c0156b9af934bcaa8f539de1928e85-2035136552.ap-south-1.elb.amazonaws.com:3100/';
-
-    test("testSDKInitializationDefault", () {
-      var sdk = GBSDKBuilderApp(
+    const testHostURL = '<HOST_URL>';
+    const client = MockNetworkClient();
+    test("- default", () async {
+      final sdk = await GBSDKBuilderApp(
         apiKey: testApiKey,
         hostURL: testHostURL,
         attributes: attr,
+        client: client,
         growthBookTrackingCallBack: (experiment, experimentResult) {},
       ).initialize();
 
@@ -34,38 +34,37 @@ void main() {
       expect(sdk.context.attributes, attr);
     });
 
-    test('testSDKInitializationData', () {
+    test('- with pre set data', () async {
       const variations = <String, int>{};
-      bool fetched = false;
-      final sdk = GBSDKBuilderApp(
+
+      final sdk = await GBSDKBuilderApp(
               apiKey: testApiKey,
+              qaMode: true,
+              client: client,
+              forcedVariations: variations,
               hostURL: testHostURL,
               attributes: attr,
               growthBookTrackingCallBack: (exp, result) {})
-          .setQAMode(true)
-          .setForcedVariations(variations)
-          .initialize()
-        ..afterFetch = () {
-          fetched = true;
-        };
-      sdk.afterFetch!();
+          .initialize();
       expect(sdk.context.enabled, true);
       expect(sdk.context.qaMode, true);
-      expect(fetched, true);
     });
 
-    test('testSDKFeatureData', () async {
+    test('- with network client', () async {
       late GrowthBookSDK sdk;
-      final client = MockNetworkClient();
-      sdk = GBSDKBuilderApp(
+
+      sdk = await GBSDKBuilderApp(
               apiKey: testApiKey,
               hostURL: testHostURL,
               attributes: attr,
+              client: client,
               growthBookTrackingCallBack: (exp, result) {})
-          .setNetworkDispatcher(client)
           .initialize();
       final featureValue = sdk.feature('fwrfewrfe');
       expect(featureValue.source, GBFeatureSource.unknownFeature);
+
+      final result = sdk.run(GBExperiment(key: "fwrfewrfe"));
+      expect(result.variationID, 0);
     });
   });
 }

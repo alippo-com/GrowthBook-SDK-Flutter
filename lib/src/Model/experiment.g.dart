@@ -8,7 +8,7 @@ part of 'experiment.dart';
 
 GBExperiment _$GBExperimentFromJson(Map<String, dynamic> json) => GBExperiment(
       key: json['key'] as String?,
-      variations: json['variations'] as List<dynamic>?,
+      variations: json['variations'] as List<dynamic>? ?? const [],
       namespace: json['namespace'] as List<dynamic>?,
       condition: json['condition'],
       hashAttribute: json['hashAttribute'] as String?,

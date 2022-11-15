@@ -8,7 +8,7 @@ part 'experiment.g.dart';
 class GBExperiment {
   GBExperiment({
     this.key,
-    this.variations,
+    this.variations = const [],
     this.namespace,
     this.condition,
     this.hashAttribute,
@@ -22,7 +22,7 @@ class GBExperiment {
   String? key;
 
   /// The different variations to choose between
-  List? variations = [];
+  List variations = [];
 
   /// A tuple that contains the namespace identifier, plus a range of coverage for the experiment
   List? namespace;

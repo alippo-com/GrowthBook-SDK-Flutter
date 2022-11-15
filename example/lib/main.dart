@@ -54,18 +54,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     initializeSDK();
   }
 
-  void initializeSDK() {
-    gb = GBSDKBuilderApp(
-            apiKey: kReleaseMode ? '<PROD_KEY>' : '<DEV_KEY>',
-            hostURL: '<HOST_URL>',
-            attributes: userAttr,
-            growthBookTrackingCallBack: (experiment, experimentResult) {
-              /// Track feature.
-            })
-        .initialize()
-      ..afterFetch = () {
-        setState(() {});
-      };
+  void initializeSDK() async {
+    gb = await GBSDKBuilderApp(
+      apiKey: kReleaseMode ? '<PROD_KEY>' : '<DEV_KEY>',
+      hostURL: '<HOST_URL>',
+      attributes: userAttr,
+      growthBookTrackingCallBack: (exp, rst) {},
+    ).initialize();
+    setState(() {});
   }
 
   Widget _getRightWidget() {
