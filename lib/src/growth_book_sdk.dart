@@ -18,11 +18,11 @@ class GBSDKBuilderApp {
 
   final String apiKey;
   final String hostURL;
-  final TrackingCallBack growthBookTrackingCallBack;
-  final bool qaMode;
   final bool enable;
-  final Map<String, int> forcedVariations;
+  final bool qaMode;
   final Map<String, dynamic>? attributes;
+  final Map<String, int> forcedVariations;
+  final TrackingCallBack growthBookTrackingCallBack;
   final BaseClient? client;
 
   Future<GrowthBookSDK> initialize() async {
@@ -30,8 +30,8 @@ class GBSDKBuilderApp {
       apiKey: apiKey,
       hostURL: hostURL,
       enabled: enable,
-      attributes: attributes,
       qaMode: qaMode,
+      attributes: attributes,
       forcedVariation: forcedVariations,
       trackingCallBack: growthBookTrackingCallBack,
     );
@@ -61,7 +61,7 @@ class GrowthBookSDK extends FeaturesFlowDelegate {
 
   final BaseClient _baseClient;
 
-  /// Context - Holding the complete data regarding features & attributes etc.
+  /// The complete data regarding features & attributes etc.
   GBContext get context => _context;
 
   /// Retrieved features.
