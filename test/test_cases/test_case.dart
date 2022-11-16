@@ -26,45 +26,7 @@ const String gbTestCases = r'''
     },
     false
   ],
-  [
-    "$gt    /$lt     strings - fail $lt    ",
-    {
-      "word": {
-        "$gt": "alphabet",
-        "$lt": "zebra"
-      }
-    },
-    {
-      "word": "zebra"
-    },
-    false
-  ],
-  [
-    "$gt    /$lt     strings - pass",
-    {
-      "word": {
-        "$gt": "alphabet",
-        "$lt": "zebra"
-      }
-    },
-    {
-      "word": "always"
-    },
-    false
-  ],
-  [
-    "$gt    /$lt     strings - fail uppercase",
-    {
-      "word": {
-        "$gt": "alphabet",
-        "$lt": "zebra"
-      }
-    },
-    {
-      "word": "AZL"
-    },
-    false
-  ],
+
         [
           "$not     - fail",
           {
