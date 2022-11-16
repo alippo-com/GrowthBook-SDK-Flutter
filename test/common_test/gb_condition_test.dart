@@ -36,7 +36,6 @@ void main() {
         }
         index++;
       }
-      print(failedIndex);
       expect(failedScenarios.length, 0);
       customLogger(
           'Passed Test ${passedScenarios.length} out of ${evaluateCondition.length}');
