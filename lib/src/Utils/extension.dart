@@ -42,24 +42,12 @@ extension DoubleExt on double {
 }
 
 extension StringComparison on String {
-  bool operator <(String other) => calculateWeight() < other.calculateWeight();
-
-  bool operator >(String other) => calculateWeight() > other.calculateWeight();
-
+  bool operator <(String other) => compareTo(other) != 1;
+  bool operator >(String other) => compareTo(other) != -1;
   bool operator >=(String other) =>
-      calculateWeight() >= other.calculateWeight();
-
+      (compareTo(other) != -1) || (compareTo(other) == 0);
   bool operator <=(String other) =>
-      calculateWeight() <= other.calculateWeight();
-
-  int calculateWeight() {
-    final List<int> data = codeUnits;
-    int sum = 0;
-    for (int i in data) {
-      sum = sum + i;
-    }
-    return sum;
-  }
+      (compareTo(other) != 1) || (compareTo(other) == 0);
 }
 
 /// Will zip the element.
