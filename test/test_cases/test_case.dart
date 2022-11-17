@@ -50,7 +50,7 @@ const String gbTestCases = r'''
     {
       "word": "always"
     },
-    false
+    true
   ],
   [
     "$gt    /$lt     strings - fail uppercase",

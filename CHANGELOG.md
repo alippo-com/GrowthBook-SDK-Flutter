@@ -1,6 +1,9 @@
+# 1.1.2
+- Fixed `feature` evaluation on string comparison.
+
 # 1.1.1+2
 
-- Fixed `features` value parsing. 
+- Fixed `condition` evaluation while attribute/s is/are null. 
 
 # 1.1.0+2
 
