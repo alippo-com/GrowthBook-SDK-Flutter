@@ -3,6 +3,7 @@ description: An open-source feature flagging and experimentation platform that m
 version: 1.2.0+0
 repository: https://github.com/alippo-com/GrowthBook-SDK-Flutter
 
+
 environment:
   sdk: ">=2.17.2 <3.0.0"
 
