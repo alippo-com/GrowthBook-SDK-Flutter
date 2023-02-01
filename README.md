@@ -41,13 +41,14 @@ Integration is super easy:
 Now you can start/stop tests, adjust coverage and variation weights, and apply a winning variation to 100% of traffic, all within the Growth Book App without deploying code changes to your site.
 
 ```dart
-final GrowthBookSDK sdkInstance = GBSDKBuilderApp(
+final GrowthBookSDK sdkInstance = await GBSDKBuilderApp(
   apiKey: "<API_KEY>",
   attributes: {
     /// Specify attributes.
   },
   growthBookTrackingCallBack: (gbExperiment, gbExperimentResult) {},
   hostURL: '<GrowthBook_URL>',
+  apiKey: '<YOUR API KEY>'
 ).initialize();
 
 ```
@@ -55,20 +56,17 @@ final GrowthBookSDK sdkInstance = GBSDKBuilderApp(
 There are additional properties which can be setup at the time of initialization
 
 ```dart
-    final GrowthBookSDK newSdkInstance = GBSDKBuilderApp(
+    final GrowthBookSDK newSdkInstance =await GBSDKBuilderApp(
     apiKey: "<API_KEY>",
     attributes: {
      /// Specify user attributes.
     },
+    client: NetworkClient(), // Provide network dispatcher.
     growthBookTrackingCallBack: (gbExperiment, gbExperimentResult) {},
     hostURL: '<GrowthBook_URL>',
-).setNetworkDispatcher(
-  // set network dispatcher.
-)
-   .setForcedVariations({})
-   . // Set forced variations
-   setQAMode(true)// Set qamode
-   .initialize();
+    forcedVariations: {} // Optional provide force variation.
+    qaMode: true, // Set qamode
+).initialize();
 
 ```
 

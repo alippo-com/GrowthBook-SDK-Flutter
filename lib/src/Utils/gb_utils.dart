@@ -25,6 +25,8 @@ class FNV {
 /// - chooseVariation
 /// - getGBNameSpace
 class GBUtils {
+  const GBUtils();
+
   /// Hashes a string to a float between 0 and 1
   /// fnv32a returns an integer, so we convert that to a float using a modulus:
 

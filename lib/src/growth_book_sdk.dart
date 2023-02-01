@@ -4,134 +4,97 @@ import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
 typedef VoidCallback = void Function();
 
-abstract class SDKBuilder {
-  SDKBuilder({
-    required this.apiKey,
+class GBSDKBuilderApp {
+  GBSDKBuilderApp({
     required this.hostURL,
-    this.attributes = const <String, dynamic>{},
+    required this.apiKey,
     required this.growthBookTrackingCallBack,
-  })  : qaMode = false,
-        forcedVariations = <String, int>{},
-        enable = true;
+    this.attributes = const <String, dynamic>{},
+    this.qaMode = false,
+    this.enable = true,
+    this.forcedVariations = const <String, int>{},
+    this.client,
+  });
 
   final String apiKey;
   final String hostURL;
-  Map<String, dynamic>? attributes;
+  final bool enable;
+  final bool qaMode;
+  final Map<String, dynamic>? attributes;
+  final Map<String, int> forcedVariations;
   final TrackingCallBack growthBookTrackingCallBack;
+  final BaseClient? client;
 
-  bool qaMode;
-
-  bool enable;
-
-  Map<String, int> forcedVariations;
-
-  ///  Set Forced Variations - Default Empty
-  SDKBuilder setForcedVariations(Map<String, int> forcedVariations) {
-    this.forcedVariations = forcedVariations;
-    return this;
-  }
-
-  /// Set Enabled - Default Disabled - If Enabled - then experiments will be disabled
-  SDKBuilder setQAMode(bool value) {
-    qaMode = value;
-    return this;
-  }
-
-  GrowthBookSDK initialize();
-}
-
-class GBSDKBuilderApp extends SDKBuilder {
-  GBSDKBuilderApp({
-    required super.apiKey,
-    required super.hostURL,
-    super.attributes = const <String, dynamic>{},
-    required super.growthBookTrackingCallBack,
-  }) {
-    customLogger('GrowthBook initialized successfully.');
-  }
-
-  BaseClient? _client;
-
-  @override
-  GrowthBookSDK initialize() {
+  Future<GrowthBookSDK> initialize() async {
     final gbContext = GBContext(
       apiKey: apiKey,
       hostURL: hostURL,
       enabled: enable,
-      attributes: attributes,
       qaMode: qaMode,
+      attributes: attributes,
       forcedVariation: forcedVariations,
       trackingCallBack: growthBookTrackingCallBack,
     );
-    return GrowthBookSDK(context: gbContext, client: _client);
-  }
-
-  ///   Set Network Client - Network Client for Making API Calls
-  SDKBuilder setNetworkDispatcher(BaseClient client) {
-    _client = client;
-    return this;
+    final gb = GrowthBookSDK._(
+      context: gbContext,
+      client: client,
+    );
+    await gb.refresh();
+    return gb;
   }
 }
 
 /// The main export of the libraries is a simple GrowthBook wrapper class that
 /// takes a Context object in the constructor.
 /// It exposes two main methods: feature and run.
-/// It also includes stream of [StateHelper] which can be utilized in case
-/// sdk is not loaded yet and we want to show some in place.
 class GrowthBookSDK extends FeaturesFlowDelegate {
-  GrowthBookSDK(
-      {required GBContext context,
-      GBFeatures? features,
-      BaseClient? client,
-      VoidCallback? afterFetch})
+  GrowthBookSDK._(
+      {required GBContext context, GBFeatures? features, BaseClient? client})
       : _context = context,
-        _sdkStreamController = StreamController<StateHelper>(),
         _baseClient = client ?? DioClient() {
     if (features != null) {
       _context.features = features;
     }
-    _sdkStreamController.sink.add(StateHelper.loading);
-    refresh();
   }
-  final StreamController<StateHelper> _sdkStreamController;
 
-  VoidCallback? afterFetch;
-
-  ///
   final GBContext _context;
 
+  final BaseClient _baseClient;
+
+  /// The complete data regarding features & attributes etc.
   GBContext get context => _context;
 
+  /// Retrieved features.
   GBFeatures get features => _context.features;
-
-  Stream<StateHelper> get stream =>
-      _sdkStreamController.stream.asBroadcastStream();
-
-  final BaseClient _baseClient;
 
   @override
   void featuresFetchedSuccessfully(GBFeatures gbFeatures) {
     _context.features = gbFeatures;
-    if (afterFetch != null) {
-      afterFetch!.call();
-    }
-    _sdkStreamController.sink.add(StateHelper.fetched);
   }
 
   Future<void> refresh() async {
     final featureViewModel = FeatureViewModel(
       delegate: this,
       source: FeatureDataSource(
-          client: _baseClient,
-          context: _context,
-          onError: (e, s) {
-            _sdkStreamController.sink.add(StateHelper.error);
-          }),
+        client: _baseClient,
+        context: _context,
+        onError: (e, s) {},
+      ),
     );
     await featureViewModel.fetchFeature();
   }
 
   GBFeatureResult feature(String id) {
     return GBFeatureEvaluator().evaluateFeature(_context, id);
+  }
+
+  GBExperimentResult run(GBExperiment experiment) {
+    return GBExperimentEvaluator()
+        .evaluateExperiment(context: context, experiment: experiment);
+  }
+
+  /// Replaces the Map of user attributes that are used to assign variations
+  void setAttributes(Map<String, dynamic> attributes) {
+    context.attributes = attributes;
   }
 }
