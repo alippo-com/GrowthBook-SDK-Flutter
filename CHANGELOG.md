@@ -1,4 +1,4 @@
-# 2.0.0
+# 2.0.0+0
 - solves [#32](https://github.com/alippo-com/GrowthBook-SDK-Flutter/issues/32).
 
 # 1.2.0+0
