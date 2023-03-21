@@ -145,23 +145,23 @@ class GBConditionEvaluator {
       return GBAttributeType.gbNull;
     }
 
-    final _value = obj as Object;
+    final value = obj as Object;
 
-    if (_value.isPrimitive) {
-      if (_value.isString) {
+    if (value.isPrimitive) {
+      if (value.isString) {
         return GBAttributeType.gbString;
-      } else if (_value == true || _value == false) {
+      } else if (value == true || value == false) {
         return GBAttributeType.gbBoolean;
       } else {
         return GBAttributeType.gbNumber;
       }
     }
 
-    if (_value.isArray) {
+    if (value.isArray) {
       return GBAttributeType.gbArray;
     }
 
-    if (_value.isMap) {
+    if (value.isMap) {
       return GBAttributeType.gbObject;
     }
 
@@ -336,7 +336,6 @@ class GBConditionEvaluator {
       }
     } else if (attributeValue is List) {
       switch (operator) {
-
         /// Evaluate ELEMENT-MATCH operator - whether condition matches attribute
         case "\$elemMatch":
           return elemMatch(attributeValue, conditionValue);
@@ -373,7 +372,6 @@ class GBConditionEvaluator {
         attributeValue as num;
         bool evaluatedValue = false;
         switch (operator) {
-
           /// Evaluate EQ operator - whether condition equals to attribute
           case '\$eq':
             evaluatedValue = conditionValue == attributeValue;
@@ -410,7 +408,6 @@ class GBConditionEvaluator {
         conditionValue as String;
         attributeValue as String;
         switch (operator) {
-
           /// Evaluate EQ operator - whether condition equals to attribute
           case '\$eq':
             evaluatedValue = conditionValue == attributeValue;

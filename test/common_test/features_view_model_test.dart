@@ -27,7 +27,9 @@ void main() {
       featureViewModel = FeatureViewModel(
         delegate: dataSourceMock,
         source: FeatureDataSource(
-            client: MockNetworkClient(), context: context, onError: (e, s) {}),
+            client: const MockNetworkClient(),
+            context: context,
+            onError: (e, s) {}),
       );
     });
     test('success feature-view model.', () async {

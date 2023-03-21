@@ -44,7 +44,7 @@ class GBFeatureEvaluator {
               continue;
             } else {
               // Compute a hash using the Fowler–Noll–Vo algorithm (specifically fnv32-1a)
-              final hashFNV = GBUtils().hash(attributeValue + featureKey);
+              final hashFNV = const GBUtils().hash(attributeValue + featureKey);
               // If the hash is greater than rule.coverage, skip the rule
 
               if (hashFNV != null && hashFNV > rule.coverage!) {
