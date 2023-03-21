@@ -1,3 +1,7 @@
+# 2.1.0
+- Runnable Web, solve [alippo-com/GrowthBook-SDK-Flutter#36](https://github.com/alippo-com/GrowthBook-SDK-Flutter/issues/36)
+- Optimize Score
+
 # 2.0.0+0
 - solves [#32](https://github.com/alippo-com/GrowthBook-SDK-Flutter/issues/32).
 
