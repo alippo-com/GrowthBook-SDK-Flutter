@@ -12,9 +12,9 @@
             "program": "example/lib/main.dart",
             "args": [
                 "--dart-define",
-                "GROWTHBOOK_API_KEY=key_stag_4774a769e6e00caa",
+                "GROWTHBOOK_API_KEY=your_key",
                 "--dart-define",
-                "GROWTHBOOK_API_HOST=https://api-growthbook.evermosa2z.com/"
+                "GROWTHBOOK_API_HOST=your_api_host"
             ]
         },
         {
@@ -27,9 +27,9 @@
                 "--disable-web-security",
                 "--web-port=8080",
                 "--dart-define",
-                "GROWTHBOOK_API_KEY=key_stag_4774a769e6e00caa",
+                "GROWTHBOOK_API_KEY=your_key",
                 "--dart-define",
-                "GROWTHBOOK_API_HOST=https://api-growthbook.evermosa2z.com/"
+                "GROWTHBOOK_API_HOST=your_api_host"
             ]
         },
         {

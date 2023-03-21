@@ -70,7 +70,7 @@ class _HomeState extends State<Home> {
             title: const Text('Set Attribute'),
             onTap: () {
               gb.setAttributes({
-                'id': 1.toString(),
+                'id': 'foo',
               });
             },
           ),
@@ -84,7 +84,7 @@ class _HomeState extends State<Home> {
           ListTile(
             title: const Text('Get Feature'),
             onTap: () {
-              final feature = gb.feature('config-test');
+              final feature = gb.feature('your-feature-id');
               debugPrint('Feature config-test: ${feature.toString()}');
             },
           ),
