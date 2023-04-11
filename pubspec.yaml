@@ -6,6 +6,7 @@ repository: https://github.com/alippo-com/GrowthBook-SDK-Flutter
 
 environment:
   sdk: ">=2.17.2 <3.0.0"
+  flutter: ^3.7.10
 
 dependencies:
   dio: ^4.0.6
