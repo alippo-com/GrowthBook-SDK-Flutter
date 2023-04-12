@@ -11,7 +11,11 @@ class FeatureViewModel {
 
   Future<void> fetchFeature() async {
     try {
-      final model = await source.fetchFeatures();
+      FeaturedDataModel? model = await source.fetchFeatures();
+      if (model == null) {
+        customLogger('FeatureVieModel did NOT fetched features successfully.');
+        return;
+      }
       delegate.featuresFetchedSuccessfully(model.features);
       customLogger('FeatureVieModel have fetched features successfully.');
     } catch (e) {

@@ -14,6 +14,7 @@ class GBSDKBuilderApp {
     this.enable = true,
     this.forcedVariations = const <String, int>{},
     this.client,
+    this.features = const <String, GBFeature>{},
   });
 
   final String apiKey;
@@ -24,6 +25,7 @@ class GBSDKBuilderApp {
   final Map<String, int> forcedVariations;
   final TrackingCallBack growthBookTrackingCallBack;
   final BaseClient? client;
+  final Map<String, GBFeature> features;
 
   Future<GrowthBookSDK> initialize() async {
     final gbContext = GBContext(
@@ -34,6 +36,7 @@ class GBSDKBuilderApp {
       attributes: attributes,
       forcedVariation: forcedVariations,
       trackingCallBack: growthBookTrackingCallBack,
+      features: features,
     );
     final gb = GrowthBookSDK._(
       context: gbContext,
@@ -78,7 +81,9 @@ class GrowthBookSDK extends FeaturesFlowDelegate {
       source: FeatureDataSource(
         client: _baseClient,
         context: _context,
-        onError: (e, s) {},
+        onError: (e, s) {
+          throw Exception(e);
+        },
       ),
     );
     await featureViewModel.fetchFeature();

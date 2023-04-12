@@ -66,5 +66,23 @@ void main() {
       final result = sdk.run(GBExperiment(key: "fwrfewrfe"));
       expect(result.variationID, 0);
     });
+
+    test('- with failed network client', () async {
+      late GrowthBookSDK sdk;
+
+      sdk = await GBSDKBuilderApp(
+        apiKey: testApiKey,
+        hostURL: testHostURL,
+        attributes: attr,
+        client: const MockNetworkClient(error: true),
+        growthBookTrackingCallBack: (exp, result) {},
+        features: {'some-feature': GBFeature(defaultValue: true)},
+      ).initialize();
+      final featureValue = sdk.feature('some-feature');
+      expect(featureValue.value, true);
+
+      final result = sdk.run(GBExperiment(key: "some-feature"));
+      expect(result.variationID, 0);
+    });
   });
 }

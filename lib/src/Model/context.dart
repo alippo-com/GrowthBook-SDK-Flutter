@@ -10,6 +10,7 @@ class GBContext {
     this.forcedVariation,
     this.qaMode,
     this.trackingCallBack,
+    this.features = const <String, GBFeature>{},
   });
 
   /// Registered API key for GrowthBook SDK.
@@ -35,5 +36,5 @@ class GBContext {
 
   /// Keys are unique identifiers for the features and the values are Feature objects.
   /// Feature definitions - To be pulled from API / Cache
-  GBFeatures features = <String, GBFeature>{};
+  GBFeatures features;
 }
