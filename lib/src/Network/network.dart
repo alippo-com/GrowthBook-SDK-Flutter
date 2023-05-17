@@ -1,11 +1,8 @@
 import 'package:dio/dio.dart';
 
-typedef OnSuccess = void Function(Map<String, dynamic> onSuccess);
-typedef OnError = void Function(Object error, StackTrace stackTrace);
-
 abstract class BaseClient {
   const BaseClient();
-  consumeGetRequest(String path, OnSuccess onSuccess, OnError onError);
+  Future<Map<String, dynamic>> consumeGetRequest(String path);
 }
 
 class DioClient extends BaseClient {
@@ -14,12 +11,8 @@ class DioClient extends BaseClient {
   final Dio _dio;
 
   @override
-  consumeGetRequest(String path, OnSuccess onSuccess, OnError onError) async {
-    try {
-      final data = await _dio.get(path);
-      onSuccess(data.data);
-    } catch (e, s) {
-      onError(e, s);
-    }
+  Future<Map<String, dynamic>> consumeGetRequest(String path) async {
+    final data = await _dio.get(path);
+    return data.data;
   }
 }

@@ -78,10 +78,17 @@ class GrowthBookSDK extends FeaturesFlowDelegate {
       source: FeatureDataSource(
         client: _baseClient,
         context: _context,
-        onError: (e, s) {},
       ),
     );
-    await featureViewModel.fetchFeature();
+    try {
+      await featureViewModel.fetchFeature();
+    } catch (e) {
+      // NOTE: I added this try/catch to swallow errors here to maintain the
+      // existing behavior where FeatureDataSource(onError) used to swallow
+      // these errors. If we were to remove this try/catch block then the
+      // exception would propagate up through the Future giving the consumer
+      // the option to ignore it or handle it.
+    }
   }
 
   GBFeatureResult feature(String id) {

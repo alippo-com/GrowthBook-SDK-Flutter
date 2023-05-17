@@ -5,9 +5,8 @@ import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 class MockNetworkClient implements BaseClient {
   const MockNetworkClient();
   @override
-  consumeGetRequest(String path, OnSuccess onSuccess, OnError onError) {
+  Future<Map<String, dynamic>> consumeGetRequest(String path) async {
     final pseudoResponse = jsonDecode(MockResponse.successResponse);
-    onSuccess(pseudoResponse);
     return pseudoResponse;
   }
 }

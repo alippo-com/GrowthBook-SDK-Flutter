@@ -5,29 +5,13 @@ abstract class FeaturesFlowDelegate {
 }
 
 class FeatureDataSource {
-  FeatureDataSource(
-      {required this.context, required this.client, required this.onError});
+  FeatureDataSource({required this.context, required this.client});
   final GBContext context;
   final BaseClient client;
-  final OnError onError;
 
   Future<FeaturedDataModel> fetchFeatures() async {
     final api = context.hostURL! + Constant.featurePath + context.apiKey!;
-    await client.consumeGetRequest(api, onSuccess, onError);
-    setUpModel();
-    return model;
-  }
-
-  late FeaturedDataModel model;
-  late Map<String, dynamic> data;
-
-  /// Assign response to local variable [data]
-  void onSuccess(response) {
-    data = response;
-  }
-
-  /// Initialize [model] from the [data]
-  void setUpModel() {
-    model = FeaturedDataModel.fromJson(data);
+    final data = await client.consumeGetRequest(api);
+    return FeaturedDataModel.fromJson(data);
   }
 }
