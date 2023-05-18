@@ -65,7 +65,7 @@ void main() {
       expect(result.variationID, 0);
     });
 
-    test('- with initialization assertion', () async {
+    test('- with initialization assertion cause of wrong host url', () async {
       expect(
         () => GBSDKBuilderApp(
           apiKey: testApiKey,
@@ -75,6 +75,24 @@ void main() {
         ),
         throwsAssertionError,
       );
+    });
+
+    test('- with failed network client', () async {
+      late GrowthBookSDK sdk;
+
+      sdk = await GBSDKBuilderApp(
+        apiKey: testApiKey,
+        hostURL: testHostURL,
+        attributes: attr,
+        client: const MockNetworkClient(error: true),
+        growthBookTrackingCallBack: (exp, result) {},
+        gbFeatures: {'some-feature': GBFeature(defaultValue: true)},
+      ).initialize();
+      final featureValue = sdk.feature('some-feature');
+      expect(featureValue.value, true);
+
+      final result = sdk.run(GBExperiment(key: "some-feature"));
+      expect(result.variationID, 0);
     });
   });
 }

@@ -10,6 +10,7 @@ class GBContext {
     this.forcedVariation,
     this.qaMode,
     this.trackingCallBack,
+    this.features = const {},
   });
 
   /// Registered API key for GrowthBook SDK.

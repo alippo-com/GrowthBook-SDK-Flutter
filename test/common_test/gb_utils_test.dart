@@ -23,7 +23,7 @@ void main() {
         final testContext = item[0];
         final experiment = item[1];
 
-        final result = GBUtils().hash(testContext);
+        final result = GBUtils.hash(testContext);
 
         final status = item[0].toString() +
             '\nExpected Result - ' +
@@ -84,8 +84,11 @@ void main() {
                 .map((e) => double.parse(e.toString()))
                 .toList();
           }
-          final bucketRange = GBUtils().getBucketRanges(
-              numVariation, double.parse(coverage.toString()), weights ?? []);
+          final bucketRange = GBUtils.getBucketRanges(
+            numVariation,
+            double.parse(coverage.toString()),
+            weights ?? [],
+          );
 
           /// For status.
           final status = item[0].toString() +
@@ -139,7 +142,7 @@ void main() {
           ///
           final rangeData = getPairedData(comparer);
 
-          var result = GBUtils().chooseVariation(hash!, rangeData);
+          var result = const GBUtils().chooseVariation(hash!, rangeData);
 
           if (localItem[3].toString() == result.toString()) {
             passedScenarios.add(item.toString());
@@ -163,7 +166,7 @@ void main() {
         if ((item as Object?).isArray) {
           final localItem = item as List;
           final numVariation = double.parse(localItem[0].toString());
-          final result = GBUtils().getEqualWeights(numVariation.toInt());
+          final result = GBUtils.getEqualWeights(numVariation.toInt());
           final status = "Expected Result - " +
               item[1].toString() +
               "\nActual result - " +
@@ -205,8 +208,8 @@ void main() {
       for (var item in evaluateConditions) {
         final userId = item[1];
         final array = item[2];
-        final nameSpace = GBUtils().getGBNameSpace(array);
-        final result = GBUtils().inNamespace(userId, nameSpace!);
+        final nameSpace = GBUtils.getGBNameSpace(array);
+        final result = GBUtils.inNamespace(userId, nameSpace!);
         final status = item[0].toString() +
             "\nExpected Result - " +
             item[3].toString() +

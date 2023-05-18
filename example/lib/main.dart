@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -45,7 +45,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   /// Initialization of controllers.
   late TabController _tabController;
   final userAttr = {"id": Platform.isIOS ? "foo" : "foo_bar"};
-  late final GrowthBookSDK gb;
+  GrowthBookSDK? gb;
   @override
   void initState() {
     super.initState();
@@ -60,12 +60,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       hostURL: 'https://example.growthbook.io/',
       attributes: userAttr,
       growthBookTrackingCallBack: (exp, rst) {},
+      gbFeatures: {
+        'some-feature': GBFeature(defaultValue: true),
+      },
     ).initialize();
     setState(() {});
   }
 
   Widget _getRightWidget() {
-    if (gb.feature('random').on!) {
+    if (gb?.feature('some-feature').on! ?? false) {
       return TabBar(
         isScrollable: true,
         tabs: tabs,
@@ -103,13 +106,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(tabNames[i]),
-                        ElevatedButton(
-                          onPressed: () {
-                            //
-                            gb.features.forEach((key, value) {});
-                          },
-                          child: const Text('Press'),
-                        )
                       ],
                     ),
                   ),

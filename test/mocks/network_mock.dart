@@ -1,14 +1,30 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
 class MockNetworkClient implements BaseClient {
-  const MockNetworkClient();
+  final bool error;
+  const MockNetworkClient({this.error = false});
+
   @override
-  consumeGetRequest(String path, OnSuccess onSuccess, OnError onError) {
-    final pseudoResponse = jsonDecode(MockResponse.successResponse);
-    onSuccess(pseudoResponse);
-    return pseudoResponse;
+  Future<void> consumeGetRequest(
+      String path, OnSuccess onSuccess, OnError onError) async {
+    if (!error) {
+      final pseudoResponse = jsonDecode(MockResponse.successResponse);
+      onSuccess(pseudoResponse);
+    } else {
+      onError(
+        DioError(
+          type: DioErrorType.other,
+          requestOptions: RequestOptions(path: '', baseUrl: ''),
+          response: null,
+          error:
+              'SocketException: Failed host lookup: \'cdn.growthbook.io\' (OS Error: nodename nor servname provided, or not known, errno = 8)',
+        ),
+        StackTrace.current,
+      );
+    }
   }
 }
 

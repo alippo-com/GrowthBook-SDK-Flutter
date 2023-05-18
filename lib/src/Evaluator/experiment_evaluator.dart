@@ -5,7 +5,7 @@ import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 class GBExperimentEvaluator {
   /// Takes Context & Experiment & returns Experiment Result
 
-  GBExperimentResult evaluateExperiment({
+  static GBExperimentResult evaluateExperiment({
     required GBContext context,
     required GBExperiment experiment,
   }) {
@@ -14,7 +14,10 @@ class GBExperimentEvaluator {
     ///
     /// If context.enabled is false, return immediately (not in experiment, variationId 0)
     if (experiment.variations.length < 2 || !context.enabled!) {
-      return _getExperimentResult(experiment: experiment, gbContext: context);
+      return _getExperimentResult(
+        experiment: experiment,
+        gbContext: context,
+      );
     }
 
     /// If context.forcedVariations[experiment.trackingKey] is defined,
@@ -22,15 +25,19 @@ class GBExperimentEvaluator {
     final forcedVariation = context.forcedVariation?[experiment.key];
     if (forcedVariation != null) {
       return _getExperimentResult(
-          experiment: experiment,
-          variationIndex: forcedVariation,
-          gbContext: context);
+        experiment: experiment,
+        variationIndex: forcedVariation,
+        gbContext: context,
+      );
     }
 
     /// If experiment.action is set to false, return immediately
     /// (not in experiment, variationId 0)
     if (experiment.deactivated) {
-      return _getExperimentResult(experiment: experiment, gbContext: context);
+      return _getExperimentResult(
+        experiment: experiment,
+        gbContext: context,
+      );
     }
 
     // Get the user hash attribute and value (context.attributes[experiment.hashAttribute || "id"])
@@ -38,16 +45,22 @@ class GBExperimentEvaluator {
     final attributeValue =
         context.attributes?[experiment.hashAttribute ?? Constant.idAttribute];
     if (attributeValue == null || attributeValue.toString().isEmpty) {
-      return _getExperimentResult(experiment: experiment, gbContext: context);
+      return _getExperimentResult(
+        experiment: experiment,
+        gbContext: context,
+      );
     }
 
     /// If experiment.namespace is set, check if hash value is included in the
     ///  range and if not, return immediately (not in experiment, variationId 0)
     if (experiment.namespace != null) {
-      var namespace = const GBUtils().getGBNameSpace(experiment.namespace!);
-      if (experiment.namespace != null &&
-          !const GBUtils().inNamespace(attributeValue, namespace!)) {
-        return _getExperimentResult(experiment: experiment, gbContext: context);
+      var namespace = GBUtils.getGBNameSpace(experiment.namespace!);
+      if (namespace != null &&
+          !GBUtils.inNamespace(attributeValue, namespace)) {
+        return _getExperimentResult(
+          experiment: experiment,
+          gbContext: context,
+        );
       }
     }
 
@@ -57,7 +70,10 @@ class GBExperimentEvaluator {
       final attr = context.attributes;
       if (!GBConditionEvaluator()
           .evaluateCondition(attr!, experiment.condition!)) {
-        return _getExperimentResult(experiment: experiment, gbContext: context);
+        return _getExperimentResult(
+          experiment: experiment,
+          gbContext: context,
+        );
       }
     }
 
@@ -66,15 +82,16 @@ class GBExperimentEvaluator {
     if (weights == null) {
       // Default weights to an even split between all variations
       experiment.weights =
-          const GBUtils().getEqualWeights(experiment.variations.length);
+          GBUtils.getEqualWeights(experiment.variations.length);
     }
 
+    // Default coverage 1.
     final coverage = experiment.coverage ?? 1.0;
     experiment.coverage = coverage;
 
     /// Calculate bucket ranges for the variations
     /// Convert weights/coverage to ranges
-    final List<GBBucketRange> bucketRange = const GBUtils().getBucketRanges(
+    final List<GBBucketRange> bucketRange = GBUtils.getBucketRanges(
         experiment.variations.length,
         coverage,
         experiment.weights != null
@@ -83,14 +100,14 @@ class GBExperimentEvaluator {
                 .toList()
             : []);
 
-    final hash = const GBUtils().hash(attributeValue + experiment.key);
-    late final int assigned;
-    if (hash != null) {
-      assigned = const GBUtils().chooseVariation(hash, bucketRange);
-    }
+    final hash = GBUtils.hash(attributeValue + experiment.key);
+    final assigned = const GBUtils().chooseVariation(hash, bucketRange);
     // If not assigned a variation (assigned === -1), return immediately (not in experiment, variationId 0)
     if (assigned == -1) {
-      return _getExperimentResult(experiment: experiment, gbContext: context);
+      return _getExperimentResult(
+        experiment: experiment,
+        gbContext: context,
+      );
     }
 
     /// If experiment.force is set, return immediately (not in experiment,
@@ -100,14 +117,16 @@ class GBExperimentEvaluator {
       return _getExperimentResult(
         experiment: experiment,
         variationIndex: forceExp,
-        inExperiment: false,
         gbContext: context,
       );
     }
 
     // If context.qaMode is true, return immediately (not in experiment, variationId 0)
     if (context.qaMode ?? false) {
-      return _getExperimentResult(experiment: experiment, gbContext: context);
+      return _getExperimentResult(
+        experiment: experiment,
+        gbContext: context,
+      );
     }
 
     final result = _getExperimentResult(
@@ -116,17 +135,19 @@ class GBExperimentEvaluator {
       inExperiment: true,
       gbContext: context,
     );
-    context.trackingCallBack!(experiment, result);
+
+    context.trackingCallBack?.call(experiment, result);
 
     return result;
   }
 
   ///  This is a helper method to create an ExperimentResult object.
-  GBExperimentResult _getExperimentResult(
-      {required GBContext gbContext,
-      required GBExperiment experiment,
-      int variationIndex = 0,
-      bool inExperiment = false}) {
+  static GBExperimentResult _getExperimentResult({
+    required GBContext gbContext,
+    required GBExperiment experiment,
+    int variationIndex = 0,
+    bool inExperiment = false,
+  }) {
     var targetVariationIndex = variationIndex;
 
     // Check whether variationIndex lies within bounds of variations size
@@ -146,14 +167,14 @@ class GBExperimentEvaluator {
     // Hash Attribute - used for Experiment Calculations
     final hashAttribute = experiment.hashAttribute ?? Constant.idAttribute;
     // Hash Value against hash attribute
-    final hashValue = gbContext.attributes?[hashAttribute];
+    final hashValue = gbContext.attributes?[hashAttribute]?.toString() ?? '';
 
     return GBExperimentResult(
       inExperiment: inExperiment,
       variationID: targetVariationIndex,
       value: targetValue,
       hasAttributes: hashAttribute,
-      hashValue: hashValue as String?,
+      hashValue: hashValue,
     );
   }
 }

@@ -29,8 +29,7 @@ void main() {
           gbContext.features = testData.features!;
         }
 
-        final evaluator = GBFeatureEvaluator();
-        final result = evaluator.evaluateFeature(gbContext, item[2]);
+        final result = GBFeatureEvaluator.evaluateFeature(gbContext, item[2]);
         final expectedResult = GBFeatureResultTest.fromMap(item[3]);
 
         final status = item[0].toString() +
