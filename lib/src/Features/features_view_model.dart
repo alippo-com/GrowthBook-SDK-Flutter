@@ -15,7 +15,7 @@ class FeatureViewModel {
       ),
       (e, s) => delegate.featuresFetchFailed(
         GBError(
-          message: e.toString(),
+          error: e,
           stackTrace: s.toString(),
         ),
       ),

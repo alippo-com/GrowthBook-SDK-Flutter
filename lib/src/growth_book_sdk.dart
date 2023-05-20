@@ -4,6 +4,8 @@ import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
 typedef VoidCallback = void Function();
 
+typedef OnInitializationFailure = void Function(GBError? error);
+
 class GBSDKBuilderApp {
   GBSDKBuilderApp({
     required this.hostURL,
@@ -15,6 +17,7 @@ class GBSDKBuilderApp {
     this.forcedVariations = const <String, int>{},
     this.client,
     this.gbFeatures = const {},
+    this.onInitializationFailure,
   }) : assert(
           hostURL.endsWith('/'),
           'Invalid host url: $hostURL. The hostUrl should be end with `/`, example: `https://example.growthbook.io/`',
@@ -29,6 +32,7 @@ class GBSDKBuilderApp {
   final TrackingCallBack growthBookTrackingCallBack;
   final BaseClient? client;
   final GBFeatures gbFeatures;
+  final OnInitializationFailure? onInitializationFailure;
 
   Future<GrowthBookSDK> initialize() async {
     final gbContext = GBContext(
@@ -44,6 +48,7 @@ class GBSDKBuilderApp {
     final gb = GrowthBookSDK._(
       context: gbContext,
       client: client,
+      onInitializationFailure: onInitializationFailure,
     );
     await gb.refresh();
     return gb;
@@ -55,14 +60,18 @@ class GBSDKBuilderApp {
 /// It exposes two main methods: feature and run.
 class GrowthBookSDK extends FeaturesFlowDelegate {
   GrowthBookSDK._({
+    OnInitializationFailure? onInitializationFailure,
     required GBContext context,
     BaseClient? client,
   })  : _context = context,
+        _onInitializationFailure = onInitializationFailure,
         _baseClient = client ?? DioClient();
 
   final GBContext _context;
 
   final BaseClient _baseClient;
+
+  final OnInitializationFailure? _onInitializationFailure;
 
   /// The complete data regarding features & attributes etc.
   GBContext get context => _context;
@@ -76,7 +85,9 @@ class GrowthBookSDK extends FeaturesFlowDelegate {
   }
 
   @override
-  void featuresFetchFailed(GBError? error) {}
+  void featuresFetchFailed(GBError? error) {
+    _onInitializationFailure?.call(error);
+  }
 
   Future<void> refresh() async {
     final featureViewModel = FeatureViewModel(

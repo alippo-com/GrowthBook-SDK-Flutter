@@ -38,13 +38,13 @@ typedef TrackingCallBack = void Function(GBExperiment, GBExperimentResult);
 
 class GBError {
   /// Error Message for the caught error / exception.
-  final String? message;
+  final Object? error;
 
   /// Error Stacktrace for the caught error / exception.
   final String stackTrace;
 
   const GBError({
-    this.message,
+    this.error,
     required this.stackTrace,
   });
 }
