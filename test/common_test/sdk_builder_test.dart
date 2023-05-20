@@ -7,7 +7,7 @@ void main() {
   group('Initialization', () {
     const testApiKey = '<API_KEY>';
     const attr = <String, String>{};
-    const testHostURL = '<HOST_URL>';
+    const testHostURL = 'https://example.growthbook.io/';
     const client = MockNetworkClient();
     test("- default", () async {
       final sdk = await GBSDKBuilderApp(
@@ -51,9 +51,7 @@ void main() {
     });
 
     test('- with network client', () async {
-      late GrowthBookSDK sdk;
-
-      sdk = await GBSDKBuilderApp(
+      GrowthBookSDK sdk = await GBSDKBuilderApp(
               apiKey: testApiKey,
               hostURL: testHostURL,
               attributes: attr,
@@ -65,6 +63,18 @@ void main() {
 
       final result = sdk.run(GBExperiment(key: "fwrfewrfe"));
       expect(result.variationID, 0);
+    });
+
+    test('- with initialization assertion', () async {
+      expect(
+        () => GBSDKBuilderApp(
+          apiKey: testApiKey,
+          hostURL: "https://example.growthbook.io",
+          client: client,
+          growthBookTrackingCallBack: (_, __) {},
+        ),
+        throwsAssertionError,
+      );
     });
   });
 }
