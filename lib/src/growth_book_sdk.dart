@@ -14,7 +14,10 @@ class GBSDKBuilderApp {
     this.enable = true,
     this.forcedVariations = const <String, int>{},
     this.client,
-  });
+  }) : assert(
+          hostURL.endsWith('/'),
+          'Invalid host url: $hostURL. The hostUrl should be end with `/`, example: `https://example.growthbook.io/`',
+        );
 
   final String apiKey;
   final String hostURL;
