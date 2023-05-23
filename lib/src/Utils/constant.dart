@@ -33,3 +33,18 @@ typedef GBCacheRefreshHandler = void Function(bool);
 
 /// A function that takes experiment and result as arguments.
 typedef TrackingCallBack = void Function(GBExperiment, GBExperimentResult);
+
+/// GrowthBook Error Class to handle any error / exception scenario
+
+class GBError {
+  /// Error Message for the caught error / exception.
+  final Object? error;
+
+  /// Error Stacktrace for the caught error / exception.
+  final String stackTrace;
+
+  const GBError({
+    this.error,
+    required this.stackTrace,
+  });
+}

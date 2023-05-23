@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
@@ -9,6 +10,7 @@ void main() {
     const attr = <String, String>{};
     const testHostURL = 'https://example.growthbook.io/';
     const client = MockNetworkClient();
+
     test("- default", () async {
       final sdk = await GBSDKBuilderApp(
         apiKey: testApiKey,
@@ -34,7 +36,7 @@ void main() {
       expect(sdk.context.attributes, attr);
     });
 
-    test('- with pre set data', () async {
+    test('- qa mode', () async {
       const variations = <String, int>{};
 
       final sdk = await GBSDKBuilderApp(
@@ -50,22 +52,7 @@ void main() {
       expect(sdk.context.qaMode, true);
     });
 
-    test('- with network client', () async {
-      GrowthBookSDK sdk = await GBSDKBuilderApp(
-              apiKey: testApiKey,
-              hostURL: testHostURL,
-              attributes: attr,
-              client: client,
-              growthBookTrackingCallBack: (exp, result) {})
-          .initialize();
-      final featureValue = sdk.feature('fwrfewrfe');
-      expect(featureValue.source, GBFeatureSource.unknownFeature);
-
-      final result = sdk.run(GBExperiment(key: "fwrfewrfe"));
-      expect(result.variationID, 0);
-    });
-
-    test('- with initialization assertion', () async {
+    test('- with initialization assertion cause of wrong host url', () async {
       expect(
         () => GBSDKBuilderApp(
           apiKey: testApiKey,
@@ -76,5 +63,59 @@ void main() {
         throwsAssertionError,
       );
     });
+
+    test('- with network client', () async {
+      GrowthBookSDK sdk = await GBSDKBuilderApp(
+              apiKey: testApiKey,
+              hostURL: testHostURL,
+              attributes: attr,
+              client: client,
+              growthBookTrackingCallBack: (exp, result) {})
+          .initialize();
+      final featureValue = sdk.feature('fwrfewrfe');
+      expect(featureValue.source, GBFeatureSource.unknownFeature);
+      final result = sdk.run(GBExperiment(key: "fwrfewrfe"));
+      expect(result.variationID, 0);
+    });
+
+    test(
+      '- with failed network client',
+      () async {
+        GrowthBookSDK sdk = await GBSDKBuilderApp(
+          apiKey: testApiKey,
+          hostURL: testHostURL,
+          attributes: attr,
+          client: const MockNetworkClient(error: true),
+          growthBookTrackingCallBack: (exp, result) {},
+          gbFeatures: {'some-feature': GBFeature(defaultValue: true)},
+        ).initialize();
+        final featureValue = sdk.feature('some-feature');
+        expect(featureValue.value, true);
+
+        final result = sdk.run(GBExperiment(key: "some-feature"));
+        expect(result.variationID, 0);
+      },
+    );
+
+    test(
+      '- onInitializationFailure callback test',
+      () async {
+        GBError? error;
+
+        GrowthBookSDK sdk = await GBSDKBuilderApp(
+          apiKey: testApiKey,
+          hostURL: testHostURL,
+          attributes: attr,
+          client: const MockNetworkClient(error: true),
+          growthBookTrackingCallBack: (exp, result) {},
+          gbFeatures: {'some-feature': GBFeature(defaultValue: true)},
+          onInitializationFailure: (e) => error = e,
+        ).initialize();
+
+        expect(error != null, true);
+        expect(error?.error is DioError, true);
+        expect(error?.stackTrace != null, true);
+      },
+    );
   });
 }

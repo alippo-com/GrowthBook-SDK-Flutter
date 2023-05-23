@@ -31,8 +31,8 @@ void main() {
               forcedVariation: testContext.forcedVariations,
               qaMode: testContext.qaMode,
               trackingCallBack: (_, __) {});
-          final evaluator = GBExperimentEvaluator();
-          final result = evaluator.evaluateExperiment(
+
+          final result = GBExperimentEvaluator.evaluateExperiment(
               context: gbContext, experiment: experiment);
           final status = item[0].toString() +
               "\nExpected Result - " +

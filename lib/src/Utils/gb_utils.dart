@@ -30,7 +30,7 @@ class GBUtils {
   /// Hashes a string to a float between 0 and 1
   /// fnv32a returns an integer, so we convert that to a float using a modulus:
 
-  double? hash(String data) {
+  static double hash(String data) {
     final hash = FNV().fnv1a_32(data);
     final remainder = hash.remainder(BigInt.from(1000));
     final value = remainder.toDouble() / 1000.0;
@@ -38,17 +38,14 @@ class GBUtils {
   }
 
   /// This checks if a userId is within an experiment namespace or not.
-  bool inNamespace(String userId, GBNameSpace namespace) {
+  static bool inNamespace(String userId, GBNameSpace namespace) {
     final hashValue = hash(userId + "__" + namespace.item1);
-    if (hashValue != null) {
-      return hashValue >= namespace.item2 && hashValue < namespace.item3;
-    }
-    return false;
+    return hashValue >= namespace.item2 && hashValue < namespace.item3;
   }
 
   /// Returns an array of double with numVariations items that are all equal and
   /// sum to 1. For example, getEqualWeights(2) would return [0.5, 0.5].
-  List<double> getEqualWeights(int numVariations) {
+  static List<double> getEqualWeights(int numVariations) {
     List<double> weights = <double>[];
 
     if (numVariations >= 1) {
@@ -60,7 +57,7 @@ class GBUtils {
 
   ///This converts and experiment's coverage and variation weights into an array
   /// of bucket ranges.
-  List<GBBucketRange> getBucketRanges(
+  static List<GBBucketRange> getBucketRanges(
       int numVariations, double coverage, List<double> weights) {
     List<GBBucketRange> bucketRange;
 
@@ -106,7 +103,7 @@ class GBUtils {
   }
 
   ///Convert JsonArray to GBNameSpace
-  GBNameSpace? getGBNameSpace(List namespace) {
+  static GBNameSpace? getGBNameSpace(List namespace) {
     if (namespace.length >= 3) {
       final title = namespace[0];
       final start = namespace[1];

@@ -6,16 +6,19 @@ class FeatureViewModel {
     required this.source,
   });
   final FeaturesFlowDelegate delegate;
-
   final FeatureDataSource source;
 
   Future<void> fetchFeature() async {
-    try {
-      final model = await source.fetchFeatures();
-      delegate.featuresFetchedSuccessfully(model.features);
-      customLogger('FeatureVieModel have fetched features successfully.');
-    } catch (e) {
-      rethrow;
-    }
+    await source.fetchFeatures(
+      (data) => delegate.featuresFetchedSuccessfully(
+        data.features,
+      ),
+      (e, s) => delegate.featuresFetchFailed(
+        GBError(
+          error: e,
+          stackTrace: s.toString(),
+        ),
+      ),
+    );
   }
 }

@@ -4,6 +4,8 @@ import 'package:growthbook_sdk_flutter/growthbook_sdk_flutter.dart';
 
 typedef VoidCallback = void Function();
 
+typedef OnInitializationFailure = void Function(GBError? error);
+
 class GBSDKBuilderApp {
   GBSDKBuilderApp({
     required this.hostURL,
@@ -14,6 +16,8 @@ class GBSDKBuilderApp {
     this.enable = true,
     this.forcedVariations = const <String, int>{},
     this.client,
+    this.gbFeatures = const {},
+    this.onInitializationFailure,
   }) : assert(
           hostURL.endsWith('/'),
           'Invalid host url: $hostURL. The hostUrl should be end with `/`, example: `https://example.growthbook.io/`',
@@ -27,6 +31,8 @@ class GBSDKBuilderApp {
   final Map<String, int> forcedVariations;
   final TrackingCallBack growthBookTrackingCallBack;
   final BaseClient? client;
+  final GBFeatures gbFeatures;
+  final OnInitializationFailure? onInitializationFailure;
 
   Future<GrowthBookSDK> initialize() async {
     final gbContext = GBContext(
@@ -37,10 +43,12 @@ class GBSDKBuilderApp {
       attributes: attributes,
       forcedVariation: forcedVariations,
       trackingCallBack: growthBookTrackingCallBack,
+      features: gbFeatures,
     );
     final gb = GrowthBookSDK._(
       context: gbContext,
       client: client,
+      onInitializationFailure: onInitializationFailure,
     );
     await gb.refresh();
     return gb;
@@ -51,18 +59,19 @@ class GBSDKBuilderApp {
 /// takes a Context object in the constructor.
 /// It exposes two main methods: feature and run.
 class GrowthBookSDK extends FeaturesFlowDelegate {
-  GrowthBookSDK._(
-      {required GBContext context, GBFeatures? features, BaseClient? client})
-      : _context = context,
-        _baseClient = client ?? DioClient() {
-    if (features != null) {
-      _context.features = features;
-    }
-  }
+  GrowthBookSDK._({
+    OnInitializationFailure? onInitializationFailure,
+    required GBContext context,
+    BaseClient? client,
+  })  : _context = context,
+        _onInitializationFailure = onInitializationFailure,
+        _baseClient = client ?? DioClient();
 
   final GBContext _context;
 
   final BaseClient _baseClient;
+
+  final OnInitializationFailure? _onInitializationFailure;
 
   /// The complete data regarding features & attributes etc.
   GBContext get context => _context;
@@ -75,25 +84,34 @@ class GrowthBookSDK extends FeaturesFlowDelegate {
     _context.features = gbFeatures;
   }
 
+  @override
+  void featuresFetchFailed(GBError? error) {
+    _onInitializationFailure?.call(error);
+  }
+
   Future<void> refresh() async {
     final featureViewModel = FeatureViewModel(
       delegate: this,
       source: FeatureDataSource(
         client: _baseClient,
         context: _context,
-        onError: (e, s) {},
       ),
     );
     await featureViewModel.fetchFeature();
   }
 
   GBFeatureResult feature(String id) {
-    return GBFeatureEvaluator().evaluateFeature(_context, id);
+    return GBFeatureEvaluator.evaluateFeature(
+      _context,
+      id,
+    );
   }
 
   GBExperimentResult run(GBExperiment experiment) {
-    return GBExperimentEvaluator()
-        .evaluateExperiment(context: context, experiment: experiment);
+    return GBExperimentEvaluator.evaluateExperiment(
+      context: context,
+      experiment: experiment,
+    );
   }
 
   /// Replaces the Map of user attributes that are used to assign variations
