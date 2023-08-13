@@ -113,7 +113,7 @@ void main() {
         ).initialize();
 
         expect(error != null, true);
-        expect(error?.error is DioError, true);
+        expect(error?.error is DioException, true);
         expect(error?.stackTrace != null, true);
       },
     );

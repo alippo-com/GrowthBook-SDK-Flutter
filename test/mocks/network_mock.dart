@@ -15,8 +15,8 @@ class MockNetworkClient implements BaseClient {
       onSuccess(pseudoResponse);
     } else {
       onError(
-        DioError(
-          type: DioErrorType.other,
+        DioException(
+          type: DioExceptionType.unknown,
           requestOptions: RequestOptions(path: '', baseUrl: ''),
           response: null,
           error:
