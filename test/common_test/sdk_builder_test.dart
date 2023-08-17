@@ -102,7 +102,7 @@ void main() {
       () async {
         GBError? error;
 
-        GrowthBookSDK sdk = await GBSDKBuilderApp(
+        await GBSDKBuilderApp(
           apiKey: testApiKey,
           hostURL: testHostURL,
           attributes: attr,
