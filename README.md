@@ -74,7 +74,8 @@ final GrowthBookSDK newSdkInstance =await GBSDKBuilderApp(
 ## Usage
 
 - Initialization returns SDK instance - GrowthBookSDK
-  ###### Use sdkInstance to consume below features -
+
+### Use sdkInstance to consume below features
 
 - The feature method takes a single string argument, which is the unique identifier for the feature and returns a FeatureResult object.
 
@@ -84,21 +85,21 @@ final GrowthBookSDK newSdkInstance =await GBSDKBuilderApp(
 
 - The run method takes an Experiment object and returns an ExperimentResult
 
-```dart
+  ```dart
     GBExperimentResult run(GBExperiment experiment)   
-```
+  ```
 
 - Get Context
 
-```dart
+  ```dart
     GBContext getGBContext()
-```
+  ```
 
 - Get Features
 
-```dart
+  ```dart
     GBFeatures getFeatures()  
-```
+  ```
 
 
 
