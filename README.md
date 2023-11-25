@@ -55,16 +55,16 @@ final GrowthBookSDK sdkInstance = await GBSDKBuilderApp(
 There are additional properties which can be setup at the time of initialization
 
 ```dart
-    final GrowthBookSDK newSdkInstance =await GBSDKBuilderApp(
-    apiKey: "<API_KEY>",
-    attributes: {
-     /// Specify user attributes.
-    },
-    client: NetworkClient(), // Provide network dispatcher.
-    growthBookTrackingCallBack: (gbExperiment, gbExperimentResult) {},
-    hostURL: '<GrowthBook_URL>',
-    forcedVariations: {} // Optional provide force variation.
-    qaMode: true, // Set qamode
+final GrowthBookSDK newSdkInstance =await GBSDKBuilderApp(
+  apiKey: "<API_KEY>",
+  attributes: {
+    /// Specify user attributes.
+  },
+  client: NetworkClient(), // Provide network dispatcher.
+  growthBookTrackingCallBack: (gbExperiment, gbExperimentResult) {},
+  hostURL: '<GrowthBook_URL>',
+  forcedVariations: {} // Optional provide force variation.
+  qaMode: true, // Set qamode
 ).initialize();
 
 ```
