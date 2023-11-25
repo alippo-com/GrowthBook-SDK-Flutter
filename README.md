@@ -48,7 +48,6 @@ final GrowthBookSDK sdkInstance = await GBSDKBuilderApp(
   },
   growthBookTrackingCallBack: (gbExperiment, gbExperimentResult) {},
   hostURL: '<GrowthBook_URL>',
-  apiKey: '<YOUR API KEY>'
 ).initialize();
 
 ```
