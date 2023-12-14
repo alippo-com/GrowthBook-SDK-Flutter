@@ -226,5 +226,33 @@ void main() {
           'Passed Test ${passedScenarios.length} out of ${evaluateConditions.length}');
       expect(failedScenarios.length, 0);
     });
+
+    test('PaddedVersionString', () {
+      final evaluateConditions = GBTestHelper.getPaddedVersionStringData();
+      final failedScenarios = <String>[];
+      final passedScenarios = <String>[];
+      for (var item in evaluateConditions) {
+        if ((item as Object?).isArray) {
+          final localItem = item as List;
+          final versionString = localItem[0];
+          final result = GBUtils.paddedVersionString(versionString);
+          final expectedResult = localItem[1];
+          final status = versionString +
+              "\nExpected Result - " +
+              expectedResult +
+              "\nActual result   - " +
+              result +
+              "\n";
+          if (expectedResult == result) {
+            passedScenarios.add(status);
+          } else {
+            failedScenarios.add(status);
+          }
+        }
+      }
+      customLogger(
+          'Passed Test ${passedScenarios.length} out of ${evaluateConditions.length}');
+      expect(failedScenarios.length, 0);
+    });
   });
 }
