@@ -39,6 +39,10 @@ class GBTestHelper {
   static List getEqualWeightsData() {
     return testData['getEqualWeights'];
   }
+
+  static List getPaddedVersionStringData() {
+    return testData['paddedVersionString'];
+  }
 }
 
 class GBFeaturesTest {

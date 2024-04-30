@@ -117,4 +117,30 @@ class GBUtils {
 
     return null;
   }
+
+  static String paddedVersionString(String input) {
+    // Remove build info and leading `v` if any
+    // Split version into parts (both core version numbers and pre-release tags)
+    // "v1.2.3-rc.1+build123" -> ["1","2","3","rc","1"]
+    final parts = input
+        .replaceAll(
+          RegExp(r"(^v|\+.*$)"),
+          "",
+        )
+        .split(RegExp(r"[-.]"));
+
+    // If it's SemVer without a pre-release, add `~` to the end
+    // ["1","0","0"] -> ["1","0","0","~"]
+    // "~" is the largest ASCII character, so this will make "1.0.0" greater than "1.0.0-beta" for example
+    if (parts.length == 3) {
+      parts.add("~");
+    }
+
+    // Left pad each numeric part with spaces so string comparisons will work ("9">"10", but " 9"<"10")
+    // Then, join back together into a single string
+    final digits = RegExp(r"^[0-9]+$");
+    return parts
+        .map((v) => digits.hasMatch(v) ? v.padLeft(5, " ") : v)
+        .join("-");
+  }
 }

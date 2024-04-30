@@ -336,7 +336,6 @@ class GBConditionEvaluator {
       }
     } else if (attributeValue is List) {
       switch (operator) {
-
         /// Evaluate ELEMENT-MATCH operator - whether condition matches attribute
         case "\$elemMatch":
           return elemMatch(attributeValue, conditionValue);
@@ -373,7 +372,6 @@ class GBConditionEvaluator {
         attributeValue as num;
         bool evaluatedValue = false;
         switch (operator) {
-
           /// Evaluate EQ operator - whether condition equals to attribute
           case '\$eq':
             evaluatedValue = conditionValue == attributeValue;
@@ -410,7 +408,6 @@ class GBConditionEvaluator {
         conditionValue as String;
         attributeValue as String;
         switch (operator) {
-
           /// Evaluate EQ operator - whether condition equals to attribute
           case '\$eq':
             evaluatedValue = conditionValue == attributeValue;
@@ -423,6 +420,45 @@ class GBConditionEvaluator {
           // Evaluate LT operator - whether attribute less than to condition
           case '\$lt':
             evaluatedValue = attributeValue < conditionValue;
+            break;
+
+          // Evaluate VEQ operator - whether attribute version equals the condition version
+          case '\$veq':
+            evaluatedValue = GBUtils.paddedVersionString(attributeValue) ==
+                GBUtils.paddedVersionString(conditionValue);
+            break;
+          // Evaluate VNE operator - whether attribute version does not equal the condition version
+          case '\$vne':
+            evaluatedValue = GBUtils.paddedVersionString(attributeValue) !=
+                GBUtils.paddedVersionString(conditionValue);
+            break;
+          // Evaluate VGT operator - whether attribute version is greater than the condition version
+          case '\$vgt':
+            evaluatedValue = GBUtils.paddedVersionString(attributeValue) >
+                GBUtils.paddedVersionString(conditionValue);
+            break;
+          // Evaluate VGT operator - whether attribute version is greater than or equal to the condition version
+          case '\$vgte':
+            final attributeVersion =
+                GBUtils.paddedVersionString(attributeValue);
+            final conditionVersion =
+                GBUtils.paddedVersionString(conditionValue);
+            evaluatedValue = (attributeVersion == conditionVersion) ||
+                (attributeVersion > conditionVersion);
+            break;
+          // Evaluate VLT operator - whether attribute version is less than the condition version
+          case '\$vlt':
+            evaluatedValue = GBUtils.paddedVersionString(attributeValue) <
+                GBUtils.paddedVersionString(conditionValue);
+            break;
+          // Evaluate VLTE operator - whether attribute version is less than or equal to the condition version
+          case '\$vlte':
+            final attributeVersion =
+                GBUtils.paddedVersionString(attributeValue);
+            final conditionVersion =
+                GBUtils.paddedVersionString(conditionValue);
+            evaluatedValue = (attributeVersion == conditionVersion) ||
+                (attributeVersion < conditionVersion);
             break;
 
           /// Evaluate LTE operator - whether attribute less than or equal to condition
