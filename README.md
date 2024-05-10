@@ -48,7 +48,6 @@ final GrowthBookSDK sdkInstance = await GBSDKBuilderApp(
   },
   growthBookTrackingCallBack: (gbExperiment, gbExperimentResult) {},
   hostURL: '<GrowthBook_URL>',
-  apiKey: '<YOUR API KEY>'
 ).initialize();
 
 ```
@@ -56,16 +55,16 @@ final GrowthBookSDK sdkInstance = await GBSDKBuilderApp(
 There are additional properties which can be setup at the time of initialization
 
 ```dart
-    final GrowthBookSDK newSdkInstance =await GBSDKBuilderApp(
-    apiKey: "<API_KEY>",
-    attributes: {
-     /// Specify user attributes.
-    },
-    client: NetworkClient(), // Provide network dispatcher.
-    growthBookTrackingCallBack: (gbExperiment, gbExperimentResult) {},
-    hostURL: '<GrowthBook_URL>',
-    forcedVariations: {} // Optional provide force variation.
-    qaMode: true, // Set qamode
+final GrowthBookSDK newSdkInstance =await GBSDKBuilderApp(
+  apiKey: "<API_KEY>",
+  attributes: {
+    /// Specify user attributes.
+  },
+  client: NetworkClient(), // Provide network dispatcher.
+  growthBookTrackingCallBack: (gbExperiment, gbExperimentResult) {},
+  hostURL: '<GrowthBook_URL>',
+  forcedVariations: {} // Optional provide force variation.
+  qaMode: true, // Set qamode
 ).initialize();
 
 ```
@@ -75,7 +74,8 @@ There are additional properties which can be setup at the time of initialization
 ## Usage
 
 - Initialization returns SDK instance - GrowthBookSDK
-  ###### Use sdkInstance to consume below features -
+
+### Use sdkInstance to consume below features
 
 - The feature method takes a single string argument, which is the unique identifier for the feature and returns a FeatureResult object.
 
@@ -85,21 +85,21 @@ There are additional properties which can be setup at the time of initialization
 
 - The run method takes an Experiment object and returns an ExperimentResult
 
-```dart
+  ```dart
     GBExperimentResult run(GBExperiment experiment)   
-```
+  ```
 
 - Get Context
 
-```dart
+  ```dart
     GBContext getGBContext()
-```
+  ```
 
 - Get Features
 
-```dart
+  ```dart
     GBFeatures getFeatures()  
-```
+  ```
 
 
 
